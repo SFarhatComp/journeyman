@@ -1,0 +1,16 @@
+{
+  "name": "footfinder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "start": "node src/server.js",
+    "dataset": "node scripts/build-dataset.mjs"
+  },
+  "dependencies": {
+    "fastify": "^5.2.0",
+    "ws": "^8.18.0"
+  }
+}
