@@ -1,4 +1,4 @@
-# Bessak — design spec
+# FootFinder — design spec
 
 **Date:** 2026-08-12
 **Status:** approved for planning
