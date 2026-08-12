@@ -193,17 +193,27 @@ esac
 
 Note on `up`: the container's internal `HOST` is `0.0.0.0` so it accepts connections from Docker's bridge, while `-p 127.0.0.1:3000:3000` restricts the host-side publish to loopback. The public interface is never bound.
 
-- [ ] **Step 7: Run the test to verify it passes**
+- [ ] **Step 7: Create the source layout before first mount**
+
+```bash
+mkdir -p src test && touch src/.gitkeep
+```
+
+Docker auto-creates a missing bind-mount source as a **root-owned** directory.
+If `src/` does not exist when `footfinder.sh test` first runs, the daemon
+creates it as root and every later task fails to write into it.
+
+- [ ] **Step 8: Run the test to verify it passes**
 
 ```bash
 chmod +x footfinder.sh && ./footfinder.sh test
 ```
 Expected: PASS, 1 test.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
-git add package.json Dockerfile footfinder.sh .dockerignore test/harness.test.js
+git add package.json Dockerfile footfinder.sh .dockerignore test/harness.test.js src/.gitkeep
 git commit -m "Add container skeleton and Dockerised test harness"
 ```
 
@@ -1426,7 +1436,7 @@ git commit -m "Add picking phase with club lock-out and timeout auto-assign"
 
 ---
 
-### Task 9: Answering phase — claim race and grace window
+### Task 9: Answering, reveal and game end
 
 **Files:**
 - Modify: `src/engine/room.js`
@@ -1434,7 +1444,10 @@ git commit -m "Add picking phase with club lock-out and timeout auto-assign"
 
 **Interfaces:**
 - Consumes: everything from Tasks 7–8
-- Produces: `submitAnswer(state, { playerId, entityId }, now, deps) -> { state, events, error? }`; `expirePhase` extended to handle ANSWERING → REVEAL.
+- Produces: `submitAnswer(state, {playerId, entityId}, now, deps)`; `beginReveal(state, now, deps)`; `disconnect(state, playerId)`; `expirePhase` extended for ANSWERING → REVEAL → PICKING/FINAL.
+
+Answering and reveal are one task because `submitAnswer` calls `beginReveal`:
+splitting them would mean committing a task whose own tests are red.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1590,28 +1603,11 @@ export function expirePhase(state, now, deps) {
 }
 ```
 
-Note `beginReveal` is defined in Task 10; until then the answering tests that reach REVEAL will fail with "beginReveal is not defined". Implement Task 10 immediately after this step — the two tasks are split for reviewability, not for independent shipping.
+`beginReveal` arrives in Step 6 below. Until then the answering tests that
+reach REVEAL stay red — which is exactly why reveal belongs to this task and
+not the next one. Do not commit yet.
 
-- [ ] **Step 4: Commit the partial state**
-
-```bash
-git add src/engine/room.js test/room-answering.test.js
-git commit -m "Add answering phase with claim race and grace window"
-```
-
----
-
-### Task 10: Reveal, scoring and game end
-
-**Files:**
-- Modify: `src/engine/room.js`
-- Test: `test/room-reveal.test.js`
-
-**Interfaces:**
-- Consumes: everything from Tasks 7–9
-- Produces: `beginReveal(state, now, deps)`; `expirePhase` extended for REVEAL → PICKING or FINAL; `disconnect(state, playerId) -> { state, events }`
-
-- [ ] **Step 1: Write the failing test**
+- [ ] **Step 4: Write the failing reveal test**
 
 Create `test/room-reveal.test.js`:
 
@@ -1709,12 +1705,12 @@ test("disconnecting keeps the score and marks the player offline", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [ ] **Step 5: Run test to verify it fails**
 
 Run: `./footfinder.sh test`
 Expected: FAIL — `beginReveal is not defined`.
 
-- [ ] **Step 3: Add the implementation to src/engine/room.js**
+- [ ] **Step 6: Add the implementation to src/engine/room.js**
 
 Append:
 
@@ -1776,21 +1772,21 @@ Then extend `expirePhase` — replace its final `return ok(next);` with:
   return ok(next);
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [ ] **Step 7: Run tests to verify they pass**
 
 Run: `./footfinder.sh test`
-Expected: PASS — all reveal tests **and** the Task 9 answering tests that reach REVEAL.
+Expected: PASS — every answering test **and** every reveal test. Nothing red.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
-git add src/engine/room.js test/room-reveal.test.js
-git commit -m "Add reveal scoring, round progression and final standings"
+git add src/engine/room.js test/room-answering.test.js test/room-reveal.test.js
+git commit -m "Add answering, reveal scoring and game end"
 ```
 
 ---
 
-### Task 11: Protocol validation
+### Task 10: Protocol validation
 
 **Files:**
 - Create: `src/protocol.js`
@@ -1964,7 +1960,7 @@ git commit -m "Add protocol validation and answer-hiding snapshots"
 
 ---
 
-### Task 12: Server
+### Task 11: Server
 
 **Files:**
 - Create: `src/server.js`
@@ -2197,7 +2193,7 @@ git commit -m "Add server: static files, room API, WebSocket game loop"
 
 ---
 
-### Task 13: Playable UI
+### Task 12: Playable UI
 
 **Files:**
 - Create: `public/index.html`, `public/app.js`, `public/style.css`
@@ -2430,7 +2426,7 @@ git commit -m "Add playable four-screen UI"
 
 ---
 
-### Task 14: Tunnel and README
+### Task 13: Tunnel and README
 
 **Files:**
 - Create: `README.md`
@@ -2458,8 +2454,8 @@ git commit -m "Add README with run instructions and known limits"
 
 ## Self-Review
 
-**Spec coverage:** Room codes, nicknames, 2–8 players (Task 7); distinct club lock-out and timeout auto-assign (Task 8); claim race and 5s grace (Task 9); scoring as set intersection, best possible answer, fixed rounds, standings, disconnects (Tasks 2, 10); Wikidata build-time extraction, curated club list, adapter isolation (Tasks 4, 6); tiered disambiguation never showing clubs (Task 3); accent-insensitive autocomplete (Task 5); message caps and answer hiding (Task 11); rate-limited room creation (Task 12, step 4); loopback binding, non-root container, tunnel (Tasks 1, 14); playable-then-designed UI (Task 13). Early phase advance is covered in Tasks 8 and 9. No spec requirement is left without a task.
+**Spec coverage:** Room codes, nicknames, 2–8 players (Task 7); distinct club lock-out and timeout auto-assign (Task 8); claim race, 5s grace, reveal and game end (Task 9); scoring as set intersection, best possible answer, fixed rounds, standings, disconnects (Tasks 2, 9); Wikidata build-time extraction, curated club list, adapter isolation (Tasks 4, 6); tiered disambiguation never showing clubs (Task 3); accent-insensitive autocomplete (Task 5); message caps and answer hiding (Task 10); rate-limited room creation (Task 11, step 4); loopback binding, non-root container, tunnel (Tasks 1, 13); playable-then-designed UI (Task 12). Early phase advance is covered in Tasks 8 and 9. No spec requirement is left without a task.
 
-**Deliberately deferred:** the reveal screen does not name the footballer each player chose, only their score. Adding it needs an entity-id-to-label lookup on the client; it is a one-line addition to `renderResults` once Task 13 is playable, and is better judged after playing than specified now.
+**Deliberately deferred:** the reveal screen does not name the footballer each player chose, only their score. Adding it needs an entity-id-to-label lookup on the client; it is a one-line addition to `renderResults` once Task 12 is playable, and is better judged after playing than specified now.
 
-**Type consistency:** `getPlayerClubs` and `findBest` keep the same signatures across Tasks 7–12; `scoreAnswer` returns `{points, matchedClubIds}` everywhere; `buildDisplayLabels` returns a `Map` consumed as such in Task 5; `snapshotFor` field names match what `app.js` reads in Task 13.
+**Type consistency:** `getPlayerClubs` and `findBest` keep the same signatures across Tasks 7–11; `scoreAnswer` returns `{points, matchedClubIds}` everywhere; `buildDisplayLabels` returns a `Map` consumed as such in Task 5; `snapshotFor` field names match what `app.js` reads in Task 12.
