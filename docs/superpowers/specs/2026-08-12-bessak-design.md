@@ -208,15 +208,29 @@ receives the current snapshot.
 
 ## UI
 
-Four screens: lobby, club picking, answering, scoreboard. Phone-first.
+Four screens: lobby, club picking, answering, scoreboard. Phone-first
+throughout — the club grid has to be usable with a thumb.
 
-Visual design is authored in **Google Stitch** and exported as HTML/Tailwind,
-then wired up here. Stitch produces static screens; all interaction — live
-club lock-out, countdowns, the claim race, live scoreboard — is built on top.
+Built in two passes, deliberately in this order:
 
-If the Tailwind export conflicts with the no-build-step goal, it is served via
-CDN or converted to plain CSS. The container must stay buildable without a
-frontend toolchain.
+**Pass 1 — playable.** A functional UI in plain semantic HTML and hand-written
+CSS: readable, phone-sized, no framework, no build step. The goal is a game
+that can be played with friends, not a beautiful one.
+
+**Pass 2 — designed.** After playtesting, the visual direction is authored in
+**Google Stitch** and applied. Stitch produces static screens; the interaction
+layer built in pass 1 stays and is restyled underneath.
+
+The ordering is the point. Designing four screens before anyone has played
+risks styling a flow that playtesting changes — if 15 seconds turns out to be
+too short, or the reveal needs to show more, that is a layout change discovered
+*after* the design work. A playable prototype answers those questions first, and
+it gives Stitch a real thing to design against instead of a description.
+
+This also defers the Tailwind-versus-no-build-step question until it is
+actually a question. If pass 2 brings Tailwind, it is served via CDN or
+converted to plain CSS; the container must stay buildable without a frontend
+toolchain.
 
 ## Security
 
