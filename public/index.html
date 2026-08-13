@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FootFinder</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header><h1>FootFinder</h1><span id="phase"></span><span id="timer"></span></header>
+
+  <main>
+    <section id="screen-home">
+      <input id="nickname" placeholder="Your name" maxlength="24" autocomplete="off">
+      <button id="create">Create room</button>
+      <div class="row">
+        <input id="join-code" placeholder="Room code" maxlength="6" autocomplete="off">
+        <button id="join">Join</button>
+      </div>
+    </section>
+
+    <section id="screen-lobby" hidden>
+      <p>Room code: <strong id="room-code"></strong></p>
+      <ul id="lobby-players"></ul>
+      <button id="start" hidden>Start game</button>
+    </section>
+
+    <section id="screen-picking" hidden>
+      <p>Pick a club — taken ones are locked.</p>
+      <div id="club-grid"></div>
+    </section>
+
+    <section id="screen-answering" hidden>
+      <p>Name a footballer who played for the most of these clubs:</p>
+      <ul id="round-clubs"></ul>
+      <input id="answer" placeholder="Search a footballer" autocomplete="off">
+      <ul id="suggestions"></ul>
+      <p id="answer-status"></p>
+    </section>
+
+    <section id="screen-reveal" hidden>
+      <ul id="results"></ul>
+      <p id="best-answer"></p>
+    </section>
+
+    <section id="screen-final" hidden>
+      <h2>Final</h2>
+      <ol id="standings"></ol>
+    </section>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
