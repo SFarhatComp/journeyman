@@ -84,3 +84,15 @@ test("expiry before the deadline does nothing", () => {
   assert.equal(res.state.phase, "PICKING");
   assert.deepEqual(res.state.round.picks, {});
 });
+
+test("picking-phase mutators do not touch the state they were given", () => {
+  const base = started();
+  const snapshot = structuredClone(base);
+
+  pickClub(base, { playerId: "p0", clubId: "Q1" }, 1100, DEPS);
+  assert.deepEqual(base, snapshot, "pickClub mutated its input");
+
+  // Expiry runs autoAssign and beginAnswering, so this covers both helpers.
+  expirePhase(base, 1000 + 15_000, DEPS);
+  assert.deepEqual(base, snapshot, "expirePhase mutated its input");
+});
