@@ -146,17 +146,21 @@ unambiguous.
 the exact knowledge the game tests. Disambiguation therefore uses the least
 revealing thing that works:
 
-1. **Plain name** when unique — `Zlatan Ibrahimović`
-2. **First initial + surname** when that resolves it — `C. Ronaldo` / `R. Nazário`
-3. **Birth year** only on a genuine remaining collision — `D. Blind (1961)` /
-   `D. Blind (1990)`
+1. **Plain name** when unique — `Zlatan Ibrahimović`, `Danny Blind`, `Daley Blind`
+2. **Plain name + birth year** when two players share an identical name —
+   `Fred (1983)` / `Fred (1993)`
 
-Danny and Daley Blind are the worked example: father and son, both Ajax, both
-collapsing to `D. Blind`. Birth year leaks era, a far weaker signal than clubs,
-and appears only in the rare collision case.
+Birth year leaks era, a far weaker signal than clubs, and appears only in the
+rare exact-collision case.
 
-**Mononyms** (Hulk, Fred, Oscar, Rivaldo) have no usable surname split. They
-display as-is and fall through to birth year if they collide.
+An earlier draft had a middle tier shortening to initial + surname
+(`C. Ronaldo`). It was removed as unreachable: a tier-1 collision means two
+*identical* name strings, and shortening identical strings yields identical
+results, so the tier could never resolve anything. Full names are also clearer
+in a dropdown and equally club-free.
+
+**Mononyms** (Hulk, Fred, Oscar, Rivaldo) need no special handling under this
+scheme — they are just names, and fall through to birth year if they collide.
 
 ### A non-issue, recorded so it is not re-litigated
 
