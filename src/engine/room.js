@@ -132,8 +132,43 @@ function autoAssign(state, deps) {
   return next;
 }
 
+export function submitAnswer(state, { playerId, entityId }, now, deps) {
+  if (state.phase !== "ANSWERING") return fail(state, "wrong_phase");
+  if (state.round.answers[playerId]) return fail(state, "already_answered");
+
+  const claimed = Object.values(state.round.answers).some((a) => a.entityId === entityId);
+  if (claimed) {
+    // Losing a race by milliseconds must not cost the round, so the player is
+    // given a personal extension to name someone else.
+    const next = clone(state);
+    next.round.grace[playerId] = now + next.config.graceSeconds * 1000;
+    return { state: next, events: [{ type: "answer_rejected", playerId, entityId }], error: "already_claimed" };
+  }
+
+  let next = clone(state);
+  next.round.answers[playerId] = { entityId, submittedAt: now };
+  delete next.round.grace[playerId];
+
+  const events = [{ type: "answer_accepted", playerId }];
+  if (Object.keys(next.round.answers).length === next.players.length) {
+    next = beginReveal(next, now, deps);
+    events.push({ type: "phase_changed", phase: "REVEAL" });
+  }
+  return ok(next, events);
+}
+
+/** True while any player still has an unexpired grace window. */
+function graceActive(state, now) {
+  return Object.entries(state.round.grace).some(
+    ([playerId, until]) => now < until && !state.round.answers[playerId],
+  );
+}
+
 export function expirePhase(state, now, deps) {
-  if (state.phaseEndsAt === null || now < state.phaseEndsAt) return ok(state);
+  if (state.phaseEndsAt === null || now < state.phaseEndsAt) {
+    // The deadline itself has not passed, but a grace window may have.
+    return ok(state);
+  }
 
   const next = clone(state);
   if (next.phase === "PICKING") {
@@ -141,5 +176,66 @@ export function expirePhase(state, now, deps) {
       { type: "phase_changed", phase: "ANSWERING" },
     ]);
   }
+
+  if (next.phase === "ANSWERING") {
+    if (graceActive(next, now)) return ok(state); // wait for the grace window
+    return ok(beginReveal(next, now, deps), [{ type: "phase_changed", phase: "REVEAL" }]);
+  }
+
+  if (next.phase === "REVEAL") {
+    next.history.push({ number: next.round.number, results: next.round.results });
+
+    if (next.round.number >= next.config.rounds) {
+      next.phase = "FINAL";
+      next.phaseEndsAt = null;
+      next.standings = [...next.players].sort((a, b) => b.score - a.score);
+      return ok(next, [{ type: "game_over" }]);
+    }
+    // beginRound is pure, so its result is the state to return.
+    return ok(beginRound(next, next.round.number + 1, now), [{ type: "phase_changed", phase: "PICKING" }]);
+  }
+
   return ok(next);
+}
+
+/**
+ * Score every answer, attach the best possible answer, enter REVEAL. Pure
+ * like every other state helper: clones its input, never mutates it.
+ */
+export function beginReveal(state, now, deps) {
+  const next = clone(state);
+  const roundClubIds = Object.values(next.round.picks);
+  const roundClubSet = new Set(roundClubIds);
+
+  next.round.results = next.players.map((player) => {
+    const answer = next.round.answers[player.id];
+    if (!answer) {
+      return { playerId: player.id, entityId: null, points: 0, matchedClubIds: [] };
+    }
+    const clubIds = deps.getPlayerClubs(answer.entityId);
+    // Two spells at one club is still one club: dedupe the matched set.
+    const matchedClubIds = [...new Set(clubIds.filter((c) => roundClubSet.has(c)))];
+    return { playerId: player.id, entityId: answer.entityId, points: matchedClubIds.length, matchedClubIds };
+  });
+
+  for (const result of next.round.results) {
+    const player = next.players.find((p) => p.id === result.playerId);
+    player.score += result.points;
+  }
+
+  // Shown so every round teaches something, and so the game can prove the
+  // round was winnable.
+  next.round.bestAnswer = deps.findBest(roundClubIds);
+
+  next.phase = "REVEAL";
+  next.phaseEndsAt = now + next.config.revealSeconds * 1000;
+  return next;
+}
+
+export function disconnect(state, playerId) {
+  const next = clone(state);
+  const player = next.players.find((p) => p.id === playerId);
+  if (!player) return ok(next);
+  player.connected = false; // score retained; phases advance without them
+  return ok(next, [{ type: "player_disconnected", playerId }]);
 }
