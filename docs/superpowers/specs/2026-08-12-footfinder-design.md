@@ -109,7 +109,8 @@ one script, not the engine.
 {
   "clubs":   [{ "id": "Q81888", "name": "AFC Ajax", "country": "NL" }],
   "players": [{ "id": "Q46896", "name": "Zlatan Ibrahimović",
-                "birthYear": 1981, "clubIds": ["Q81888", "Q1422", ...] }]
+                "birthYear": 1981, "country": "SE",
+                "clubIds": ["Q81888", "Q1422", ...] }]
 }
 ```
 
@@ -143,24 +144,39 @@ Players are selected from a dropdown, never free text, so scoring is
 unambiguous.
 
 **The dropdown must never reveal a player's clubs.** Doing so would hand over
-the exact knowledge the game tests. Disambiguation therefore uses the least
-revealing thing that works:
+the exact knowledge the game tests.
 
-1. **Plain name** when unique — `Zlatan Ibrahimović`, `Danny Blind`, `Daley Blind`
-2. **Plain name + birth year** when two players share an identical name —
-   `Fred (1983)` / `Fred (1993)`
+Every player is therefore labelled with the **same uniform format**, with no
+conditional logic at all:
 
-Birth year leaks era, a far weaker signal than clubs, and appears only in the
-rare exact-collision case.
+    <first initial>. <surname> (<birth year>, <country code>)
 
-An earlier draft had a middle tier shortening to initial + surname
-(`C. Ronaldo`). It was removed as unreachable: a tier-1 collision means two
-*identical* name strings, and shortening identical strings yields identical
-results, so the tier could never resolve anything. Full names are also clearer
-in a dropdown and equally club-free.
+    C. Ronaldo (1985, PT)      Z. Ibrahimović (1981, SE)
+    D. Blind (1961, NL)        D. Blind (1990, NL)
+    Hulk (1986, BR)            Fred (1983, BR)
 
-**Mononyms** (Hulk, Fred, Oscar, Rivaldo) need no special handling under this
-scheme — they are just names, and fall through to birth year if they collide.
+Because the format never varies, there is no collision detection, no tiering,
+and no cross-player awareness: labelling is a pure per-player function. An
+earlier design escalated through three tiers depending on whether a name was
+unique; it produced a tier that could never execute and a test that appeared
+to cover it. Uniformity removes that whole class of bug by construction.
+
+Birth year and country are both far weaker signals than clubs. Nationality
+does not imply a club, and a label is only seen *after* typing a name — it
+cannot help find an answer, only confirm which person was meant.
+
+**Mononyms** (Hulk, Fred, Oscar) simply have no initial to show. No special
+case is needed.
+
+**Country** is the ISO 3166-1 alpha-2 code, kept short for phone screens. It
+comes from Wikidata `P27` (country of citizenship); where a player holds more
+than one, the first by QID is taken so the output stays deterministic.
+
+**Accepted residual:** the format does not *guarantee* uniqueness. Two players
+sharing an initial, surname, birth year and country would still be
+indistinguishable. This is vanishingly rare, and the tiered scheme did not
+guarantee uniqueness either — adding branches back to chase it would reinstate
+exactly the complexity this removes.
 
 ### A non-issue, recorded so it is not re-litigated
 
