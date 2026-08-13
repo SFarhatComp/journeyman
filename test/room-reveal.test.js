@@ -2,7 +2,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect } from "../src/engine/room.js";
 
-const CAREERS = { zlatan: ["Q1", "Q2", "Q3"], twoclub: ["Q1", "Q2"], oneclub: ["Q1"], nobody: [] };
+const CAREERS = {
+  zlatan: ["Q1", "Q2", "Q3"],
+  twoclub: ["Q1", "Q2"],
+  oneclub: ["Q1"],
+  nobody: [],
+  // Two separate spells at Q1, as Ibrahimović had at Milan. Still one club.
+  tworeturns: ["Q1", "Q1", "Q2"],
+};
 const DEPS = {
   clubs: [
     { id: "Q1", name: "Club One", country: "EN" },
@@ -80,6 +87,16 @@ test("the final standings are sorted by score", () => {
   let state = revealed(["oneclub", "zlatan", "twoclub"], { rounds: 1 });
   state = expirePhase(state, state.phaseEndsAt, DEPS).state;
   assert.deepEqual(state.standings.map((p) => p.id), ["p1", "p2", "p0"]);
+});
+
+test("two spells at one club count once", () => {
+  // A raw filter over the career array would score 3 here and return
+  // ["Q1","Q1","Q2"] — the dedup is what makes it 2.
+  const state = revealed(["tworeturns", "oneclub", "nobody"]);
+  const r = state.round.results.find((x) => x.playerId === "p0");
+
+  assert.equal(r.points, 2, "Q1 twice plus Q2 is two clubs, not three");
+  assert.deepEqual(r.matchedClubIds.sort(), ["Q1", "Q2"]);
 });
 
 test("disconnecting keeps the score and marks the player offline", () => {
