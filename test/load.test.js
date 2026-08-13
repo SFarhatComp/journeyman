@@ -64,3 +64,30 @@ test("getPlayerClubs on an unknown id returns an empty list", () => {
   const ds = createDataset(FIXTURE);
   assert.deepEqual(ds.getPlayerClubs("Q999"), []);
 });
+
+test("a whole-name match outranks a word match regardless of data order", () => {
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      // Interior-word match, listed FIRST…
+      { id: "Q1", name: "Thiago Silva", birthYear: 1984, country: "BR", clubIds: [] },
+      // …whole-name match, listed LAST. Order in the data must not decide rank.
+      { id: "Q2", name: "Silva Martins", birthYear: 1990, country: "PT", clubIds: [] },
+    ],
+  });
+  assert.equal(ds.search("silva")[0].id, "Q2", "whole-name prefix must come first");
+});
+
+test("a whole-name match is not lost behind many word matches", () => {
+  // Regression test: the scan used to stop after limit*4 hits BEFORE sorting,
+  // so enough interior-word matches ahead of the true prefix match pushed it
+  // out of the results entirely.
+  const players = [];
+  for (let i = 0; i < 40; i++) {
+    players.push({ id: `W${i}`, name: `Player Dasilva${i}`, birthYear: 1990, country: "BR", clubIds: [] });
+  }
+  players.push({ id: "TARGET", name: "Dasilva Junior", birthYear: 1995, country: "BR", clubIds: [] });
+
+  const ds = createDataset({ clubs: [], players });
+  assert.equal(ds.search("dasilva")[0].id, "TARGET", "the whole-name match must survive the limit");
+});

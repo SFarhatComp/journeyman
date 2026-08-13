@@ -31,22 +31,22 @@ export function createDataset({ clubs, players }) {
     const q = normalize(query);
     if (q.length < 2) return [];
 
-    const results = [];
+    // Partitioned, not truncated-then-sorted: a whole-name match must outrank
+    // every word match regardless of where it sits in the array. Scanning all
+    // entries is cheap (~25k prefix checks) and removes the ordering bug that
+    // an early break introduced.
+    const whole = [];
+    const word = [];
     for (const entry of searchable) {
-      // Prefix match on the full name or any word within it.
-      if (entry.norm.startsWith(q) || entry.words.some((w) => w.startsWith(q))) {
-        results.push(entry);
-        if (results.length >= limit * 4) break; // bounded work per keystroke
-      }
+      if (entry.norm.startsWith(q)) whole.push(entry);
+      else if (entry.words.some((w) => w.startsWith(q))) word.push(entry);
     }
-    // Whole-name prefix matches first, then alphabetical for stability.
-    results.sort((a, b) => {
-      const aStarts = a.norm.startsWith(q) ? 0 : 1;
-      const bStarts = b.norm.startsWith(q) ? 0 : 1;
-      return aStarts - bStarts || a.norm.localeCompare(b.norm);
-    });
 
-    return results.slice(0, limit).map(({ id, label }) => ({ id, label }));
+    const byName = (a, b) => a.norm.localeCompare(b.norm);
+    whole.sort(byName);
+    word.sort(byName);
+
+    return [...whole, ...word].slice(0, limit).map(({ id, label }) => ({ id, label }));
   }
 
   return {
