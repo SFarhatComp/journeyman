@@ -1375,7 +1375,7 @@ export function pickClub(state, { playerId, clubId }, now, deps) {
   const takenBy = Object.entries(state.round.picks).find(([pid, cid]) => cid === clubId && pid !== playerId);
   if (takenBy) return fail(state, "club_taken");
 
-  const next = clone(state);
+  let next = clone(state);
   next.round.picks[playerId] = clubId;
 
   const events = [{ type: "club_picked", playerId, clubId }];
@@ -1383,30 +1383,38 @@ export function pickClub(state, { playerId, clubId }, now, deps) {
   // Advance the moment everyone has acted — otherwise a room of fast players
   // watches a dead countdown every round.
   if (Object.keys(next.round.picks).length === next.players.length) {
-    beginAnswering(next, now);
+    next = beginAnswering(next, now);
     events.push({ type: "phase_changed", phase: "ANSWERING" });
   }
   return ok(next, events);
 }
 
 function beginAnswering(state, now) {
-  state.phase = "ANSWERING";
-  state.phaseEndsAt = now + state.config.answerSeconds * 1000;
+  // Pure like every other state function here. One rule with no exceptions is
+  // what stops a caller silently reintroducing a shared-mutation bug.
+  const next = clone(state);
+  next.phase = "ANSWERING";
+  next.phaseEndsAt = now + next.config.answerSeconds * 1000;
+  return next;
 }
 
-/** Assign a free club at random to a player who ran out of time. */
+/** Assign a free club at random to each player who ran out of time. */
 function autoAssign(state, deps) {
-  const taken = new Set(Object.values(state.round.picks));
+  const next = clone(state);
+  const taken = new Set(Object.values(next.round.picks));
   const free = deps.clubs.filter((c) => !taken.has(c.id));
   const rand = deps.random ?? Math.random;
 
-  for (const player of state.players) {
-    if (state.round.picks[player.id]) continue;
+  for (const player of next.players) {
+    if (next.round.picks[player.id]) continue;
     const idx = Math.floor(rand() * free.length);
+    // splice, not index: the club must leave the pool so two players can
+    // never be assigned the same one.
     const club = free.splice(idx, 1)[0];
     // startGame guarantees clubs.length >= players.length, so this holds.
-    state.round.picks[player.id] = club.id;
+    next.round.picks[player.id] = club.id;
   }
+  return next;
 }
 
 export function expirePhase(state, now, deps) {
@@ -1414,9 +1422,9 @@ export function expirePhase(state, now, deps) {
 
   const next = clone(state);
   if (next.phase === "PICKING") {
-    autoAssign(next, deps);
-    beginAnswering(next, now);
-    return ok(next, [{ type: "phase_changed", phase: "ANSWERING" }]);
+    return ok(beginAnswering(autoAssign(next, deps), now), [
+      { type: "phase_changed", phase: "ANSWERING" },
+    ]);
   }
   return ok(next);
 }
@@ -1588,9 +1596,9 @@ export function expirePhase(state, now, deps) {
 
   const next = clone(state);
   if (next.phase === "PICKING") {
-    autoAssign(next, deps);
-    beginAnswering(next, now);
-    return ok(next, [{ type: "phase_changed", phase: "ANSWERING" }]);
+    return ok(beginAnswering(autoAssign(next, deps), now), [
+      { type: "phase_changed", phase: "ANSWERING" },
+    ]);
   }
 
   if (next.phase === "ANSWERING") {
