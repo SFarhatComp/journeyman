@@ -81,3 +81,56 @@ export function beginRound(state, number, now) {
   next.phaseEndsAt = now + next.config.pickSeconds * 1000;
   return next;
 }
+
+export function pickClub(state, { playerId, clubId }, now, deps) {
+  if (state.phase !== "PICKING") return fail(state, "wrong_phase");
+  if (!deps.clubs.some((c) => c.id === clubId)) return fail(state, "unknown_club");
+
+  const takenBy = Object.entries(state.round.picks).find(([pid, cid]) => cid === clubId && pid !== playerId);
+  if (takenBy) return fail(state, "club_taken");
+
+  const next = clone(state);
+  next.round.picks[playerId] = clubId;
+
+  const events = [{ type: "club_picked", playerId, clubId }];
+
+  // Advance the moment everyone has acted — otherwise a room of fast players
+  // watches a dead countdown every round.
+  if (Object.keys(next.round.picks).length === next.players.length) {
+    beginAnswering(next, now);
+    events.push({ type: "phase_changed", phase: "ANSWERING" });
+  }
+  return ok(next, events);
+}
+
+function beginAnswering(state, now) {
+  state.phase = "ANSWERING";
+  state.phaseEndsAt = now + state.config.answerSeconds * 1000;
+}
+
+/** Assign a free club at random to a player who ran out of time. */
+function autoAssign(state, deps) {
+  const taken = new Set(Object.values(state.round.picks));
+  const free = deps.clubs.filter((c) => !taken.has(c.id));
+  const rand = deps.random ?? Math.random;
+
+  for (const player of state.players) {
+    if (state.round.picks[player.id]) continue;
+    const idx = Math.floor(rand() * free.length);
+    const club = free.splice(idx, 1)[0];
+    // startGame guarantees clubs.length >= players.length, so this holds.
+    state.round.picks[player.id] = club.id;
+  }
+}
+
+export function expirePhase(state, now, deps) {
+  if (state.phaseEndsAt === null || now < state.phaseEndsAt) return ok(state);
+
+  const next = clone(state);
+  if (next.phase === "PICKING") {
+    autoAssign(next, deps);
+    beginAnswering(next, now);
+    return ok(next, [{ type: "phase_changed", phase: "ANSWERING" }]);
+  }
+  return ok(next);
+}
