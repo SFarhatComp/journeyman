@@ -65,8 +65,12 @@ export function startGame(state, now, deps) {
 
 /** Shared by startGame and the reveal->next-round transition. */
 export function beginRound(state, number, now) {
-  state.phase = "PICKING";
-  state.round = {
+  // Clones like every other mutator: this is exported, and a future caller
+  // must not have to know it mutates. The extra clone costs nothing at this
+  // scale and removes a live-state corruption waiting to happen.
+  const next = clone(state);
+  next.phase = "PICKING";
+  next.round = {
     number,
     picks: {}, // playerId -> clubId
     answers: {}, // playerId -> { entityId, submittedAt }
@@ -74,6 +78,6 @@ export function beginRound(state, number, now) {
     results: null,
     bestAnswer: null,
   };
-  state.phaseEndsAt = now + state.config.pickSeconds * 1000;
-  return state;
+  next.phaseEndsAt = now + next.config.pickSeconds * 1000;
+  return next;
 }

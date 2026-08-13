@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRoom, addPlayer, startGame, DEFAULT_CONFIG } from "../src/engine/room.js";
+import { createRoom, addPlayer, startGame, beginRound, DEFAULT_CONFIG } from "../src/engine/room.js";
 
 const DEPS = {
   clubs: [
@@ -51,13 +51,21 @@ test("a duplicate nickname is rejected so the scoreboard stays readable", () => 
   assert.equal(res.error, "nickname_taken");
 });
 
-test("rejoining with the same id reconnects rather than duplicating", () => {
-  let state = withPlayers(1);
-  state = { ...state, players: state.players.map((p) => ({ ...p, connected: false })) };
+test("rejoining with the same id reconnects, keeping the seat and the score", () => {
+  let state = withPlayers(2);
+  // Simulate a game in progress: p0 has points, then drops offline.
+  state = {
+    ...state,
+    players: state.players.map((p) => (p.id === "p0" ? { ...p, score: 7, connected: false } : p)),
+  };
+
   const res = addPlayer(state, { id: "p0", nickname: "Player 0" });
+  const p0 = res.state.players.find((p) => p.id === "p0");
+
   assert.equal(res.error, undefined);
-  assert.equal(res.state.players.length, 1);
-  assert.equal(res.state.players[0].connected, true);
+  assert.equal(res.state.players.length, 2, "must not create a second seat");
+  assert.equal(p0.connected, true);
+  assert.equal(p0.score, 7, "a phone reload must not cost you your points");
 });
 
 test("the game will not start with fewer than two players", () => {
@@ -79,9 +87,29 @@ test("the game will not start without enough clubs for every player", () => {
   assert.equal(res.error, "not_enough_clubs");
 });
 
-test("mutators never mutate the state passed in", () => {
-  const before = withPlayers(2);
-  const snapshot = structuredClone(before);
-  startGame(before, 1000, DEPS);
-  assert.deepEqual(before, snapshot);
+test("starting an already-started game is rejected and changes nothing", () => {
+  const started = startGame(withPlayers(2), 1000, DEPS).state;
+  const res = startGame(started, 2000, DEPS);
+
+  assert.equal(res.error, "already_started");
+  assert.equal(res.state.phase, "PICKING");
+  assert.equal(res.state.round.number, 1, "the running game must be untouched");
+});
+
+test("no mutator touches the state it was given", () => {
+  const base = withPlayers(3);
+  const snapshot = structuredClone(base);
+
+  addPlayer(base, { id: "p9", nickname: "New" });
+  assert.deepEqual(base, snapshot, "addPlayer mutated its input");
+
+  startGame(base, 1000, DEPS);
+  assert.deepEqual(base, snapshot, "startGame mutated its input");
+
+  // beginRound is exported for Task 9's next-round transition, so it must be
+  // pure on its own terms — not merely safe when startGame happens to clone.
+  const started = startGame(base, 1000, DEPS).state;
+  const startedSnapshot = structuredClone(started);
+  beginRound(started, 2, 5000);
+  assert.deepEqual(started, startedSnapshot, "beginRound mutated its input");
 });
