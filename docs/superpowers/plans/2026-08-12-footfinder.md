@@ -1221,8 +1221,12 @@ export function startGame(state, now, deps) {
 
 /** Shared by startGame and the reveal->next-round transition. */
 export function beginRound(state, number, now) {
-  state.phase = "PICKING";
-  state.round = {
+  // Clones like every other mutator. It is exported, so a future caller must
+  // not have to know whether it mutates — an earlier draft mutated in place
+  // and was safe only because its one caller happened to pass a clone.
+  const next = clone(state);
+  next.phase = "PICKING";
+  next.round = {
     number,
     picks: {},        // playerId -> clubId
     answers: {},      // playerId -> { entityId, submittedAt }
@@ -1230,8 +1234,8 @@ export function beginRound(state, number, now) {
     results: null,
     bestAnswer: null,
   };
-  state.phaseEndsAt = now + state.config.pickSeconds * 1000;
-  return state;
+  next.phaseEndsAt = now + next.config.pickSeconds * 1000;
+  return next;
 }
 ```
 
@@ -1761,8 +1765,8 @@ Then extend `expirePhase` — replace its final `return ok(next);` with:
       next.standings = [...next.players].sort((a, b) => b.score - a.score);
       return ok(next, [{ type: "game_over" }]);
     }
-    beginRound(next, next.round.number + 1, now);
-    return ok(next, [{ type: "phase_changed", phase: "PICKING" }]);
+    // beginRound is pure, so its result is the state to return.
+    return ok(beginRound(next, next.round.number + 1, now), [{ type: "phase_changed", phase: "PICKING" }]);
   }
 
   return ok(next);
