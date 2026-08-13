@@ -41,7 +41,7 @@ footfinder/
       room.js             state machine; pure, time injected, deps injected
     dataset/
       fromWikidata.js     PURE adapter: raw SPARQL rows -> dataset shape
-      disambiguate.js     PURE: player list -> display labels (never clubs)
+      label.js            PURE: one player -> display label (never clubs)
       load.js             loads dataset.json, builds search index
     protocol.js           message validation + size caps
     server.js             Fastify + ws shell; wires engine to sockets
@@ -51,7 +51,7 @@ footfinder/
     style.css             phone-first
   test/
     scoring.test.js
-    disambiguate.test.js
+    label.test.js
     fromWikidata.test.js
     load.test.js
     room-lobby.test.js
@@ -62,7 +62,7 @@ footfinder/
     dataset-real.test.js  asserts against the committed dataset.json
 ```
 
-**Why these boundaries:** `engine/` is the only place game rules live and it has no imports outside itself. `dataset/fromWikidata.js` is the sole adapter between Wikidata's shape and ours — swapping to Transfermarkt later touches that one file. `disambiguate.js` is separate because it carries the never-leak-clubs rule and deserves its own test suite.
+**Why these boundaries:** `engine/` is the only place game rules live and it has no imports outside itself. `dataset/fromWikidata.js` is the sole adapter between Wikidata's shape and ours — swapping to Transfermarkt later touches that one file. `label.js` is separate because it carries the never-leak-clubs rule and deserves its own test suite.
 
 ---
 
@@ -341,187 +341,145 @@ git commit -m "Add scoring: round points as club-set intersection"
 
 ---
 
-### Task 3: Autocomplete disambiguation
+### Task 3: Player display labels
 
 **Files:**
-- Create: `src/dataset/disambiguate.js`
-- Test: `test/disambiguate.test.js`
+- Create: `src/dataset/label.js`
+- Test: `test/label.test.js`
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: `buildDisplayLabels(players: Array<{id, name, birthYear}>) -> Map<string, string>` — entity id to the label shown in the dropdown.
+- Produces: `formatLabel(player: {name, birthYear?, country?}) -> string`
+
+Every player gets the **same** label shape, so there is no collision detection
+and no cross-player awareness — labelling is a pure per-player function:
+
+```
+<first initial>. <surname> (<birth year>, <country>)
+C. Ronaldo (1985, PT)    D. Blind (1961, NL)    Hulk (1986, BR)
+```
 
 - [ ] **Step 1: Write the failing test**
 
-Create `test/disambiguate.test.js`:
+Create `test/label.test.js`:
 
 ```javascript
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildDisplayLabels } from "../src/dataset/disambiguate.js";
+import { formatLabel } from "../src/dataset/label.js";
 
-const label = (players, id) => buildDisplayLabels(players).get(id);
-
-test("a unique name is shown plainly", () => {
-  const players = [{ id: "A", name: "Zlatan Ibrahimović", birthYear: 1981 }];
-  assert.equal(label(players, "A"), "Zlatan Ibrahimović");
+test("a normal name becomes initial, surname, year and country", () => {
+  assert.equal(
+    formatLabel({ name: "Cristiano Ronaldo", birthYear: 1985, country: "PT" }),
+    "C. Ronaldo (1985, PT)",
+  );
 });
 
-test("a shared surname disambiguates by first initial", () => {
-  const players = [
-    { id: "A", name: "Cristiano Ronaldo", birthYear: 1985 },
-    { id: "B", name: "Ronaldo Nazário", birthYear: 1976 },
-  ];
-  assert.equal(label(players, "A"), "C. Ronaldo");
-  assert.equal(label(players, "B"), "R. Nazário");
+test("players sharing an initial and surname are separated by year", () => {
+  // Danny and Daley Blind: father and son, both Ajax, both Dutch.
+  const danny = { name: "Danny Blind", birthYear: 1961, country: "NL" };
+  const daley = { name: "Daley Blind", birthYear: 1990, country: "NL" };
+  assert.equal(formatLabel(danny), "D. Blind (1961, NL)");
+  assert.equal(formatLabel(daley), "D. Blind (1990, NL)");
+  assert.notEqual(formatLabel(danny), formatLabel(daley));
 });
 
-test("same initial and surname falls through to birth year", () => {
-  // Danny and Daley Blind: father and son, both Ajax, both "D. Blind".
-  const players = [
-    { id: "A", name: "Danny Blind", birthYear: 1961 },
-    { id: "B", name: "Daley Blind", birthYear: 1990 },
-  ];
-  assert.equal(label(players, "A"), "D. Blind (1961)");
-  assert.equal(label(players, "B"), "D. Blind (1990)");
+test("a mononym keeps its single name with no initial", () => {
+  assert.equal(formatLabel({ name: "Hulk", birthYear: 1986, country: "BR" }), "Hulk (1986, BR)");
 });
 
-test("mononyms display as-is", () => {
-  const players = [{ id: "A", name: "Hulk", birthYear: 1986 }];
-  assert.equal(label(players, "A"), "Hulk");
+test("surname particles stay with the surname", () => {
+  assert.equal(
+    formatLabel({ name: "Luís Carlos Almeida da Cunha", birthYear: 1981, country: "PT" }),
+    "L. da Cunha (1981, PT)",
+  );
 });
 
-test("colliding mononyms fall through to birth year", () => {
-  const players = [
-    { id: "A", name: "Fred", birthYear: 1983 },
-    { id: "B", name: "Fred", birthYear: 1993 },
-  ];
-  assert.equal(label(players, "A"), "Fred (1983)");
-  assert.equal(label(players, "B"), "Fred (1993)");
+test("a missing birth year is omitted rather than printed as undefined", () => {
+  assert.equal(formatLabel({ name: "Old Player", country: "EN" }), "O. Player (EN)");
+});
+
+test("a missing country is omitted rather than printed as undefined", () => {
+  assert.equal(formatLabel({ name: "Old Player", birthYear: 1920 }), "O. Player (1920)");
+});
+
+test("with neither year nor country the parenthetical disappears entirely", () => {
+  assert.equal(formatLabel({ name: "Old Player" }), "O. Player");
 });
 
 test("a label never contains a club name", () => {
-  // Game-correctness rule: showing clubs gives away exactly what is being
-  // tested. This asserts the shape carries no club data at all.
-  const players = [
-    { id: "A", name: "Cristiano Ronaldo", birthYear: 1985, clubIds: ["Q8682"] },
-    { id: "B", name: "Ronaldo Nazário", birthYear: 1976, clubIds: ["Q7156"] },
-  ];
-  for (const value of buildDisplayLabels(players).values()) {
-    assert.doesNotMatch(value, /Q\d+|Madrid|Barcelona|Inter|United/i);
-  }
+  // Game-correctness rule: showing clubs gives away exactly what is tested.
+  const label = formatLabel({ name: "Cristiano Ronaldo", birthYear: 1985, country: "PT" });
+  assert.doesNotMatch(label, /Q\d+|Madrid|Barcelona|Inter|United|Juventus/i);
 });
 
-test("names with multiple given names use only the first initial", () => {
-  const players = [
-    { id: "A", name: "Luís Carlos Almeida da Cunha", birthYear: 1981 },
-    { id: "B", name: "Pedro Miguel da Cunha", birthYear: 1990 },
-  ];
-  assert.equal(label(players, "A"), "L. da Cunha");
-  assert.equal(label(players, "B"), "P. da Cunha");
-});
-
-test("labels are stable regardless of input order", () => {
-  const a = [
-    { id: "A", name: "Danny Blind", birthYear: 1961 },
-    { id: "B", name: "Daley Blind", birthYear: 1990 },
-  ];
-  const b = [a[1], a[0]];
-  assert.deepEqual([...buildDisplayLabels(a)].sort(), [...buildDisplayLabels(b)].sort());
+test("the same input always produces the same label", () => {
+  const p = { name: "Zlatan Ibrahimović", birthYear: 1981, country: "SE" };
+  assert.equal(formatLabel(p), formatLabel(p));
+  assert.equal(formatLabel(p), "Z. Ibrahimović (1981, SE)");
 });
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `./footfinder.sh test`
-Expected: FAIL — cannot find module `../src/dataset/disambiguate.js`.
+Expected: FAIL — cannot find module `../src/dataset/label.js`.
 
 - [ ] **Step 3: Write the implementation**
 
-Create `src/dataset/disambiguate.js`:
+Create `src/dataset/label.js`:
 
 ```javascript
 /**
- * Display labels for the answer autocomplete.
+ * The label shown in the answer autocomplete.
  *
  * THE RULE: a label must never reveal which clubs a player played for. That is
  * precisely the knowledge the game tests, so a hint like
  * "Ronaldo (Barcelona, Inter)" would hand over the answer.
  *
- * So disambiguation escalates through the least revealing thing that works:
- *   1. plain name            "Zlatan Ibrahimović"
- *   2. first initial+surname "C. Ronaldo" / "R. Nazário"
- *   3. birth year            "D. Blind (1961)" / "D. Blind (1990)"
+ * Every player gets the same shape — "C. Ronaldo (1985, PT)" — so there is no
+ * collision detection, no tiering, and no need to see other players. An
+ * earlier design escalated through tiers depending on whether a name was
+ * unique; it produced a tier that could never execute. Uniformity removes that
+ * class of bug by construction.
  *
- * Birth year leaks era, a far weaker signal than clubs, and only appears on a
- * genuine collision.
+ * Birth year and country are far weaker signals than clubs, and are only seen
+ * after a name is typed — they cannot help find an answer, only confirm which
+ * person was meant.
  */
 
-// Particles that belong to the surname, not the given names.
+// Particles belong to the surname, not the given names.
 const PARTICLES = new Set(["da", "de", "del", "della", "di", "dos", "du", "la", "le", "van", "von", "der", "den", "ten", "ter"]);
 
-/** Split a full name into { initial, surname }. Mononyms yield initial: null. */
-function splitName(name) {
+/** "Luís Carlos Almeida da Cunha" -> "L. da Cunha"; "Hulk" -> "Hulk". */
+function shortName(name) {
   const parts = String(name).trim().split(/\s+/);
-  if (parts.length === 1) return { initial: null, surname: parts[0] };
+  if (parts.length === 1) return parts[0];
 
-  // Walk back over particles so "Luís Carlos Almeida da Cunha" -> "da Cunha".
+  // Walk back over particles so multi-word surnames stay intact.
   let i = parts.length - 1;
   while (i > 1 && PARTICLES.has(parts[i - 1].toLowerCase())) i--;
 
-  return { initial: parts[0][0].toUpperCase(), surname: parts.slice(i).join(" ") };
+  return `${parts[0][0].toUpperCase()}. ${parts.slice(i).join(" ")}`;
 }
 
-/**
- * @param {Array<{id:string, name:string, birthYear?:number}>} players
- * @returns {Map<string,string>} entity id -> display label
- */
-export function buildDisplayLabels(players) {
-  const byName = new Map();
-  for (const p of players) {
-    if (!byName.has(p.name)) byName.set(p.name, []);
-    byName.get(p.name).push(p);
-  }
-
-  // Tier 2 candidate label for every player, so collisions can be counted.
-  const shortOf = new Map();
-  for (const p of players) {
-    const { initial, surname } = splitName(p.name);
-    shortOf.set(p.id, initial ? `${initial}. ${surname}` : surname);
-  }
-  const shortCounts = new Map();
-  for (const short of shortOf.values()) {
-    shortCounts.set(short, (shortCounts.get(short) ?? 0) + 1);
-  }
-
-  const labels = new Map();
-  for (const p of players) {
-    if (byName.get(p.name).length === 1) {
-      labels.set(p.id, p.name); // tier 1: the full name is already unique
-      continue;
-    }
-    const short = shortOf.get(p.id);
-    if (shortCounts.get(short) === 1) {
-      labels.set(p.id, short); // tier 2: initial + surname resolves it
-      continue;
-    }
-    // tier 3: still ambiguous — the only remaining non-club signal.
-    labels.set(p.id, p.birthYear ? `${short} (${p.birthYear})` : short);
-  }
-  return labels;
+/** @param {{name:string, birthYear?:number, country?:string}} player */
+export function formatLabel(player) {
+  const suffix = [player.birthYear, player.country].filter(Boolean).join(", ");
+  return suffix ? `${shortName(player.name)} (${suffix})` : shortName(player.name);
 }
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `./footfinder.sh test`
-Expected: PASS, all disambiguation tests.
+Expected: PASS, all label tests.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/dataset/disambiguate.js test/disambiguate.test.js
-git commit -m "Add autocomplete disambiguation that never reveals clubs"
+git add src/dataset/label.js test/label.test.js
+git commit -m "Add uniform player labels that never reveal clubs"
 ```
 
 ---
@@ -534,7 +492,7 @@ git commit -m "Add autocomplete disambiguation that never reveals clubs"
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: `shapeDataset(clubs, rows) -> { clubs, players }` where `rows` are raw SPARQL bindings `{ player: {value: url}, playerLabel: {value}, dob?: {value}, club: {value: url} }`.
+- Produces: `shapeDataset(clubs, rows) -> { clubs, players }` where `rows` are raw SPARQL bindings `{ player: {value: url}, playerLabel: {value}, dob?: {value}, iso?: {value}, club: {value: url} }`. Each player is `{ id, name, birthYear?, country?, clubIds }`.
 
 This is the sole adapter between Wikidata's shape and the game's. Swapping data sources later means rewriting only this file.
 
@@ -552,11 +510,12 @@ const CLUBS = [
   { id: "Q1422", name: "Juventus FC", country: "IT" },
 ];
 
-const row = (pid, name, club, dob) => ({
+const row = (pid, name, club, dob, iso) => ({
   player: { value: `http://www.wikidata.org/entity/${pid}` },
   playerLabel: { value: name },
   club: { value: `http://www.wikidata.org/entity/${club}` },
   ...(dob ? { dob: { value: dob } } : {}),
+  ...(iso ? { iso: { value: iso } } : {}),
 });
 
 test("rows collapse into one player carrying all their clubs", () => {
@@ -595,6 +554,31 @@ test("repeated spells at one club collapse to a single entry", () => {
 test("a missing date of birth yields no birthYear rather than NaN", () => {
   const out = shapeDataset(CLUBS, [row("Q1", "No Birthday", "Q1422")]);
   assert.equal(out.players[0].birthYear, undefined);
+});
+
+test("country of citizenship is carried through as an ISO code", () => {
+  const out = shapeDataset(CLUBS, [
+    row("Q46896", "Zlatan Ibrahimović", "Q1422", "1981-10-03T00:00:00Z", "SE"),
+  ]);
+  assert.equal(out.players[0].country, "SE");
+});
+
+test("dual citizenship resolves deterministically to one code", () => {
+  // Wikidata returns a row per citizenship; the label must not flap between
+  // runs, so the first alphabetically wins.
+  const rows = [
+    row("Q1", "Dual National", "Q1422", undefined, "MA"),
+    row("Q1", "Dual National", "Q1422", undefined, "FR"),
+  ];
+  const a = shapeDataset(CLUBS, rows).players[0].country;
+  const b = shapeDataset(CLUBS, [...rows].reverse()).players[0].country;
+  assert.equal(a, "FR");
+  assert.equal(a, b);
+});
+
+test("a missing country yields no country rather than undefined text", () => {
+  const out = shapeDataset(CLUBS, [row("Q1", "Stateless", "Q1422")]);
+  assert.equal(out.players[0].country, undefined);
 });
 
 test("rows whose label is a bare QID are dropped as unlabelled", () => {
@@ -667,14 +651,23 @@ export function shapeDataset(clubs, rows) {
         id,
         name,
         birthYear: Number.isFinite(year) ? year : undefined,
+        countries: new Set(),
         clubIds: new Set(),
       });
     }
-    byPlayer.get(id).clubIds.add(clubId);
+    const entry = byPlayer.get(id);
+    entry.clubIds.add(clubId);
+    // Wikidata emits one row per citizenship; collect then pick one, so a
+    // dual national's label cannot flap between builds.
+    if (r.iso?.value) entry.countries.add(String(r.iso.value).toUpperCase());
   }
 
   const players = [...byPlayer.values()]
-    .map((p) => ({ ...p, clubIds: [...p.clubIds].sort() }))
+    .map(({ countries, ...p }) => ({
+      ...p,
+      country: [...countries].sort()[0],
+      clubIds: [...p.clubIds].sort(),
+    }))
     .sort((a, b) => a.id.localeCompare(b.id)); // deterministic output
 
   return { clubs, players };
@@ -702,7 +695,7 @@ git commit -m "Add pure Wikidata adapter restricted to the curated club list"
 - Test: `test/load.test.js`
 
 **Interfaces:**
-- Consumes: `buildDisplayLabels` (Task 3)
+- Consumes: `formatLabel` (Task 3)
 - Produces: `createDataset({clubs, players}) -> { clubs, players, getPlayer(id), getPlayerClubs(id), search(query, limit=8) }` where `search` returns `[{ id, label }]`.
 
 - [ ] **Step 1: Write the failing test**
@@ -720,9 +713,9 @@ const FIXTURE = {
     { id: "Q1422", name: "Juventus FC", country: "IT" },
   ],
   players: [
-    { id: "Q46896", name: "Zlatan Ibrahimović", birthYear: 1981, clubIds: ["Q81888", "Q1422"] },
-    { id: "Q1", name: "Danny Blind", birthYear: 1961, clubIds: ["Q81888"] },
-    { id: "Q2", name: "Daley Blind", birthYear: 1990, clubIds: ["Q81888"] },
+    { id: "Q46896", name: "Zlatan Ibrahimović", birthYear: 1981, country: "SE", clubIds: ["Q81888", "Q1422"] },
+    { id: "Q1", name: "Danny Blind", birthYear: 1961, country: "NL", clubIds: ["Q81888"] },
+    { id: "Q2", name: "Daley Blind", birthYear: 1990, country: "NL", clubIds: ["Q81888"] },
   ],
 };
 
@@ -744,10 +737,10 @@ test("search is case-insensitive and matches any word, not just the first", () =
   assert.equal(ds.search("Ibra")[0].id, "Q46896");
 });
 
-test("search results carry disambiguated labels", () => {
+test("search results carry uniform labels", () => {
   const ds = createDataset(FIXTURE);
   const labels = ds.search("blind").map((r) => r.label).sort();
-  assert.deepEqual(labels, ["D. Blind (1961)", "D. Blind (1990)"]);
+  assert.deepEqual(labels, ["D. Blind (1961, NL)", "D. Blind (1990, NL)"]);
 });
 
 test("search results never contain club names", () => {
@@ -788,7 +781,7 @@ Expected: FAIL — cannot find module `../src/dataset/load.js`.
 Create `src/dataset/load.js`:
 
 ```javascript
-import { buildDisplayLabels } from "./disambiguate.js";
+import { formatLabel } from "./label.js";
 
 /**
  * Loads the baked dataset into memory and exposes lookup + autocomplete.
@@ -808,14 +801,13 @@ export function normalize(s) {
 }
 
 export function createDataset({ clubs, players }) {
-  const labels = buildDisplayLabels(players);
   const byId = new Map(players.map((p) => [p.id, p]));
 
   // Precomputed search keys: the whole name plus each word, so "Ibra" and
   // "Zlatan" both hit.
   const searchable = players.map((p) => {
     const norm = normalize(p.name);
-    return { id: p.id, label: labels.get(p.id), norm, words: norm.split(/\s+/) };
+    return { id: p.id, label: formatLabel(p), norm, words: norm.split(/\s+/) };
   });
 
   function search(query, limit = 8) {
@@ -919,11 +911,14 @@ async function fetchClubRoster(clubId) {
   // P54 = member of sports team. Fetch per club so each query stays small
   // enough to beat the endpoint's 60s timeout.
   const query = `
-    SELECT ?player ?playerLabel ?dob ?club WHERE {
+    SELECT ?player ?playerLabel ?dob ?iso ?club WHERE {
       ?player p:P54/ps:P54 wd:${clubId} .
       ?player wdt:P31 wd:Q5 .
       BIND(wd:${clubId} AS ?club)
       OPTIONAL { ?player wdt:P569 ?dob }
+      # P27 = country of citizenship, P297 = its ISO 3166-1 alpha-2 code.
+      # A dual national yields one row per citizenship; the adapter picks one.
+      OPTIONAL { ?player wdt:P27/wdt:P297 ?iso }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
     }`;
 
@@ -2454,8 +2449,8 @@ git commit -m "Add README with run instructions and known limits"
 
 ## Self-Review
 
-**Spec coverage:** Room codes, nicknames, 2–8 players (Task 7); distinct club lock-out and timeout auto-assign (Task 8); claim race, 5s grace, reveal and game end (Task 9); scoring as set intersection, best possible answer, fixed rounds, standings, disconnects (Tasks 2, 9); Wikidata build-time extraction, curated club list, adapter isolation (Tasks 4, 6); tiered disambiguation never showing clubs (Task 3); accent-insensitive autocomplete (Task 5); message caps and answer hiding (Task 10); rate-limited room creation (Task 11, step 4); loopback binding, non-root container, tunnel (Tasks 1, 13); playable-then-designed UI (Task 12). Early phase advance is covered in Tasks 8 and 9. No spec requirement is left without a task.
+**Spec coverage:** Room codes, nicknames, 2–8 players (Task 7); distinct club lock-out and timeout auto-assign (Task 8); claim race, 5s grace, reveal and game end (Task 9); scoring as set intersection, best possible answer, fixed rounds, standings, disconnects (Tasks 2, 9); Wikidata build-time extraction, curated club list, adapter isolation (Tasks 4, 6); uniform labels never showing clubs (Task 3); accent-insensitive autocomplete (Task 5); message caps and answer hiding (Task 10); rate-limited room creation (Task 11, step 4); loopback binding, non-root container, tunnel (Tasks 1, 13); playable-then-designed UI (Task 12). Early phase advance is covered in Tasks 8 and 9. No spec requirement is left without a task.
 
 **Deliberately deferred:** the reveal screen does not name the footballer each player chose, only their score. Adding it needs an entity-id-to-label lookup on the client; it is a one-line addition to `renderResults` once Task 12 is playable, and is better judged after playing than specified now.
 
-**Type consistency:** `getPlayerClubs` and `findBest` keep the same signatures across Tasks 7–11; `scoreAnswer` returns `{points, matchedClubIds}` everywhere; `buildDisplayLabels` returns a `Map` consumed as such in Task 5; `snapshotFor` field names match what `app.js` reads in Task 12.
+**Type consistency:** `getPlayerClubs` and `findBest` keep the same signatures across Tasks 7–11; `scoreAnswer` returns `{points, matchedClubIds}` everywhere; `formatLabel` returns a string consumed per-player in Task 5; `snapshotFor` field names match what `app.js` reads in Task 12.

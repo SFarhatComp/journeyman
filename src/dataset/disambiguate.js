@@ -5,29 +5,16 @@
  * precisely the knowledge the game tests, so a hint like
  * "Ronaldo (Barcelona, Inter)" would hand over the answer.
  *
- * So disambiguation escalates through the least revealing thing that works:
- *   1. plain name            "Zlatan Ibrahimović"
- *   2. first initial+surname "C. Ronaldo" / "R. Nazário"
- *   3. birth year            "D. Blind (1961)" / "D. Blind (1990)"
+ * Two tiers:
+ *   1. plain name        "Zlatan Ibrahimović", "Danny Blind", "Daley Blind"
+ *   2. + birth year      "Fred (1983)" / "Fred (1993)", only when two players
+ *                        share an identical name
  *
- * Birth year leaks era, a far weaker signal than clubs, and only appears on a
- * genuine collision.
+ * An earlier draft had a middle tier shortening to initial + surname. It was
+ * unreachable: a tier-1 collision means two identical name strings, and
+ * shortening identical strings yields identical results. Full names are also
+ * clearer in a dropdown and equally club-free.
  */
-
-// Particles that belong to the surname, not the given names.
-const PARTICLES = new Set(["da", "de", "del", "della", "di", "dos", "du", "la", "le", "van", "von", "der", "den", "ten", "ter"]);
-
-/** Split a full name into { initial, surname }. Mononyms yield initial: null. */
-function splitName(name) {
-  const parts = String(name).trim().split(/\s+/);
-  if (parts.length === 1) return { initial: null, surname: parts[0] };
-
-  // Walk back over particles so "Luís Carlos Almeida da Cunha" -> "da Cunha".
-  let i = parts.length - 1;
-  while (i > 1 && PARTICLES.has(parts[i - 1].toLowerCase())) i--;
-
-  return { initial: parts[0][0].toUpperCase(), surname: parts.slice(i).join(" ") };
-}
 
 /**
  * @param {Array<{id:string, name:string, birthYear?:number}>} players
@@ -40,57 +27,12 @@ export function buildDisplayLabels(players) {
     byName.get(p.name).push(p);
   }
 
-  // Tier 2 candidate label for every player, so collisions can be counted.
-  const shortOf = new Map();
-  const surnameCounts = new Map();
-
-  for (const p of players) {
-    const { initial, surname } = splitName(p.name);
-    shortOf.set(p.id, initial ? `${initial}. ${surname}` : surname);
-    surnameCounts.set(surname, (surnameCounts.get(surname) ?? 0) + 1);
-  }
-
-  const shortCounts = new Map();
-  for (const short of shortOf.values()) {
-    shortCounts.set(short, (shortCounts.get(short) ?? 0) + 1);
-  }
-
-  // Build maps for cross-checking
-  const firstNames = new Map();
-  const surnames = new Map();
-  for (const p of players) {
-    const parts = String(p.name).trim().split(/\s+/);
-    const firstName = parts[0];
-    const { surname } = splitName(p.name);
-    firstNames.set(firstName, (firstNames.get(firstName) ?? 0) + 1);
-    surnames.set(surname, (surnames.get(surname) ?? 0) + 1);
-  }
-
   const labels = new Map();
   for (const p of players) {
-    const { surname } = splitName(p.name);
-    const parts = String(p.name).trim().split(/\s+/);
-    const firstName = parts[0];
-
-    // Tier 1: use full name only if there's no ambiguity from any source
-    const hasFullNameCollision = byName.get(p.name).length > 1;
-    const hasSurnameCollision = surnameCounts.get(surname) > 1;
-    // Check if my surname is someone's first name OR my first name is someone's surname
-    const hasCrossmatch = (firstNames.has(surname) && firstNames.get(surname) > 0) ||
-                         (surnames.has(firstName) && surnames.get(firstName) > 0);
-
-    if (!hasFullNameCollision && !hasSurnameCollision && !hasCrossmatch) {
-      labels.set(p.id, p.name); // tier 1: the full name is already unique
-      continue;
-    }
-
-    const short = shortOf.get(p.id);
-    if (shortCounts.get(short) === 1) {
-      labels.set(p.id, short); // tier 2: initial + surname resolves it
-      continue;
-    }
-    // tier 3: still ambiguous — the only remaining non-club signal.
-    labels.set(p.id, p.birthYear ? `${short} (${p.birthYear})` : short);
+    const unique = byName.get(p.name).length === 1;
+    // Without a birth year there is nothing non-revealing left to add, so an
+    // ambiguous label beats inventing a distinction or printing "undefined".
+    labels.set(p.id, unique || !p.birthYear ? p.name : `${p.name} (${p.birthYear})`);
   }
   return labels;
 }
