@@ -1847,9 +1847,18 @@ test("an unknown message type is rejected", () => {
   assert.equal(parseMessage(JSON.stringify({ type: "dropTable" })).error, "unknown_type");
 });
 
-test("an oversized message is rejected before parsing", () => {
-  const big = JSON.stringify({ type: "join", payload: { nickname: "x".repeat(MAX_MESSAGE_BYTES) } });
+test("an oversized message is rejected before it is parsed", () => {
+  // Deliberately BOTH oversized and malformed: an implementation that parsed
+  // first would return bad_json, so this asserts the ordering rather than
+  // merely that both checks exist.
+  const big = "{" + "x".repeat(MAX_MESSAGE_BYTES);
   assert.equal(parseMessage(big).error, "too_large");
+});
+
+test("valid JSON that is not an object is rejected without throwing", () => {
+  for (const raw of ["null", "123", "[]", '"a string"']) {
+    assert.equal(parseMessage(raw).error, "unknown_type", `${raw} should be rejected`);
+  }
 });
 
 test("a nickname longer than 24 characters is rejected", () => {
@@ -1887,13 +1896,20 @@ test("the snapshot reveals everything at REVEAL", () => {
   assert.equal(snap.round.bestAnswer.points, 3);
 });
 
-test("the snapshot tells a player about their own grace window", () => {
+test("a player sees their own grace deadline and not another player's", () => {
+  // Two players with different deadlines: a single-player fixture cannot
+  // distinguish "keyed by the requester" from "returns whatever is in the map".
   const state = {
     phase: "ANSWERING", code: "ABC123", config: {}, phaseEndsAt: 5000,
-    players: [{ id: "p0", nickname: "A", score: 0, connected: true }],
-    round: { number: 1, picks: {}, answers: {}, grace: { p0: 7000 }, results: null, bestAnswer: null },
+    players: [
+      { id: "p0", nickname: "A", score: 0, connected: true },
+      { id: "p1", nickname: "B", score: 0, connected: true },
+    ],
+    round: { number: 1, picks: {}, answers: {}, grace: { p0: 7000, p1: 9999 }, results: null, bestAnswer: null },
   };
+
   assert.equal(snapshotFor(state, "p0").round.myGraceEndsAt, 7000);
+  assert.equal(snapshotFor(state, "p1").round.myGraceEndsAt, 9999, "must be keyed by the requesting player");
 });
 ```
 
