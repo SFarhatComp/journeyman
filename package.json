@@ -10,7 +10,6 @@
     "dataset": "node scripts/build-dataset.mjs"
   },
   "dependencies": {
-    "fastify": "^5.2.0",
     "ws": "^8.18.0"
   }
 }

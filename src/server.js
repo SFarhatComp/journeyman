@@ -26,6 +26,11 @@ const deps = {
 const rooms = new Map();
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1
 
+// A room nobody ever joined is junk; a room everyone briefly dropped out of
+// is not. Both are reaped by the same sweep, on different clocks.
+const ROOM_UNJOINED_TTL_MS = 30 * 60_000;
+const ROOM_EMPTY_GRACE_MS = 2 * 60_000;
+
 function newCode() {
   let code;
   do {
@@ -81,7 +86,7 @@ const server = createServer(async (req, res) => {
       return res.end(JSON.stringify({ error: "slow_down" }));
     }
     const code = newCode();
-    rooms.set(code, { state: createRoom({ code }), sockets: new Map() });
+    rooms.set(code, { state: createRoom({ code }), sockets: new Map(), createdAt: Date.now(), emptiedAt: null });
     res.writeHead(200, { "content-type": "application/json" });
     return res.end(JSON.stringify({ code }));
   }
@@ -140,18 +145,35 @@ wss.on("connection", (ws, req) => {
   });
 
   ws.on("close", () => {
-    room.sockets.delete(playerId);
+    // Only drop this socket if it is still the live one. A reconnect may have
+    // replaced it already, and deleting then would cut off the new connection.
+    if (room.sockets.get(playerId) === ws) room.sockets.delete(playerId);
     apply(room, disconnect(room.state, playerId));
-    // Rooms are ephemeral: drop it once the last player leaves.
-    if (room.sockets.size === 0) rooms.delete(code);
+    // Do not delete the room here — a grace period lets a table full of
+    // sleeping phones come back. The sweep below reaps it.
+    if (room.sockets.size === 0) room.emptiedAt = Date.now();
   });
 });
 
 // One timer drives every room's phase expiry. The engine decides what expiry
-// means; this only supplies the clock.
+// means; this only supplies the clock. It also reaps abandoned rooms.
 setInterval(() => {
   const now = Date.now();
-  for (const room of rooms.values()) {
+  for (const [code, room] of rooms) {
+    if (room.sockets.size > 0) {
+      room.emptiedAt = null;          // someone is back
+    } else {
+      // Unjoined rooms get a long TTL; rooms that emptied mid-game get a
+      // short one, long enough to survive a phone locking.
+      const since = room.emptiedAt ?? room.createdAt;
+      const ttl = room.emptiedAt ? ROOM_EMPTY_GRACE_MS : ROOM_UNJOINED_TTL_MS;
+      if (now - since > ttl) {
+        rooms.delete(code);
+        console.log(`${code}: reaped (${room.emptiedAt ? "empty" : "never joined"})`);
+        continue;
+      }
+    }
+
     if (room.state.phaseEndsAt === null) continue;
     const before = room.state.phase;
     const result = expirePhase(room.state, now, deps);
