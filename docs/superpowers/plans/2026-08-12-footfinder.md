@@ -1569,13 +1569,13 @@ export function submitAnswer(state, { playerId, entityId }, now, deps) {
     return { state: next, events: [{ type: "answer_rejected", playerId, entityId }], error: "already_claimed" };
   }
 
-  const next = clone(state);
+  let next = clone(state);
   next.round.answers[playerId] = { entityId, submittedAt: now };
   delete next.round.grace[playerId];
 
   const events = [{ type: "answer_accepted", playerId }];
   if (Object.keys(next.round.answers).length === next.players.length) {
-    beginReveal(next, now, deps);
+    next = beginReveal(next, now, deps);
     events.push({ type: "phase_changed", phase: "REVEAL" });
   }
   return ok(next, events);
@@ -1603,8 +1603,7 @@ export function expirePhase(state, now, deps) {
 
   if (next.phase === "ANSWERING") {
     if (graceActive(next, now)) return ok(state); // wait for the grace window
-    beginReveal(next, now, deps);
-    return ok(next, [{ type: "phase_changed", phase: "REVEAL" }]);
+    return ok(beginReveal(next, now, deps), [{ type: "phase_changed", phase: "REVEAL" }]);
   }
 
   return ok(next);
@@ -1725,10 +1724,12 @@ Append:
 ```javascript
 /** Score every answer, attach the best possible answer, enter REVEAL. */
 export function beginReveal(state, now, deps) {
-  const roundClubIds = Object.values(state.round.picks);
+  // Pure like every other state function here — see beginRound.
+  const state_ = clone(state);
+  const roundClubIds = Object.values(state_.round.picks);
 
-  state.round.results = state.players.map((player) => {
-    const answer = state.round.answers[player.id];
+  state_.round.results = state_.players.map((player) => {
+    const answer = state_.round.answers[player.id];
     if (!answer) {
       return { playerId: player.id, entityId: null, points: 0, matchedClubIds: [] };
     }
@@ -1738,18 +1739,18 @@ export function beginReveal(state, now, deps) {
     return { playerId: player.id, entityId: answer.entityId, points: matchedClubIds.length, matchedClubIds };
   });
 
-  for (const result of state.round.results) {
-    const player = state.players.find((p) => p.id === result.playerId);
+  for (const result of state_.round.results) {
+    const player = state_.players.find((p) => p.id === result.playerId);
     player.score += result.points;
   }
 
   // Shown so every round teaches something, and so the game can prove the
   // round was winnable.
-  state.round.bestAnswer = deps.findBest(roundClubIds);
+  state_.round.bestAnswer = deps.findBest(roundClubIds);
 
-  state.phase = "REVEAL";
-  state.phaseEndsAt = now + state.config.revealSeconds * 1000;
-  return state;
+  state_.phase = "REVEAL";
+  state_.phaseEndsAt = now + state_.config.revealSeconds * 1000;
+  return state_;
 }
 
 export function disconnect(state, playerId) {
