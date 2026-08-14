@@ -127,3 +127,10 @@ other change.
   the shell is killed or an SSH session drops, the cloudflared container
   can survive and keep the public URL live. `./footfinder.sh down` closes
   both the server and the tunnel, and is the reliable way to be sure.
+- **Everyone dropping at once costs a round or two.** If every player's
+  phone locks mid-game, the round timers keep running while nobody is
+  connected, so the game can advance a phase or two before anyone
+  reconnects.
+- **Room-creation rate limiting is per-tunnel, not per-person.** Behind a
+  Cloudflare tunnel every request arrives from the same address, so the
+  five-rooms-per-minute budget is shared by everyone at the table.

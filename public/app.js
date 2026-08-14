@@ -4,7 +4,7 @@ const screens = ["home", "lobby", "picking", "answering", "reveal", "final"];
 let ws, me = null, snap = null, clubs = [];
 // playerId, room code and nickname persist across a reload so the client can
 // rejoin the same seat without the user retyping anything.
-const saved = (k, v) => (v === undefined ? sessionStorage.getItem(k) : sessionStorage.setItem(k, v));
+const saved = (k, v) => (v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v));
 
 // Nicknames are user input rendered via innerHTML — escape them.
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
@@ -51,7 +51,7 @@ async function connect(code, nickname) {
   ws.onclose = (e) => {
     // 4004 = no such room. Retrying would loop forever against a reaped room.
     if (e.code === 4004) {
-      sessionStorage.clear();
+      localStorage.clear();
       snap = null;
       notice("That room no longer exists.");
       return show("home");
@@ -145,7 +145,7 @@ $("answer").oninput = (e) => {
   if (q.length < 2) return ($("suggestions").innerHTML = "");
   searchTimer = setTimeout(async () => {
     const results = await (await fetch(`/api/search?q=${encodeURIComponent(q)}`)).json();
-    $("suggestions").innerHTML = results.map((r) => `<li data-id="${r.id}">${r.label}</li>`).join("");
+    $("suggestions").innerHTML = results.map((r) => `<li data-id="${r.id}">${esc(r.label)}</li>`).join("");
   }, 150);
 };
 $("suggestions").onclick = (e) => {

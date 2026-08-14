@@ -145,12 +145,12 @@ wss.on("connection", (ws, req) => {
   });
 
   ws.on("close", () => {
-    // Only drop this socket if it is still the live one. A reconnect may have
-    // replaced it already, and deleting then would cut off the new connection.
-    if (room.sockets.get(playerId) === ws) room.sockets.delete(playerId);
+    // If this is not the live socket, a reconnect already replaced it. Doing
+    // anything here would mark a currently-connected player offline, and
+    // nothing would clear that.
+    if (room.sockets.get(playerId) !== ws) return;
+    room.sockets.delete(playerId);
     apply(room, disconnect(room.state, playerId));
-    // Do not delete the room here — a grace period lets a table full of
-    // sleeping phones come back. The sweep below reaps it.
     if (room.sockets.size === 0) room.emptiedAt = Date.now();
   });
 });

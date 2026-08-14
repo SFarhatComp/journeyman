@@ -21,7 +21,7 @@ test("rows collapse into one player carrying all their clubs", () => {
     row("Q46896", "Zlatan Ibrahimović", "Q1422", "1981-10-03T00:00:00Z"),
   ]);
   assert.equal(out.players.length, 1);
-  assert.deepEqual(out.players[0].clubIds.sort(), ["Q1422", "Q81888"]);
+  assert.deepEqual(out.players[0].clubIds, ["Q1422", "Q81888"]);
   assert.equal(out.players[0].birthYear, 1981);
 });
 

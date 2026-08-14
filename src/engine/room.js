@@ -45,6 +45,12 @@ export function addPlayer(state, { id, nickname }) {
     existing.connected = true;
     return ok(next, [{ type: "player_reconnected", playerId: id }]);
   }
+  // A NEW player may only join in the lobby. Joining mid-game they would hold
+  // no club of their own, still be able to answer, and score off everyone
+  // else's clubs — and inflate players.length, shifting the early-advance
+  // thresholds mid-round. Reconnecting (known id) is handled above and stays
+  // allowed in every phase.
+  if (next.phase !== "LOBBY") return fail(state, "game_in_progress");
   if (next.players.length >= next.config.maxPlayers) return fail(state, "room_full");
   if (next.players.some((p) => p.nickname === nickname)) return fail(state, "nickname_taken");
 

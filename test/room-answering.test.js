@@ -80,3 +80,16 @@ test("answering outside the phase is rejected", () => {
   const lobby = createRoom({ code: "ABC123" });
   assert.equal(submitAnswer(lobby, { playerId: "p0", entityId: "x" }, 1, DEPS).error, "wrong_phase");
 });
+
+test("submitAnswer leaves its input untouched on both the accept and reject paths", () => {
+  const base = answering();
+  const baseSnapshot = structuredClone(base);
+  submitAnswer(base, { playerId: "p0", entityId: "zlatan" }, 2100, DEPS);
+  assert.deepEqual(base, baseSnapshot, "submitAnswer mutated its input when accepting");
+
+  // The rejected-claim path takes a different branch and writes to grace.
+  const claimed = submitAnswer(base, { playerId: "p0", entityId: "zlatan" }, 2100, DEPS).state;
+  const claimedSnapshot = structuredClone(claimed);
+  submitAnswer(claimed, { playerId: "p1", entityId: "zlatan" }, 2200, DEPS);
+  assert.deepEqual(claimed, claimedSnapshot, "submitAnswer mutated its input when rejecting a claim");
+});

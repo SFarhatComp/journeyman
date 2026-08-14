@@ -11,7 +11,7 @@ const qid = (url) => String(url).split("/").pop();
 /**
  * @param {Array<{id:string,name:string,country:string}>} clubs curated list
  * @param {Array<object>} rows raw SPARQL bindings
- * @returns {{clubs:Array, players:Array<{id,name,birthYear,clubIds}>}}
+ * @returns {{clubs:Array, players:Array<{id,name,birthYear,country,clubIds}>}}
  */
 export function shapeDataset(clubs, rows) {
   const curated = new Set(clubs.map((c) => c.id));

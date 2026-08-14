@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect } from "../src/engine/room.js";
+import {
+  createRoom,
+  addPlayer,
+  startGame,
+  pickClub,
+  submitAnswer,
+  expirePhase,
+  disconnect,
+  beginReveal,
+} from "../src/engine/room.js";
 
 const CAREERS = {
   zlatan: ["Q1", "Q2", "Q3"],
@@ -105,4 +114,22 @@ test("disconnecting keeps the score and marks the player offline", () => {
   const p0 = res.state.players.find((p) => p.id === "p0");
   assert.equal(p0.connected, false);
   assert.equal(p0.score, 3, "score is retained");
+});
+
+test("every exported mutator leaves the state it was given untouched", () => {
+  // The engine's purity rule is load-bearing: the server holds room state and
+  // relies on snapshots not changing underfoot. Three mutate-in-place bugs
+  // shipped during this build and were caught by review, not by tests. This
+  // is that missing net — making any of these mutate must turn it red.
+  const base = revealed(["twoclub", "oneclub", "nobody"]);
+  const snapshot = structuredClone(base);
+
+  beginReveal(base, 9000, DEPS);
+  assert.deepEqual(base, snapshot, "beginReveal mutated its input");
+
+  disconnect(base, "p0");
+  assert.deepEqual(base, snapshot, "disconnect mutated its input");
+
+  expirePhase(base, 999_999, DEPS);
+  assert.deepEqual(base, snapshot, "expirePhase mutated its input");
 });

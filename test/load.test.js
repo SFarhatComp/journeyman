@@ -11,6 +11,7 @@ const FIXTURE = {
     { id: "Q46896", name: "Zlatan Ibrahimović", birthYear: 1981, country: "SE", clubIds: ["Q81888", "Q1422"] },
     { id: "Q1", name: "Danny Blind", birthYear: 1961, country: "NL", clubIds: ["Q81888"] },
     { id: "Q2", name: "Daley Blind", birthYear: 1990, country: "NL", clubIds: ["Q81888"] },
+    { id: "Q3", name: "Jose Gomez", birthYear: 1990, country: "ES", clubIds: ["Q1422"] },
   ],
 };
 
@@ -90,4 +91,12 @@ test("a whole-name match is not lost behind many word matches", () => {
 
   const ds = createDataset({ clubs: [], players });
   assert.equal(ds.search("dasilva")[0].id, "TARGET", "the whole-name match must survive the limit");
+});
+
+test("search strips accents from the query, not just the data", () => {
+  // Deleting the diacritic strip from normalize() must turn this red: NFD
+  // decomposition alone leaves a combining mark on the query, which then
+  // fails to prefix-match the plainly-spelled name.
+  const ds = createDataset(FIXTURE);
+  assert.equal(ds.search("josé")[0].id, "Q3");
 });

@@ -113,3 +113,24 @@ test("no mutator touches the state it was given", () => {
   beginRound(started, 2, 5000);
   assert.deepEqual(started, startedSnapshot, "beginRound mutated its input");
 });
+
+test("a new player cannot join a game already in progress", () => {
+  const started = startGame(withPlayers(2), 1000, DEPS).state;
+  const res = addPlayer(started, { id: "late", nickname: "Latecomer" });
+
+  assert.equal(res.error, "game_in_progress");
+  assert.equal(res.state.players.length, 2, "the latecomer must not get a seat");
+});
+
+test("an existing player may still reconnect mid-game", () => {
+  let started = startGame(withPlayers(2), 1000, DEPS).state;
+  started = {
+    ...started,
+    players: started.players.map((p) => (p.id === "p0" ? { ...p, connected: false } : p)),
+  };
+
+  const res = addPlayer(started, { id: "p0", nickname: "Player 0" });
+
+  assert.equal(res.error, undefined, "reconnect must not be blocked by the phase guard");
+  assert.equal(res.state.players.find((p) => p.id === "p0").connected, true);
+});
