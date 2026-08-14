@@ -205,7 +205,33 @@ button:active { transform:scale(.98); }
 #submitted li.done::before { content:"\2713 "; }
 #submitted li.me { font-weight:700; }
 
+/* Base for every points number on every screen. #standings and #scoreboard
+   set only a size and inherit the rest from here. */
+.pts { color:var(--gold); font-family:var(--display); font-weight:700; }
+
 /* ---------------- results ---------------- */
+.reveal-no { font-size:20px; line-height:24px; letter-spacing:.06em; margin-bottom:var(--base); }
+
+/* The round's clubs, same order on every row, lit where the answer landed.
+   Reading two crests bright out of three is instant; reading a comma list of
+   club names against another comma list is not. */
+.strip { display:flex; flex-wrap:wrap; gap:6px; list-style:none; padding:0; margin:var(--sm) 0 0; }
+.strip li { width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+            border-radius:50%; background:var(--surface-high); }
+.strip img { width:22px; height:22px; object-fit:contain; }
+.strip li.miss { opacity:.28; filter:grayscale(1); }
+.strip li.hit { box-shadow:0 0 0 1.5px var(--tertiary); }
+
+.best {
+  background:var(--surface-high); border-radius:var(--r-xl); padding:var(--gutter);
+  margin-bottom:var(--gutter); border-left:3px solid var(--gold);
+}
+.best .lbl { display:block; font:500 10px/14px var(--body); letter-spacing:.14em;
+             text-transform:uppercase; color:var(--gold); }
+.best .who { display:block; font:700 22px/26px var(--display); margin-top:2px; }
+.best .who.none { font-size:15px; line-height:20px; color:var(--outline); }
+.best .max { font:500 12px/16px var(--body); color:var(--on-surface-variant); }
+
 #results { list-style:none; padding:0; }
 #results li {
   background:var(--surface); border:1px solid var(--outline-variant);
@@ -213,16 +239,12 @@ button:active { transform:scale(.98); }
   border-left:3px solid var(--outline-variant);
 }
 #results li.scored { border-left-color:var(--tertiary); }
-#results .pts { float:right; font:700 24px/1 var(--display); color:var(--tertiary); }
+#results li.me { background:var(--surface-high); }
+#results .row { display:flex; align-items:baseline; justify-content:space-between; gap:var(--sm); }
+#results .pts { font:700 24px/1 var(--display); color:var(--tertiary); flex:none; }
 #results li:not(.scored) .pts { color:var(--outline); }
-#results .chose { color:var(--on-surface); }
+#results .chose { display:block; color:var(--on-surface); font-size:14px; margin-top:2px; }
 #results .chose.none { color:var(--outline); font-style:italic; }
-#results .hit { color:var(--mint); font-size:13px; }
-#best-answer {
-  color:var(--on-surface-variant); font-size:14px;
-  border-top:1px solid var(--outline-variant); padding-top:var(--sm); margin-top:var(--gutter);
-}
-.pts { color:var(--gold); font-family:var(--display); font-weight:700; }
 
 /* ---------------- final ---------------- */
 #standings { list-style:none; padding:0; counter-reset:rank; }

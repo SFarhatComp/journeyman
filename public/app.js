@@ -183,7 +183,30 @@ function renderRoundClubs() {
 
 function renderResults() {
   const name = (id) => esc(snap.players.find((p) => p.id === id)?.nickname ?? id);
-  const clubName = (id) => clubs.find((c) => c.id === id)?.name ?? id;
+  const club = (id) => clubs.find((c) => c.id === id);
+  // The round's clubs in pick order — every result is scored against this same
+  // set, so showing it identically on each row makes the scores comparable at
+  // a glance instead of a list of names to re-read.
+  const roundClubs = Object.values(snap.round.picks);
+
+  const strip = (matched) => {
+    const hit = new Set(matched);
+    return `<ul class="strip">${roundClubs.map((cid) => `
+      <li class="${hit.has(cid) ? "hit" : "miss"}" title="${esc(club(cid)?.name ?? cid)}">
+        <img src="/crests/${cid}.png" alt="${esc(club(cid)?.name ?? cid)}" decoding="async" loading="lazy">
+      </li>`).join("")}</ul>`;
+  };
+
+  $("reveal-no").textContent = `Round ${snap.round.number} results`;
+
+  const best = snap.round.bestAnswer;
+  $("best-answer").innerHTML = best
+    ? `<span class="lbl">Best possible answer</span>
+       <strong class="who">${esc(best.name)}</strong>
+       <span class="max">${best.points} of ${roundClubs.length}</span>
+       ${strip(best.matchedClubIds ?? [])}`
+    : `<span class="lbl">Best possible answer</span>
+       <strong class="who none">Nobody covered any of these clubs</strong>`;
 
   $("results").innerHTML = [...snap.round.results]
     .sort((a, b) => b.points - a.points)
@@ -191,17 +214,17 @@ function renderResults() {
       const chose = r.entityLabel
         ? `<span class="chose">${esc(r.entityLabel)}</span>`
         : `<span class="chose none">no answer</span>`;
-      // Which clubs the pick actually covered — the reason for the score.
-      const hit = r.matchedClubIds.length
-        ? `<span class="hit">${r.matchedClubIds.map(clubName).map(esc).join(", ")}</span>`
-        : "";
-      return `<li class="${r.points > 0 ? "scored" : ""}"><strong>${name(r.playerId)}</strong> <span class="pts">${r.points}</span><br>${chose}${hit ? "<br>" + hit : ""}</li>`;
+      return `<li class="${r.points > 0 ? "scored" : ""}${r.playerId === snap.you ? " me" : ""}">
+        <div class="row">
+          <strong>${name(r.playerId)}</strong>
+          <span class="pts">${r.points > 0 ? "+" : ""}${r.points}</span>
+        </div>
+        ${chose}
+        ${strip(r.matchedClubIds)}
+      </li>`;
     }).join("");
-  const best = snap.round.bestAnswer;
-  $("best-answer").textContent = best
-    ? `Best possible: ${best.name} (${best.points})`
-    : "No player in the dataset covered any of these clubs.";
 }
+
 
 // Countdown ticks locally between snapshots so it looks smooth. A personal
 // grace window (granted when your claim lost a race) extends past the phase
