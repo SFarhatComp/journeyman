@@ -25,8 +25,8 @@ Nothing is installed on the host — everything runs in Docker via
 ```bash
 ./footfinder.sh build     # build the image
 ./footfinder.sh test      # run the test suite in a container
-./footfinder.sh up        # start the game server (binds 127.0.0.1:3000)
-./footfinder.sh down      # stop and remove the container
+./footfinder.sh up        # start the game server (reachable at http://127.0.0.1:3000)
+./footfinder.sh down      # stop the server AND close the tunnel if open
 ./footfinder.sh logs      # follow the server's logs
 ./footfinder.sh tunnel    # expose the running server to the internet
 ./footfinder.sh dataset   # regenerate data/dataset.json from Wikidata
@@ -40,15 +40,16 @@ Nothing is installed on the host — everything runs in Docker via
 ```
 
 `tunnel` runs `cloudflared` in Docker and prints a `https://….trycloudflare.com`
-URL to stdout. It runs in the foreground (Ctrl-C closes it), so run it in a
-terminal you're going to leave open for the session. Share the printed URL
-and the in-game room code with friends; they open the URL on their phones
-and join with the code.
+URL to stdout. It runs in the foreground, so run it in a terminal you're
+going to leave open for the session. Share the printed URL and the in-game
+room code with friends; they open the URL on their phones and join with the
+code.
 
 The tunnel URL is different every time — there's no way to bookmark it
-ahead of a session. When you're done, Ctrl-C the tunnel and run
-`./footfinder.sh down`. Leaving the tunnel up leaves a public URL pointed at
-this machine.
+ahead of a session. When you're done, run `./footfinder.sh down`. It stops
+both the server and the tunnel and is the reliable way to be sure no public
+URL to this machine is left running — Ctrl-C alone can fail to close the
+tunnel if the shell is killed or the session drops (see Known limits).
 
 ## The data
 
@@ -92,9 +93,11 @@ other change.
 
 ## Security posture
 
-- The server binds `127.0.0.1` only inside the container (`docker run -p
-  127.0.0.1:3000:3000`) — it is never reachable on the host's public
-  interface, and no router port needs to be opened.
+- The container publishes to `127.0.0.1:3000` on the host only, so the game
+  is unreachable from your local network. (The process binds `0.0.0.0`
+  *inside* the container, which is required for Docker's port mapping to
+  work — the loopback restriction is enforced by the host-side publish, not
+  by the process.) No router port needs to be opened.
 - The tunnel (`cloudflared`) is outbound-only: it dials out to Cloudflare
   and Cloudflare proxies traffic in, so the host's IP address is never
   exposed to players.
@@ -120,3 +123,7 @@ other change.
 - **The tunnel URL isn't stable.** Every `./footfinder.sh tunnel` run mints
   a new `trycloudflare.com` subdomain. There's no way to give friends a
   fixed link across sessions without a paid Cloudflare tunnel.
+- **A tunnel can outlive its terminal.** Ctrl-C normally closes it, but if
+  the shell is killed or an SSH session drops, the cloudflared container
+  can survive and keep the public URL live. `./footfinder.sh down` closes
+  both the server and the tunnel, and is the reliable way to be sure.

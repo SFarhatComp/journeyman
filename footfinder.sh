@@ -4,6 +4,7 @@ set -euo pipefail
 
 IMAGE=footfinder:dev
 NAME=footfinder
+TUNNEL_NAME=footfinder-tunnel
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 case "${1:-help}" in
@@ -21,12 +22,19 @@ case "${1:-help}" in
              --log-opt max-size=10m --log-opt max-file=3 "$IMAGE"
            echo "up on http://127.0.0.1:3000" ;;
 
-  down)    docker rm -f "$NAME" >/dev/null 2>&1 && echo stopped || echo "not running" ;;
+  down)    docker rm -f "$NAME" >/dev/null 2>&1 && echo "server stopped" || echo "server not running"
+           docker rm -f "$TUNNEL_NAME" >/dev/null 2>&1 && echo "tunnel closed" || true ;;
   logs)    docker logs -f --tail 100 "$NAME" ;;
 
-  tunnel)  echo "Public URL for friends (Ctrl-C to close):"
-           docker run --rm --network host cloudflare/cloudflared:latest \
-             tunnel --url http://127.0.0.1:3000 ;;
+  tunnel)  docker rm -f "$TUNNEL_NAME" >/dev/null 2>&1 || true
+           # Named so cleanup never depends on signal propagation. The trap
+           # covers a clean Ctrl-C; the name means `down` can still close it
+           # after a killed shell or dropped SSH, when no trap ever runs.
+           trap 'docker rm -f "$TUNNEL_NAME" >/dev/null 2>&1' EXIT INT TERM
+           echo "Public URL for friends below."
+           echo "Ctrl-C closes it, or run './footfinder.sh down' from another terminal."
+           docker run --rm --name "$TUNNEL_NAME" --network host \
+             cloudflare/cloudflared:latest tunnel --url http://127.0.0.1:3000 ;;
 
   dataset) docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-dataset.mjs ;;
