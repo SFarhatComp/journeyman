@@ -94,7 +94,7 @@ function render() {
   } else {
     lastPicks = null; // next round starts from a fresh grid
   }
-  if (snap.phase === "ANSWERING") { show("answering"); renderRoundClubs(); }
+  if (snap.phase === "ANSWERING") { show("answering"); renderRoundClubs(); renderSubmitted(); }
   if (snap.phase === "REVEAL") { show("reveal"); renderResults(); }
   if (snap.phase === "FINAL") {
     show("final");
@@ -148,7 +148,19 @@ function renderClubs() {
   }).join("");
 }
 
+// Who has locked an answer in. The snapshot gives THAT they answered, never
+// what — showing the pick would hand rivals the answer and break the race.
+function renderSubmitted() {
+  $("submitted").innerHTML = snap.players
+    .map((p) => {
+      const done = !!snap.round.answered[p.id];
+      const me = p.id === snap.you;
+      return `<li class="${done ? "done" : ""}${me ? " me" : ""}">${esc(p.nickname)}</li>`;
+    }).join("");
+}
+
 function renderRoundClubs() {
+  $("round-no").textContent = `Round ${snap.round.number} of ${snap.config.rounds ?? "?"}`;
   // Attribute each club to whoever claimed it — knowing Sam took Juventus is
   // half the fun, and it makes the round's set easier to hold in your head.
   const who = (pid) => snap.players.find((p) => p.id === pid);

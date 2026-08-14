@@ -33,11 +33,14 @@
     </section>
 
     <section id="screen-answering" hidden>
-      <p>Name a footballer who played for the most of these clubs:</p>
+      <div class="round-bar"><span class="live-dot"></span><h2 id="round-no">Round 1</h2></div>
+      <p class="prompt">Name one footballer who played for</p>
       <ul id="round-clubs"></ul>
-      <input id="answer" placeholder="Search a footballer" autocomplete="off">
+      <input id="answer" placeholder="Search a footballer" autocomplete="off"
+             autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
       <ul id="suggestions"></ul>
       <p id="answer-status"></p>
+      <div class="status-strip"><span class="lbl">Submitted</span><ul id="submitted"></ul></div>
     </section>
 
     <section id="screen-reveal" hidden>
