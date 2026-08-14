@@ -36,9 +36,12 @@ case "${1:-help}" in
            docker run --rm --name "$TUNNEL_NAME" --network host \
              cloudflare/cloudflared:latest tunnel --url http://127.0.0.1:3000 ;;
 
+  crests)  docker run --rm -v "$DIR/public":/app/public -v "$DIR/data":/app/data:ro \
+             -v "$DIR/scripts":/app/scripts:ro "$IMAGE" node scripts/fetch-crests.mjs ;;
+
   dataset) docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-dataset.mjs ;;
 
   *)       sed -n '2,4p' "${BASH_SOURCE[0]}"; echo
-           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset}"; exit 1 ;;
+           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests}"; exit 1 ;;
 esac

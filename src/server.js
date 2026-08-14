@@ -70,7 +70,8 @@ function apply(room, result) {
 }
 
 // Static files. Tiny hand-rolled server — three files, no framework needed.
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css" };
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
+               ".png": "image/png", ".svg": "image/svg+xml" };
 const server = createServer(async (req, res) => {
   if (req.url === "/api/clubs") {
     res.writeHead(200, { "content-type": "application/json" });
@@ -93,7 +94,13 @@ const server = createServer(async (req, res) => {
   }
 
   const path = req.url === "/" ? "/index.html" : req.url.split("?")[0];
-  if (!/^\/[\w.-]+$/.test(path)) { res.writeHead(404); return res.end(); }
+  // One optional subdirectory, for /crests/Q18656.png. The explicit ".." test
+  // is what actually stops traversal: "." is a legal filename character, so
+  // the character class alone would happily match "/../etc".
+  if (!/^\/[\w.-]+(\/[\w.-]+)?$/.test(path) || path.includes("..")) {
+    res.writeHead(404);
+    return res.end();
+  }
   try {
     const body = await readFile(new URL(`../public${path}`, import.meta.url));
     const ext = path.slice(path.lastIndexOf("."));
