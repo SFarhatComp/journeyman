@@ -71,7 +71,8 @@ function apply(room, result) {
 
 // Static files. Tiny hand-rolled server — three files, no framework needed.
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
-               ".png": "image/png", ".svg": "image/svg+xml" };
+               ".png": "image/png", ".svg": "image/svg+xml",
+               ".woff2": "font/woff2" };
 const server = createServer(async (req, res) => {
   if (req.url === "/api/clubs") {
     res.writeHead(200, { "content-type": "application/json" });
@@ -195,8 +196,11 @@ setInterval(() => {
     const before = room.state.phase;
     const result = expirePhase(room.state, now, deps);
     room.state = result.state;
-    // Broadcast every tick so countdowns stay in sync, not just on transitions.
-    broadcast(room);
+    // Only broadcast when the tick actually changed something. Clients run
+    // their own countdown from phaseEndsAt, so a per-second snapshot to every
+    // player was pure traffic — and it forced a full re-render every second on
+    // the one screen where people are trying to tap.
+    if (result.events.length > 0) broadcast(room);
     if (before !== room.state.phase) console.log(`${room.state.code}: ${before} -> ${room.state.phase}`);
   }
 }, 1000);

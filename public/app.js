@@ -1,7 +1,7 @@
 const $ = (id) => document.getElementById(id);
 const screens = ["home", "lobby", "picking", "answering", "reveal", "final"];
 
-let ws, me = null, snap = null, clubs = [], lastRound = null;
+let ws, me = null, snap = null, clubs = [], lastRound = null, lastPicks = null;
 // playerId, room code and nickname persist across a reload so the client can
 // rejoin the same seat without the user retyping anything.
 const saved = (k, v) => (v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v));
@@ -85,7 +85,15 @@ function render() {
     $("lobby-players").innerHTML = snap.players.map((p) => `<li>${esc(p.nickname)}</li>`).join("");
     $("start").hidden = snap.you !== snap.hostId || snap.players.length < 2;
   }
-  if (snap.phase === "PICKING") { show("picking"); renderClubs(); }
+  if (snap.phase === "PICKING") {
+    show("picking");
+    // Rebuilding 97 cards is expensive, so only do it when the pick set
+    // actually changed — not on every snapshot that happens to arrive.
+    const sig = JSON.stringify(snap.round.picks);
+    if (sig !== lastPicks) { lastPicks = sig; renderClubs(); }
+  } else {
+    lastPicks = null; // next round starts from a fresh grid
+  }
   if (snap.phase === "ANSWERING") { show("answering"); renderRoundClubs(); }
   if (snap.phase === "REVEAL") { show("reveal"); renderResults(); }
   if (snap.phase === "FINAL") {
@@ -128,8 +136,15 @@ function renderClubs() {
   $("club-grid").innerHTML = clubs.map((c) => {
     const header = c.league !== league ? `<h3 class="league">${esc(c.league ?? "")}</h3>` : "";
     league = c.league;
-    const takenByOther = Object.entries(taken).some(([pid, cid]) => cid === c.id && pid !== snap.you);
-    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}" ${takenByOther ? "disabled" : ""}>${esc(c.name)}</button>`;
+    const byOther = Object.entries(taken).find(([pid, cid]) => cid === c.id && pid !== snap.you);
+    const owner = byOther && snap.players.find((p) => p.id === byOther[0]);
+    // loading="lazy" matters: 97 crests is ~1.5MB, and only a handful are on
+    // screen at once under a 15-second timer.
+    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}" ${byOther ? "disabled" : ""}>
+      <img src="/crests/${c.id}.png" alt="" loading="lazy" decoding="async">
+      <span class="nm">${esc(c.name)}</span>
+      ${byOther ? `<span class="lock">taken by<b>${esc(owner ? owner.nickname : "someone")}</b></span>` : ""}
+    </button>`;
   }).join("");
 }
 
@@ -139,11 +154,15 @@ function renderRoundClubs() {
   const who = (pid) => snap.players.find((p) => p.id === pid);
   $("round-clubs").innerHTML = Object.entries(snap.round.picks)
     .map(([pid, cid]) => {
-      const club = clubs.find((c) => c.id === cid)?.name ?? cid;
+      const club = clubs.find((c) => c.id === cid);
       const player = who(pid);
       const mine = pid === snap.you;
       const owner = player ? esc(player.nickname) : "?";
-      return `<li><strong>${club}</strong> <span class="owner">${mine ? "you" : owner}</span></li>`;
+      return `<li>
+        <img src="/crests/${cid}.png" alt="" decoding="async">
+        <span class="cn">${esc(club?.name ?? cid)}</span>
+        <span class="owner">${mine ? "you" : owner}</span>
+      </li>`;
     }).join("");
   const answered = snap.round.answered[snap.you];
   $("answer").disabled = !!answered;
@@ -164,7 +183,7 @@ function renderResults() {
       const hit = r.matchedClubIds.length
         ? `<span class="hit">${r.matchedClubIds.map(clubName).map(esc).join(", ")}</span>`
         : "";
-      return `<li><strong>${name(r.playerId)}</strong> <span class="pts">${r.points}</span><br>${chose}${hit ? "<br>" + hit : ""}</li>`;
+      return `<li class="${r.points > 0 ? "scored" : ""}"><strong>${name(r.playerId)}</strong> <span class="pts">${r.points}</span><br>${chose}${hit ? "<br>" + hit : ""}</li>`;
     }).join("");
   const best = snap.round.bestAnswer;
   $("best-answer").textContent = best
@@ -180,7 +199,8 @@ setInterval(() => {
   const grace = snap.round?.myGraceEndsAt;
   const usingGrace = grace && grace > snap.phaseEndsAt;
   const left = Math.max(0, Math.ceil(((usingGrace ? grace : snap.phaseEndsAt) - Date.now()) / 1000));
-  $("timer").textContent = usingGrace ? `${left} +grace` : String(left);
+  $("timer").textContent = usingGrace ? `${left}+` : String(left);
+  $("timer").classList.toggle("urgent", left <= 10 && snap.phase !== "REVEAL");
 }, 250);
 
 $("create").onclick = async () => {

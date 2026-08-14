@@ -1,59 +1,251 @@
-:root { --bg:#10151c; --fg:#e8edf3; --dim:#8b9bb0; --accent:#38d39f; --taken:#39424f; }
-* { box-sizing: border-box; }
-body { margin:0; background:var(--bg); color:var(--fg);
-  font:16px/1.5 system-ui, sans-serif; padding-bottom:2rem; }
-header { display:flex; gap:.75rem; align-items:baseline; padding:1rem;
-  border-bottom:1px solid #222c38; position:sticky; top:0; background:var(--bg); }
-h1 { font-size:1.1rem; margin:0; letter-spacing:.08em; text-transform:uppercase; }
-#phase { color:var(--dim); font-size:.85rem; }
-#timer { margin-left:auto; font-variant-numeric:tabular-nums; font-size:1.3rem; }
-main { padding:1rem; max-width:640px; margin:0 auto; }
-input, button { font:inherit; padding:.75rem; border-radius:.5rem; border:1px solid #2a3542; }
-input { width:100%; background:#182029; color:var(--fg); margin-bottom:.5rem; }
-button { background:var(--accent); color:#06231a; border:0; font-weight:600; width:100%; }
-.row { display:flex; gap:.5rem; } .row input { margin:0; }
-#club-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(9rem,1fr)); gap:.5rem; }
-.club { padding:.9rem .6rem; background:#182029; border:1px solid #2a3542;
-  /* Explicit colour: .club is a <button>, so without this it inherits the
-     dark-green button text and renders nearly invisible on the dark card. */
-  color:var(--fg); font-weight:500;
-  border-radius:.5rem; text-align:center; cursor:pointer; }
-.club[disabled] { background:var(--taken); color:var(--dim); cursor:not-allowed; }
-.club.mine { border-color:var(--accent); }
-ul, ol { padding-left:1.2rem; } #suggestions { list-style:none; padding:0; }
-#suggestions li { padding:.75rem; background:#182029; border-radius:.5rem; margin-bottom:.25rem; cursor:pointer; }
-.pts { color:var(--accent); font-weight:700; }
-#notice { background:#7a2f2f; color:var(--fg); padding:.75rem 1rem; text-align:center; }
-#notice[hidden] { display:none; }
+/* Arena Velocity — hand-written from the design system's own token values.
+   No Tailwind: its CDN build ships a JIT compiler that runs on every page
+   load, which is the opposite of what this game needs on a phone. */
 
-/* Running scoreboard, visible during play rather than only at the end. */
-#live { max-width:640px; margin:0 auto; padding:0 1rem; }
-#scoreboard { display:flex; flex-wrap:wrap; gap:.4rem; list-style:none; padding:0; margin:.5rem 0; }
-#scoreboard li { background:#182029; border:1px solid #2a3542; border-radius:.5rem;
-  padding:.35rem .6rem; font-size:.9rem; }
-#scoreboard li.me { border-color:var(--accent); }
-#scoreboard li.off { opacity:.45; }
-#scoreboard .pts { margin-left:.35rem; }
-#end-game { background:transparent; color:var(--dim); border:1px solid #2a3542;
-  font-weight:400; font-size:.85rem; padding:.5rem; margin-top:.5rem; }
+/* Inlined rather than @import-ed: an import makes the font wait for a
+   second stylesheet round trip before it can even start loading. */
+@font-face {
+  font-family: Oswald; font-style: normal; font-weight: 600; font-display: swap;
+  src: url(/fonts/oswald-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: Oswald; font-style: normal; font-weight: 600; font-display: swap;
+  src: url(/fonts/oswald-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: Oswald; font-style: normal; font-weight: 700; font-display: swap;
+  src: url(/fonts/oswald-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: Oswald; font-style: normal; font-weight: 700; font-display: swap;
+  src: url(/fonts/oswald-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-#round-clubs { list-style:none; padding:0; }
-#round-clubs li { background:#182029; border:1px solid #2a3542; border-radius:.5rem;
-  padding:.6rem .75rem; margin-bottom:.4rem; display:flex; justify-content:space-between; align-items:baseline; }
-#round-clubs .owner { color:var(--dim); font-size:.85rem; }
-#results { list-style:none; padding:0; }
-#results li { background:#182029; border:1px solid #2a3542; border-radius:.5rem;
-  padding:.7rem .75rem; margin-bottom:.5rem; }
-#results .pts { float:right; }
-#results .chose { color:var(--fg); }
-#results .chose.none { color:var(--dim); font-style:italic; }
-#results .hit { color:var(--accent); font-size:.85rem; }
+:root {
+  /* surfaces, low to high */
+  --surface-lowest:#0c0f10;
+  --bg:#111415;
+  --surface-low:#191c1d;
+  --surface:#1d2021;
+  --surface-high:#282a2b;
+  --surface-highest:#323536;
 
-/* League headers span the whole grid so each block reads as one group. */
-.league { grid-column:1/-1; margin:.9rem 0 .1rem; font-size:.75rem; font-weight:600;
-  letter-spacing:.09em; text-transform:uppercase; color:var(--dim);
-  border-bottom:1px solid #222c38; padding-bottom:.3rem; }
+  /* text */
+  --on-surface:#e1e3e4;
+  --on-surface-variant:#c1c8c2;
+  --outline:#8b938d;
+  --outline-variant:#414844;
+
+  /* accents */
+  --gold:#ffe16d;          /* every CTA */
+  --gold-dim:#e9c400;
+  --on-gold:#3a3000;
+  --mint:#a5d0b9;          /* status, ready, live */
+  --tertiary:#95d4b3;      /* positive / scored */
+  --error:#ffb4ab;
+  --error-container:#93000a;
+
+  /* radii + spacing, straight from the design config */
+  --r:2px; --r-lg:4px; --r-xl:8px; --r-full:12px;
+  --xs:4px; --base:8px; --sm:12px; --gutter:16px; --md:24px; --lg:40px; --xl:64px;
+
+  --display: Oswald, "Arial Narrow", Impact, system-ui, sans-serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*, *::before, *::after { box-sizing:border-box; }
+
+html, body { margin:0; padding:0; background:var(--bg); }
+body {
+  color:var(--on-surface); font:400 16px/24px var(--body);
+  overscroll-behavior:none; -webkit-text-size-adjust:100%;
+  padding-bottom:calc(var(--xl) + env(safe-area-inset-bottom,0px));
+}
+::-webkit-scrollbar { display:none; }
+
+h1, h2, h3 { font-family:var(--display); font-weight:600; text-transform:uppercase; margin:0; }
+
+/* ---------------- header ---------------- */
+header {
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:var(--sm);
+  height:64px; padding:0 var(--gutter);
+  background:color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter:blur(12px);
+  box-shadow:0 1px 8px rgba(0,0,0,.4);
+}
+h1 { font-size:24px; line-height:32px; color:var(--gold); letter-spacing:.02em; }
+#phase {
+  font:500 12px/16px var(--body); color:var(--on-surface-variant);
+  text-transform:uppercase; letter-spacing:.12em;
+}
+#timer {
+  margin-left:auto; font:700 40px/1 var(--display);
+  color:var(--gold); font-variant-numeric:tabular-nums; min-width:2.2ch; text-align:right;
+}
+#timer.urgent { color:var(--error); animation:pulse .9s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
+
+main { padding:var(--gutter); max-width:640px; margin:0 auto; }
+
+/* ---------------- controls ---------------- */
+input, button { font:inherit; border-radius:var(--r-xl); border:1px solid var(--outline-variant); }
+input {
+  width:100%; padding:var(--sm); background:var(--surface-high);
+  color:var(--on-surface); margin-bottom:var(--base); -webkit-appearance:none;
+}
+input:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(255,225,109,.15); }
+input::placeholder { color:var(--outline); }
+
+button {
+  width:100%; padding:14px; border:0; cursor:pointer;
+  background:var(--gold); color:var(--on-gold);
+  font:600 20px/1.2 var(--display); text-transform:uppercase; letter-spacing:.04em;
+  box-shadow:0 0 15px rgba(255,225,109,.25);
+}
+button:active { transform:scale(.98); }
+.row { display:flex; gap:var(--base); } .row input { margin:0; }
+
+/* ---------------- club draft ---------------- */
+#club-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--base); }
+@media (max-width:359px) { #club-grid { grid-template-columns:repeat(2,1fr); } }
+
+/* Sticky, so you always know which league you are scrolling through. */
+.league {
+  grid-column:1/-1; position:sticky; top:64px; z-index:10;
+  margin:var(--md) 0 var(--xs); padding:6px 0;
+  background:var(--bg);
+  font:500 12px/16px var(--body); letter-spacing:.14em;
+  color:var(--gold); text-transform:uppercase;
+  border-bottom:1px solid var(--outline-variant);
+}
 .league:first-child { margin-top:0; }
 
-#play-again { margin-top:1rem; }
-#final-note { color:var(--dim); font-size:.85rem; text-align:center; margin-top:.6rem; }
+.club {
+  position:relative; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:6px; aspect-ratio:1;
+  padding:var(--base); background:var(--surface);
+  border:1px solid var(--outline-variant); border-radius:var(--r-xl);
+  color:var(--on-surface); font:700 12px/15px var(--body);
+  letter-spacing:0; text-transform:none; text-align:center;
+  box-shadow:none; overflow:hidden;
+}
+.club img { width:44px; height:44px; object-fit:contain; }
+.club .nm { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.club.mine { border-color:var(--gold); box-shadow:0 0 0 1px var(--gold), 0 0 16px rgba(255,225,109,.2); }
+.club[disabled] { background:var(--surface-highest); cursor:not-allowed; }
+.club[disabled] img { filter:grayscale(1); opacity:.35; }
+.club[disabled] .nm { opacity:.35; }
+/* The lock names who took it, rather than the card just going quiet. */
+.club .lock {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:2px;
+  background:rgba(0,0,0,.55); backdrop-filter:blur(2px);
+  font:500 10px/13px var(--body); color:var(--on-surface-variant); padding:4px;
+}
+.club .lock b { font-weight:700; color:var(--on-surface); }
+
+/* ---------------- gameplay ---------------- */
+#round-clubs { list-style:none; padding:0; margin:0 0 var(--gutter); }
+#round-clubs li {
+  display:flex; align-items:center; gap:var(--sm);
+  background:var(--surface); border:1px solid var(--outline-variant);
+  border-left:3px solid var(--gold); border-radius:var(--r-xl);
+  padding:10px var(--sm); margin-bottom:6px;
+}
+#round-clubs img { width:28px; height:28px; object-fit:contain; flex:none; }
+#round-clubs .cn { font:600 18px/22px var(--display); text-transform:uppercase; }
+#round-clubs .owner {
+  margin-left:auto; font:500 11px/14px var(--body); color:var(--outline);
+  text-transform:uppercase; letter-spacing:.08em;
+}
+#suggestions { list-style:none; padding:0; margin:0; }
+#suggestions li {
+  padding:var(--sm); background:var(--surface); border:1px solid var(--outline-variant);
+  border-radius:var(--r-xl); margin-bottom:6px; cursor:pointer;
+}
+#suggestions li:active { border-color:var(--gold); }
+#answer-status { color:var(--on-surface-variant); font-size:14px; }
+
+/* ---------------- results ---------------- */
+#results { list-style:none; padding:0; }
+#results li {
+  background:var(--surface); border:1px solid var(--outline-variant);
+  border-radius:var(--r-xl); padding:var(--sm); margin-bottom:var(--base);
+  border-left:3px solid var(--outline-variant);
+}
+#results li.scored { border-left-color:var(--tertiary); }
+#results .pts { float:right; font:700 24px/1 var(--display); color:var(--tertiary); }
+#results li:not(.scored) .pts { color:var(--outline); }
+#results .chose { color:var(--on-surface); }
+#results .chose.none { color:var(--outline); font-style:italic; }
+#results .hit { color:var(--mint); font-size:13px; }
+#best-answer {
+  color:var(--on-surface-variant); font-size:14px;
+  border-top:1px solid var(--outline-variant); padding-top:var(--sm); margin-top:var(--gutter);
+}
+.pts { color:var(--gold); font-family:var(--display); font-weight:700; }
+
+/* ---------------- final ---------------- */
+#standings { list-style:none; padding:0; counter-reset:rank; }
+#standings li {
+  counter-increment:rank; display:flex; align-items:center; gap:var(--sm);
+  background:var(--surface); border:1px solid var(--outline-variant);
+  border-radius:var(--r-xl); padding:var(--sm); margin-bottom:6px;
+}
+#standings li::before {
+  content:counter(rank); font:700 20px/1 var(--display); color:var(--outline);
+  min-width:28px; text-align:center;
+}
+#standings li:nth-child(1) { border-color:var(--gold); box-shadow:0 0 20px rgba(255,225,109,.15); }
+#standings li:nth-child(1)::before { color:var(--gold); font-size:28px; }
+#standings li:nth-child(2)::before { color:#c9d1d4; }
+#standings li:nth-child(3)::before { color:#c0835f; }
+#standings .pts { margin-left:auto; font-size:24px; }
+#final-note { color:var(--outline); font-size:13px; text-align:center; margin-top:var(--sm); }
+#play-again { margin-top:var(--gutter); }
+
+/* ---------------- live bar ---------------- */
+#live { max-width:640px; margin:0 auto; padding:0 var(--gutter); }
+#scoreboard { display:flex; flex-wrap:wrap; gap:6px; list-style:none; padding:0; margin:var(--sm) 0; }
+#scoreboard li {
+  display:flex; align-items:center; gap:6px;
+  background:var(--surface); border:1px solid var(--outline-variant);
+  border-radius:var(--r-full); padding:5px 10px; font:500 13px/16px var(--body);
+}
+#scoreboard li.me { border-color:var(--gold); }
+#scoreboard li.off { opacity:.4; }
+#scoreboard .pts { font-size:15px; }
+#end-game {
+  background:transparent; color:var(--outline); border:1px solid var(--outline-variant);
+  font:500 11px/14px var(--body); letter-spacing:.12em; text-transform:uppercase;
+  padding:10px; box-shadow:none; margin-top:6px;
+}
+
+/* ---------------- lobby ---------------- */
+#room-code {
+  font:700 40px/1.1 var(--display); color:var(--gold);
+  letter-spacing:.18em; display:block; text-align:center;
+}
+#lobby-players { list-style:none; padding:0; }
+#lobby-players li {
+  background:var(--surface); border:1px solid var(--outline-variant);
+  border-left:2px solid var(--mint); border-radius:var(--r-xl);
+  padding:var(--sm); margin-bottom:6px; font-weight:500;
+}
+
+/* ---------------- notice ---------------- */
+#notice {
+  background:var(--error-container); color:#fff; padding:var(--sm) var(--gutter);
+  text-align:center; font-size:14px;
+}
+#notice[hidden] { display:none; }
+
+@media (prefers-reduced-motion:reduce) {
+  #timer.urgent { animation:none; }
+  * { transition:none !important; }
+}
