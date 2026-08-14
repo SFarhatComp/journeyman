@@ -247,23 +247,59 @@ button:active { transform:scale(.98); }
 #results .chose.none { color:var(--outline); font-style:italic; }
 
 /* ---------------- final ---------------- */
-#standings { list-style:none; padding:0; counter-reset:rank; }
+.whistle { font-size:32px; line-height:36px; letter-spacing:.06em; text-align:center; }
+
+#podium {
+  display:flex; align-items:flex-end; justify-content:center; gap:8px;
+  list-style:none; padding:0; margin:var(--gutter) 0 0;
+}
+#podium li { flex:1; max-width:112px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+#podium .nm { font:500 13px/16px var(--body); overflow-wrap:anywhere; }
+#podium .sc { font-size:22px; line-height:26px; }
+#podium .block {
+  width:100%; margin-top:6px; border-radius:var(--r-md) var(--r-md) 0 0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--surface-high); border:1px solid var(--outline-variant); border-bottom:none;
+}
+#podium .rk { font:700 26px/1 var(--display); color:var(--outline); }
+#podium .me .nm { color:var(--gold); }
+
+/* Heights are the whole point of a podium — first place has to look taller. */
+#podium .p1 .block {
+  height:104px; border-color:var(--gold);
+  background:linear-gradient(180deg, rgba(255,225,109,.22), var(--surface-high));
+}
+#podium .p1 .rk { color:var(--gold); font-size:34px; }
+#podium .p2 .block { height:76px; }
+#podium .p2 .rk { color:#c9d1d4; }
+#podium .p3 .block { height:56px; }
+#podium .p3 .rk { color:#c0835f; }
+
+/* Fourth place down. The rank is written out rather than counted by CSS,
+   because the list starts at four and ties can repeat a number. */
+#standings { list-style:none; padding:0; margin-top:var(--base); }
 #standings li {
-  counter-increment:rank; display:flex; align-items:center; gap:var(--sm);
+  display:flex; align-items:center; gap:var(--sm);
   background:var(--surface); border:1px solid var(--outline-variant);
   border-radius:var(--r-xl); padding:var(--sm); margin-bottom:6px;
 }
-#standings li::before {
-  content:counter(rank); font:700 20px/1 var(--display); color:var(--outline);
-  min-width:28px; text-align:center;
-}
-#standings li:nth-child(1) { border-color:var(--gold); box-shadow:0 0 20px rgba(255,225,109,.15); }
-#standings li:nth-child(1)::before { color:var(--gold); font-size:28px; }
-#standings li:nth-child(2)::before { color:#c9d1d4; }
-#standings li:nth-child(3)::before { color:#c0835f; }
-#standings .pts { margin-left:auto; font-size:24px; }
+#standings li.me { border-color:var(--gold); }
+#standings .rk { font:700 18px/1 var(--display); color:var(--outline); min-width:24px; text-align:center; }
+#standings .pts { margin-left:auto; font-size:22px; }
+
 #final-note { color:var(--outline); font-size:13px; text-align:center; margin-top:var(--sm); }
 #play-again { margin-top:var(--gutter); }
+
+/* Compositor-only: transform and opacity, never a layout property. */
+#confetti { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:5; }
+#confetti i {
+  position:absolute; top:-16px; width:7px; height:12px; opacity:0;
+  animation-name:fall; animation-timing-function:linear; animation-fill-mode:forwards;
+}
+@keyframes fall {
+  0%   { transform:translate3d(0,0,0) rotate(0); opacity:1; }
+  100% { transform:translate3d(0,104vh,0) rotate(var(--r)); opacity:.9; }
+}
 
 /* ---------------- live bar ---------------- */
 #live { max-width:640px; margin:0 auto; padding:0 var(--gutter); }
@@ -303,5 +339,6 @@ button:active { transform:scale(.98); }
 
 @media (prefers-reduced-motion:reduce) {
   #timer.urgent { animation:none; }
+  #confetti { display:none; }
   * { transition:none !important; }
 }

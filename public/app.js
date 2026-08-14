@@ -1,7 +1,7 @@
 const $ = (id) => document.getElementById(id);
 const screens = ["home", "lobby", "picking", "answering", "reveal", "final"];
 
-let ws, me = null, snap = null, clubs = [], lastRound = null, lastPicks = null;
+let ws, me = null, snap = null, clubs = [], lastRound = null, lastPicks = null, lastPhase = null;
 // playerId, room code and nickname persist across a reload so the client can
 // rejoin the same seat without the user retyping anything.
 const saved = (k, v) => (v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v));
@@ -98,8 +98,8 @@ function render() {
   if (snap.phase === "REVEAL") { show("reveal"); renderResults(); }
   if (snap.phase === "FINAL") {
     show("final");
-    $("standings").innerHTML = snap.standings
-      .map((p) => `<li>${esc(p.nickname)} — <span class="pts">${p.score}</span></li>`).join("");
+    renderPodium();
+    if (lastPhase !== "FINAL") confetti();
     // Host restarts; everyone else is told who they are waiting on, so the
     // screen never looks like a dead end.
     const host = snap.players.find((p) => p.id === snap.hostId);
@@ -109,6 +109,55 @@ function render() {
       ? "Starting again returns everyone to the lobby, so new players can join."
       : `Waiting for ${host ? host.nickname : "the host"} to start another game.`;
   }
+  lastPhase = snap.phase;
+}
+
+function renderPodium() {
+  // Competition ranking: equal scores share a rank. Rendering a tied winner as
+  // "2nd" because the sort had to put someone second would be a visible lie,
+  // and ties are common in an eight-round game scored 0-8.
+  let rank = 0, prev = null;
+  const ranked = snap.standings.map((p, i) => {
+    if (p.score !== prev) { rank = i + 1; prev = p.score; }
+    return { ...p, rank };
+  });
+
+  const top = ranked.slice(0, 3);
+  // 2nd, 1st, 3rd — the shape of an actual podium. Filtered so a three-player
+  // game does not render an empty plinth.
+  $("podium").innerHTML = [1, 0, 2].filter((i) => top[i]).map((i) => {
+    const p = top[i];
+    return `<li class="p${p.rank}${p.id === snap.you ? " me" : ""}">
+      <span class="nm">${esc(p.nickname)}</span>
+      <span class="sc pts">${p.score}</span>
+      <span class="block"><span class="rk">${p.rank}</span></span>
+    </li>`;
+  }).join("");
+
+  $("standings").innerHTML = ranked.slice(3).map((p) => `
+    <li class="${p.id === snap.you ? "me" : ""}">
+      <span class="rk">${p.rank}</span>${esc(p.nickname)}
+      <span class="pts">${p.score}</span>
+    </li>`).join("");
+}
+
+// Pure CSS confetti: transform and opacity only, so it runs on the compositor
+// and never touches layout. Thirty-six elements, removed after five seconds.
+// A canvas library would be the obvious choice and costs several KB of JS on a
+// screen that exists for eight seconds.
+let confettiTimer = null;
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const colors = ["#ffe16d", "#a5d0b9", "#95d4b3", "#e1e3e4"];
+  $("confetti").innerHTML = Array.from({ length: 36 }, () => {
+    const c = colors[Math.floor(Math.random() * colors.length)];
+    return `<i style="left:${(Math.random() * 100).toFixed(1)}%;background:${c};`
+      + `animation-duration:${(2 + Math.random() * 1.5).toFixed(2)}s;`
+      + `animation-delay:${(Math.random() * 1.2).toFixed(2)}s;`
+      + `--r:${Math.round(Math.random() * 720 - 360)}deg"></i>`;
+  }).join("");
+  clearTimeout(confettiTimer);
+  confettiTimer = setTimeout(() => { $("confetti").innerHTML = ""; }, 5000);
 }
 
 // Running totals, so players can see where they stand mid-game rather than
