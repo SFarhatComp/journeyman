@@ -41,7 +41,7 @@ footfinder/
       room.js             state machine; pure, time injected, deps injected
     dataset/
       fromWikidata.js     PURE adapter: raw SPARQL rows -> dataset shape
-      disambiguate.js     PURE: player list -> display labels (never clubs)
+      label.js            PURE: one player -> display label (never clubs)
       load.js             loads dataset.json, builds search index
     protocol.js           message validation + size caps
     server.js             Fastify + ws shell; wires engine to sockets
@@ -51,7 +51,7 @@ footfinder/
     style.css             phone-first
   test/
     scoring.test.js
-    disambiguate.test.js
+    label.test.js
     fromWikidata.test.js
     load.test.js
     room-lobby.test.js
@@ -62,7 +62,7 @@ footfinder/
     dataset-real.test.js  asserts against the committed dataset.json
 ```
 
-**Why these boundaries:** `engine/` is the only place game rules live and it has no imports outside itself. `dataset/fromWikidata.js` is the sole adapter between Wikidata's shape and ours — swapping to Transfermarkt later touches that one file. `disambiguate.js` is separate because it carries the never-leak-clubs rule and deserves its own test suite.
+**Why these boundaries:** `engine/` is the only place game rules live and it has no imports outside itself. `dataset/fromWikidata.js` is the sole adapter between Wikidata's shape and ours — swapping to Transfermarkt later touches that one file. `label.js` is separate because it carries the never-leak-clubs rule and deserves its own test suite.
 
 ---
 
@@ -193,17 +193,27 @@ esac
 
 Note on `up`: the container's internal `HOST` is `0.0.0.0` so it accepts connections from Docker's bridge, while `-p 127.0.0.1:3000:3000` restricts the host-side publish to loopback. The public interface is never bound.
 
-- [ ] **Step 7: Run the test to verify it passes**
+- [ ] **Step 7: Create the source layout before first mount**
+
+```bash
+mkdir -p src test && touch src/.gitkeep
+```
+
+Docker auto-creates a missing bind-mount source as a **root-owned** directory.
+If `src/` does not exist when `footfinder.sh test` first runs, the daemon
+creates it as root and every later task fails to write into it.
+
+- [ ] **Step 8: Run the test to verify it passes**
 
 ```bash
 chmod +x footfinder.sh && ./footfinder.sh test
 ```
 Expected: PASS, 1 test.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
-git add package.json Dockerfile footfinder.sh .dockerignore test/harness.test.js
+git add package.json Dockerfile footfinder.sh .dockerignore test/harness.test.js src/.gitkeep
 git commit -m "Add container skeleton and Dockerised test harness"
 ```
 
@@ -331,187 +341,145 @@ git commit -m "Add scoring: round points as club-set intersection"
 
 ---
 
-### Task 3: Autocomplete disambiguation
+### Task 3: Player display labels
 
 **Files:**
-- Create: `src/dataset/disambiguate.js`
-- Test: `test/disambiguate.test.js`
+- Create: `src/dataset/label.js`
+- Test: `test/label.test.js`
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: `buildDisplayLabels(players: Array<{id, name, birthYear}>) -> Map<string, string>` — entity id to the label shown in the dropdown.
+- Produces: `formatLabel(player: {name, birthYear?, country?}) -> string`
+
+Every player gets the **same** label shape, so there is no collision detection
+and no cross-player awareness — labelling is a pure per-player function:
+
+```
+<first initial>. <surname> (<birth year>, <country>)
+C. Ronaldo (1985, PT)    D. Blind (1961, NL)    Hulk (1986, BR)
+```
 
 - [ ] **Step 1: Write the failing test**
 
-Create `test/disambiguate.test.js`:
+Create `test/label.test.js`:
 
 ```javascript
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildDisplayLabels } from "../src/dataset/disambiguate.js";
+import { formatLabel } from "../src/dataset/label.js";
 
-const label = (players, id) => buildDisplayLabels(players).get(id);
-
-test("a unique name is shown plainly", () => {
-  const players = [{ id: "A", name: "Zlatan Ibrahimović", birthYear: 1981 }];
-  assert.equal(label(players, "A"), "Zlatan Ibrahimović");
+test("a normal name becomes initial, surname, year and country", () => {
+  assert.equal(
+    formatLabel({ name: "Cristiano Ronaldo", birthYear: 1985, country: "PT" }),
+    "C. Ronaldo (1985, PT)",
+  );
 });
 
-test("a shared surname disambiguates by first initial", () => {
-  const players = [
-    { id: "A", name: "Cristiano Ronaldo", birthYear: 1985 },
-    { id: "B", name: "Ronaldo Nazário", birthYear: 1976 },
-  ];
-  assert.equal(label(players, "A"), "C. Ronaldo");
-  assert.equal(label(players, "B"), "R. Nazário");
+test("players sharing an initial and surname are separated by year", () => {
+  // Danny and Daley Blind: father and son, both Ajax, both Dutch.
+  const danny = { name: "Danny Blind", birthYear: 1961, country: "NL" };
+  const daley = { name: "Daley Blind", birthYear: 1990, country: "NL" };
+  assert.equal(formatLabel(danny), "D. Blind (1961, NL)");
+  assert.equal(formatLabel(daley), "D. Blind (1990, NL)");
+  assert.notEqual(formatLabel(danny), formatLabel(daley));
 });
 
-test("same initial and surname falls through to birth year", () => {
-  // Danny and Daley Blind: father and son, both Ajax, both "D. Blind".
-  const players = [
-    { id: "A", name: "Danny Blind", birthYear: 1961 },
-    { id: "B", name: "Daley Blind", birthYear: 1990 },
-  ];
-  assert.equal(label(players, "A"), "D. Blind (1961)");
-  assert.equal(label(players, "B"), "D. Blind (1990)");
+test("a mononym keeps its single name with no initial", () => {
+  assert.equal(formatLabel({ name: "Hulk", birthYear: 1986, country: "BR" }), "Hulk (1986, BR)");
 });
 
-test("mononyms display as-is", () => {
-  const players = [{ id: "A", name: "Hulk", birthYear: 1986 }];
-  assert.equal(label(players, "A"), "Hulk");
+test("surname particles stay with the surname", () => {
+  assert.equal(
+    formatLabel({ name: "Luís Carlos Almeida da Cunha", birthYear: 1981, country: "PT" }),
+    "L. da Cunha (1981, PT)",
+  );
 });
 
-test("colliding mononyms fall through to birth year", () => {
-  const players = [
-    { id: "A", name: "Fred", birthYear: 1983 },
-    { id: "B", name: "Fred", birthYear: 1993 },
-  ];
-  assert.equal(label(players, "A"), "Fred (1983)");
-  assert.equal(label(players, "B"), "Fred (1993)");
+test("a missing birth year is omitted rather than printed as undefined", () => {
+  assert.equal(formatLabel({ name: "Old Player", country: "EN" }), "O. Player (EN)");
+});
+
+test("a missing country is omitted rather than printed as undefined", () => {
+  assert.equal(formatLabel({ name: "Old Player", birthYear: 1920 }), "O. Player (1920)");
+});
+
+test("with neither year nor country the parenthetical disappears entirely", () => {
+  assert.equal(formatLabel({ name: "Old Player" }), "O. Player");
 });
 
 test("a label never contains a club name", () => {
-  // Game-correctness rule: showing clubs gives away exactly what is being
-  // tested. This asserts the shape carries no club data at all.
-  const players = [
-    { id: "A", name: "Cristiano Ronaldo", birthYear: 1985, clubIds: ["Q8682"] },
-    { id: "B", name: "Ronaldo Nazário", birthYear: 1976, clubIds: ["Q7156"] },
-  ];
-  for (const value of buildDisplayLabels(players).values()) {
-    assert.doesNotMatch(value, /Q\d+|Madrid|Barcelona|Inter|United/i);
-  }
+  // Game-correctness rule: showing clubs gives away exactly what is tested.
+  const label = formatLabel({ name: "Cristiano Ronaldo", birthYear: 1985, country: "PT" });
+  assert.doesNotMatch(label, /Q\d+|Madrid|Barcelona|Inter|United|Juventus/i);
 });
 
-test("names with multiple given names use only the first initial", () => {
-  const players = [
-    { id: "A", name: "Luís Carlos Almeida da Cunha", birthYear: 1981 },
-    { id: "B", name: "Pedro Miguel da Cunha", birthYear: 1990 },
-  ];
-  assert.equal(label(players, "A"), "L. da Cunha");
-  assert.equal(label(players, "B"), "P. da Cunha");
-});
-
-test("labels are stable regardless of input order", () => {
-  const a = [
-    { id: "A", name: "Danny Blind", birthYear: 1961 },
-    { id: "B", name: "Daley Blind", birthYear: 1990 },
-  ];
-  const b = [a[1], a[0]];
-  assert.deepEqual([...buildDisplayLabels(a)].sort(), [...buildDisplayLabels(b)].sort());
+test("the same input always produces the same label", () => {
+  const p = { name: "Zlatan Ibrahimović", birthYear: 1981, country: "SE" };
+  assert.equal(formatLabel(p), formatLabel(p));
+  assert.equal(formatLabel(p), "Z. Ibrahimović (1981, SE)");
 });
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `./footfinder.sh test`
-Expected: FAIL — cannot find module `../src/dataset/disambiguate.js`.
+Expected: FAIL — cannot find module `../src/dataset/label.js`.
 
 - [ ] **Step 3: Write the implementation**
 
-Create `src/dataset/disambiguate.js`:
+Create `src/dataset/label.js`:
 
 ```javascript
 /**
- * Display labels for the answer autocomplete.
+ * The label shown in the answer autocomplete.
  *
  * THE RULE: a label must never reveal which clubs a player played for. That is
  * precisely the knowledge the game tests, so a hint like
  * "Ronaldo (Barcelona, Inter)" would hand over the answer.
  *
- * So disambiguation escalates through the least revealing thing that works:
- *   1. plain name            "Zlatan Ibrahimović"
- *   2. first initial+surname "C. Ronaldo" / "R. Nazário"
- *   3. birth year            "D. Blind (1961)" / "D. Blind (1990)"
+ * Every player gets the same shape — "C. Ronaldo (1985, PT)" — so there is no
+ * collision detection, no tiering, and no need to see other players. An
+ * earlier design escalated through tiers depending on whether a name was
+ * unique; it produced a tier that could never execute. Uniformity removes that
+ * class of bug by construction.
  *
- * Birth year leaks era, a far weaker signal than clubs, and only appears on a
- * genuine collision.
+ * Birth year and country are far weaker signals than clubs, and are only seen
+ * after a name is typed — they cannot help find an answer, only confirm which
+ * person was meant.
  */
 
-// Particles that belong to the surname, not the given names.
+// Particles belong to the surname, not the given names.
 const PARTICLES = new Set(["da", "de", "del", "della", "di", "dos", "du", "la", "le", "van", "von", "der", "den", "ten", "ter"]);
 
-/** Split a full name into { initial, surname }. Mononyms yield initial: null. */
-function splitName(name) {
+/** "Luís Carlos Almeida da Cunha" -> "L. da Cunha"; "Hulk" -> "Hulk". */
+function shortName(name) {
   const parts = String(name).trim().split(/\s+/);
-  if (parts.length === 1) return { initial: null, surname: parts[0] };
+  if (parts.length === 1) return parts[0];
 
-  // Walk back over particles so "Luís Carlos Almeida da Cunha" -> "da Cunha".
+  // Walk back over particles so multi-word surnames stay intact.
   let i = parts.length - 1;
   while (i > 1 && PARTICLES.has(parts[i - 1].toLowerCase())) i--;
 
-  return { initial: parts[0][0].toUpperCase(), surname: parts.slice(i).join(" ") };
+  return `${parts[0][0].toUpperCase()}. ${parts.slice(i).join(" ")}`;
 }
 
-/**
- * @param {Array<{id:string, name:string, birthYear?:number}>} players
- * @returns {Map<string,string>} entity id -> display label
- */
-export function buildDisplayLabels(players) {
-  const byName = new Map();
-  for (const p of players) {
-    if (!byName.has(p.name)) byName.set(p.name, []);
-    byName.get(p.name).push(p);
-  }
-
-  // Tier 2 candidate label for every player, so collisions can be counted.
-  const shortOf = new Map();
-  for (const p of players) {
-    const { initial, surname } = splitName(p.name);
-    shortOf.set(p.id, initial ? `${initial}. ${surname}` : surname);
-  }
-  const shortCounts = new Map();
-  for (const short of shortOf.values()) {
-    shortCounts.set(short, (shortCounts.get(short) ?? 0) + 1);
-  }
-
-  const labels = new Map();
-  for (const p of players) {
-    if (byName.get(p.name).length === 1) {
-      labels.set(p.id, p.name); // tier 1: the full name is already unique
-      continue;
-    }
-    const short = shortOf.get(p.id);
-    if (shortCounts.get(short) === 1) {
-      labels.set(p.id, short); // tier 2: initial + surname resolves it
-      continue;
-    }
-    // tier 3: still ambiguous — the only remaining non-club signal.
-    labels.set(p.id, p.birthYear ? `${short} (${p.birthYear})` : short);
-  }
-  return labels;
+/** @param {{name:string, birthYear?:number, country?:string}} player */
+export function formatLabel(player) {
+  const suffix = [player.birthYear, player.country].filter(Boolean).join(", ");
+  return suffix ? `${shortName(player.name)} (${suffix})` : shortName(player.name);
 }
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `./footfinder.sh test`
-Expected: PASS, all disambiguation tests.
+Expected: PASS, all label tests.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/dataset/disambiguate.js test/disambiguate.test.js
-git commit -m "Add autocomplete disambiguation that never reveals clubs"
+git add src/dataset/label.js test/label.test.js
+git commit -m "Add uniform player labels that never reveal clubs"
 ```
 
 ---
@@ -524,7 +492,7 @@ git commit -m "Add autocomplete disambiguation that never reveals clubs"
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: `shapeDataset(clubs, rows) -> { clubs, players }` where `rows` are raw SPARQL bindings `{ player: {value: url}, playerLabel: {value}, dob?: {value}, club: {value: url} }`.
+- Produces: `shapeDataset(clubs, rows) -> { clubs, players }` where `rows` are raw SPARQL bindings `{ player: {value: url}, playerLabel: {value}, dob?: {value}, iso?: {value}, club: {value: url} }`. Each player is `{ id, name, birthYear?, country?, clubIds }`.
 
 This is the sole adapter between Wikidata's shape and the game's. Swapping data sources later means rewriting only this file.
 
@@ -542,11 +510,12 @@ const CLUBS = [
   { id: "Q1422", name: "Juventus FC", country: "IT" },
 ];
 
-const row = (pid, name, club, dob) => ({
+const row = (pid, name, club, dob, iso) => ({
   player: { value: `http://www.wikidata.org/entity/${pid}` },
   playerLabel: { value: name },
   club: { value: `http://www.wikidata.org/entity/${club}` },
   ...(dob ? { dob: { value: dob } } : {}),
+  ...(iso ? { iso: { value: iso } } : {}),
 });
 
 test("rows collapse into one player carrying all their clubs", () => {
@@ -585,6 +554,31 @@ test("repeated spells at one club collapse to a single entry", () => {
 test("a missing date of birth yields no birthYear rather than NaN", () => {
   const out = shapeDataset(CLUBS, [row("Q1", "No Birthday", "Q1422")]);
   assert.equal(out.players[0].birthYear, undefined);
+});
+
+test("country of citizenship is carried through as an ISO code", () => {
+  const out = shapeDataset(CLUBS, [
+    row("Q46896", "Zlatan Ibrahimović", "Q1422", "1981-10-03T00:00:00Z", "SE"),
+  ]);
+  assert.equal(out.players[0].country, "SE");
+});
+
+test("dual citizenship resolves deterministically to one code", () => {
+  // Wikidata returns a row per citizenship; the label must not flap between
+  // runs, so the first alphabetically wins.
+  const rows = [
+    row("Q1", "Dual National", "Q1422", undefined, "MA"),
+    row("Q1", "Dual National", "Q1422", undefined, "FR"),
+  ];
+  const a = shapeDataset(CLUBS, rows).players[0].country;
+  const b = shapeDataset(CLUBS, [...rows].reverse()).players[0].country;
+  assert.equal(a, "FR");
+  assert.equal(a, b);
+});
+
+test("a missing country yields no country rather than undefined text", () => {
+  const out = shapeDataset(CLUBS, [row("Q1", "Stateless", "Q1422")]);
+  assert.equal(out.players[0].country, undefined);
 });
 
 test("rows whose label is a bare QID are dropped as unlabelled", () => {
@@ -657,14 +651,23 @@ export function shapeDataset(clubs, rows) {
         id,
         name,
         birthYear: Number.isFinite(year) ? year : undefined,
+        countries: new Set(),
         clubIds: new Set(),
       });
     }
-    byPlayer.get(id).clubIds.add(clubId);
+    const entry = byPlayer.get(id);
+    entry.clubIds.add(clubId);
+    // Wikidata emits one row per citizenship; collect then pick one, so a
+    // dual national's label cannot flap between builds.
+    if (r.iso?.value) entry.countries.add(String(r.iso.value).toUpperCase());
   }
 
   const players = [...byPlayer.values()]
-    .map((p) => ({ ...p, clubIds: [...p.clubIds].sort() }))
+    .map(({ countries, ...p }) => ({
+      ...p,
+      country: [...countries].sort()[0],
+      clubIds: [...p.clubIds].sort(),
+    }))
     .sort((a, b) => a.id.localeCompare(b.id)); // deterministic output
 
   return { clubs, players };
@@ -692,7 +695,7 @@ git commit -m "Add pure Wikidata adapter restricted to the curated club list"
 - Test: `test/load.test.js`
 
 **Interfaces:**
-- Consumes: `buildDisplayLabels` (Task 3)
+- Consumes: `formatLabel` (Task 3)
 - Produces: `createDataset({clubs, players}) -> { clubs, players, getPlayer(id), getPlayerClubs(id), search(query, limit=8) }` where `search` returns `[{ id, label }]`.
 
 - [ ] **Step 1: Write the failing test**
@@ -710,9 +713,9 @@ const FIXTURE = {
     { id: "Q1422", name: "Juventus FC", country: "IT" },
   ],
   players: [
-    { id: "Q46896", name: "Zlatan Ibrahimović", birthYear: 1981, clubIds: ["Q81888", "Q1422"] },
-    { id: "Q1", name: "Danny Blind", birthYear: 1961, clubIds: ["Q81888"] },
-    { id: "Q2", name: "Daley Blind", birthYear: 1990, clubIds: ["Q81888"] },
+    { id: "Q46896", name: "Zlatan Ibrahimović", birthYear: 1981, country: "SE", clubIds: ["Q81888", "Q1422"] },
+    { id: "Q1", name: "Danny Blind", birthYear: 1961, country: "NL", clubIds: ["Q81888"] },
+    { id: "Q2", name: "Daley Blind", birthYear: 1990, country: "NL", clubIds: ["Q81888"] },
   ],
 };
 
@@ -734,10 +737,10 @@ test("search is case-insensitive and matches any word, not just the first", () =
   assert.equal(ds.search("Ibra")[0].id, "Q46896");
 });
 
-test("search results carry disambiguated labels", () => {
+test("search results carry uniform labels", () => {
   const ds = createDataset(FIXTURE);
   const labels = ds.search("blind").map((r) => r.label).sort();
-  assert.deepEqual(labels, ["D. Blind (1961)", "D. Blind (1990)"]);
+  assert.deepEqual(labels, ["D. Blind (1961, NL)", "D. Blind (1990, NL)"]);
 });
 
 test("search results never contain club names", () => {
@@ -778,7 +781,7 @@ Expected: FAIL — cannot find module `../src/dataset/load.js`.
 Create `src/dataset/load.js`:
 
 ```javascript
-import { buildDisplayLabels } from "./disambiguate.js";
+import { formatLabel } from "./label.js";
 
 /**
  * Loads the baked dataset into memory and exposes lookup + autocomplete.
@@ -798,36 +801,36 @@ export function normalize(s) {
 }
 
 export function createDataset({ clubs, players }) {
-  const labels = buildDisplayLabels(players);
   const byId = new Map(players.map((p) => [p.id, p]));
 
   // Precomputed search keys: the whole name plus each word, so "Ibra" and
   // "Zlatan" both hit.
   const searchable = players.map((p) => {
     const norm = normalize(p.name);
-    return { id: p.id, label: labels.get(p.id), norm, words: norm.split(/\s+/) };
+    return { id: p.id, label: formatLabel(p), norm, words: norm.split(/\s+/) };
   });
 
   function search(query, limit = 8) {
     const q = normalize(query);
     if (q.length < 2) return [];
 
-    const results = [];
+    // Partitioned, not truncated-then-sorted: a whole-name match must outrank
+    // every word match regardless of where it sits in the array. An earlier
+    // draft broke out of the scan after limit*4 hits BEFORE sorting, so enough
+    // interior-word matches ahead of the true prefix match dropped it from the
+    // results entirely. Scanning all ~25k entries is about a millisecond.
+    const whole = [];
+    const word = [];
     for (const entry of searchable) {
-      // Prefix match on the full name or any word within it.
-      if (entry.norm.startsWith(q) || entry.words.some((w) => w.startsWith(q))) {
-        results.push(entry);
-        if (results.length >= limit * 4) break; // bounded work per keystroke
-      }
+      if (entry.norm.startsWith(q)) whole.push(entry);
+      else if (entry.words.some((w) => w.startsWith(q))) word.push(entry);
     }
-    // Whole-name prefix matches first, then alphabetical for stability.
-    results.sort((a, b) => {
-      const aStarts = a.norm.startsWith(q) ? 0 : 1;
-      const bStarts = b.norm.startsWith(q) ? 0 : 1;
-      return aStarts - bStarts || a.norm.localeCompare(b.norm);
-    });
 
-    return results.slice(0, limit).map(({ id, label }) => ({ id, label }));
+    const byName = (a, b) => a.norm.localeCompare(b.norm);
+    whole.sort(byName);
+    word.sort(byName);
+
+    return [...whole, ...word].slice(0, limit).map(({ id, label }) => ({ id, label }));
   }
 
   return {
@@ -909,11 +912,14 @@ async function fetchClubRoster(clubId) {
   // P54 = member of sports team. Fetch per club so each query stays small
   // enough to beat the endpoint's 60s timeout.
   const query = `
-    SELECT ?player ?playerLabel ?dob ?club WHERE {
+    SELECT ?player ?playerLabel ?dob ?iso ?club WHERE {
       ?player p:P54/ps:P54 wd:${clubId} .
       ?player wdt:P31 wd:Q5 .
       BIND(wd:${clubId} AS ?club)
       OPTIONAL { ?player wdt:P569 ?dob }
+      # P27 = country of citizenship, P297 = its ISO 3166-1 alpha-2 code.
+      # A dual national yields one row per citizenship; the adapter picks one.
+      OPTIONAL { ?player wdt:P27/wdt:P297 ?iso }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
     }`;
 
@@ -1215,8 +1221,12 @@ export function startGame(state, now, deps) {
 
 /** Shared by startGame and the reveal->next-round transition. */
 export function beginRound(state, number, now) {
-  state.phase = "PICKING";
-  state.round = {
+  // Clones like every other mutator. It is exported, so a future caller must
+  // not have to know whether it mutates — an earlier draft mutated in place
+  // and was safe only because its one caller happened to pass a clone.
+  const next = clone(state);
+  next.phase = "PICKING";
+  next.round = {
     number,
     picks: {},        // playerId -> clubId
     answers: {},      // playerId -> { entityId, submittedAt }
@@ -1224,8 +1234,8 @@ export function beginRound(state, number, now) {
     results: null,
     bestAnswer: null,
   };
-  state.phaseEndsAt = now + state.config.pickSeconds * 1000;
-  return state;
+  next.phaseEndsAt = now + next.config.pickSeconds * 1000;
+  return next;
 }
 ```
 
@@ -1365,7 +1375,7 @@ export function pickClub(state, { playerId, clubId }, now, deps) {
   const takenBy = Object.entries(state.round.picks).find(([pid, cid]) => cid === clubId && pid !== playerId);
   if (takenBy) return fail(state, "club_taken");
 
-  const next = clone(state);
+  let next = clone(state);
   next.round.picks[playerId] = clubId;
 
   const events = [{ type: "club_picked", playerId, clubId }];
@@ -1373,30 +1383,38 @@ export function pickClub(state, { playerId, clubId }, now, deps) {
   // Advance the moment everyone has acted — otherwise a room of fast players
   // watches a dead countdown every round.
   if (Object.keys(next.round.picks).length === next.players.length) {
-    beginAnswering(next, now);
+    next = beginAnswering(next, now);
     events.push({ type: "phase_changed", phase: "ANSWERING" });
   }
   return ok(next, events);
 }
 
 function beginAnswering(state, now) {
-  state.phase = "ANSWERING";
-  state.phaseEndsAt = now + state.config.answerSeconds * 1000;
+  // Pure like every other state function here. One rule with no exceptions is
+  // what stops a caller silently reintroducing a shared-mutation bug.
+  const next = clone(state);
+  next.phase = "ANSWERING";
+  next.phaseEndsAt = now + next.config.answerSeconds * 1000;
+  return next;
 }
 
-/** Assign a free club at random to a player who ran out of time. */
+/** Assign a free club at random to each player who ran out of time. */
 function autoAssign(state, deps) {
-  const taken = new Set(Object.values(state.round.picks));
+  const next = clone(state);
+  const taken = new Set(Object.values(next.round.picks));
   const free = deps.clubs.filter((c) => !taken.has(c.id));
   const rand = deps.random ?? Math.random;
 
-  for (const player of state.players) {
-    if (state.round.picks[player.id]) continue;
+  for (const player of next.players) {
+    if (next.round.picks[player.id]) continue;
     const idx = Math.floor(rand() * free.length);
+    // splice, not index: the club must leave the pool so two players can
+    // never be assigned the same one.
     const club = free.splice(idx, 1)[0];
     // startGame guarantees clubs.length >= players.length, so this holds.
-    state.round.picks[player.id] = club.id;
+    next.round.picks[player.id] = club.id;
   }
+  return next;
 }
 
 export function expirePhase(state, now, deps) {
@@ -1404,9 +1422,9 @@ export function expirePhase(state, now, deps) {
 
   const next = clone(state);
   if (next.phase === "PICKING") {
-    autoAssign(next, deps);
-    beginAnswering(next, now);
-    return ok(next, [{ type: "phase_changed", phase: "ANSWERING" }]);
+    return ok(beginAnswering(autoAssign(next, deps), now), [
+      { type: "phase_changed", phase: "ANSWERING" },
+    ]);
   }
   return ok(next);
 }
@@ -1426,7 +1444,7 @@ git commit -m "Add picking phase with club lock-out and timeout auto-assign"
 
 ---
 
-### Task 9: Answering phase — claim race and grace window
+### Task 9: Answering, reveal and game end
 
 **Files:**
 - Modify: `src/engine/room.js`
@@ -1434,7 +1452,10 @@ git commit -m "Add picking phase with club lock-out and timeout auto-assign"
 
 **Interfaces:**
 - Consumes: everything from Tasks 7–8
-- Produces: `submitAnswer(state, { playerId, entityId }, now, deps) -> { state, events, error? }`; `expirePhase` extended to handle ANSWERING → REVEAL.
+- Produces: `submitAnswer(state, {playerId, entityId}, now, deps)`; `beginReveal(state, now, deps)`; `disconnect(state, playerId)`; `expirePhase` extended for ANSWERING → REVEAL → PICKING/FINAL.
+
+Answering and reveal are one task because `submitAnswer` calls `beginReveal`:
+splitting them would mean committing a task whose own tests are red.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1548,13 +1569,13 @@ export function submitAnswer(state, { playerId, entityId }, now, deps) {
     return { state: next, events: [{ type: "answer_rejected", playerId, entityId }], error: "already_claimed" };
   }
 
-  const next = clone(state);
+  let next = clone(state);
   next.round.answers[playerId] = { entityId, submittedAt: now };
   delete next.round.grace[playerId];
 
   const events = [{ type: "answer_accepted", playerId }];
   if (Object.keys(next.round.answers).length === next.players.length) {
-    beginReveal(next, now, deps);
+    next = beginReveal(next, now, deps);
     events.push({ type: "phase_changed", phase: "REVEAL" });
   }
   return ok(next, events);
@@ -1575,43 +1596,25 @@ export function expirePhase(state, now, deps) {
 
   const next = clone(state);
   if (next.phase === "PICKING") {
-    autoAssign(next, deps);
-    beginAnswering(next, now);
-    return ok(next, [{ type: "phase_changed", phase: "ANSWERING" }]);
+    return ok(beginAnswering(autoAssign(next, deps), now), [
+      { type: "phase_changed", phase: "ANSWERING" },
+    ]);
   }
 
   if (next.phase === "ANSWERING") {
     if (graceActive(next, now)) return ok(state); // wait for the grace window
-    beginReveal(next, now, deps);
-    return ok(next, [{ type: "phase_changed", phase: "REVEAL" }]);
+    return ok(beginReveal(next, now, deps), [{ type: "phase_changed", phase: "REVEAL" }]);
   }
 
   return ok(next);
 }
 ```
 
-Note `beginReveal` is defined in Task 10; until then the answering tests that reach REVEAL will fail with "beginReveal is not defined". Implement Task 10 immediately after this step — the two tasks are split for reviewability, not for independent shipping.
+`beginReveal` arrives in Step 6 below. Until then the answering tests that
+reach REVEAL stay red — which is exactly why reveal belongs to this task and
+not the next one. Do not commit yet.
 
-- [ ] **Step 4: Commit the partial state**
-
-```bash
-git add src/engine/room.js test/room-answering.test.js
-git commit -m "Add answering phase with claim race and grace window"
-```
-
----
-
-### Task 10: Reveal, scoring and game end
-
-**Files:**
-- Modify: `src/engine/room.js`
-- Test: `test/room-reveal.test.js`
-
-**Interfaces:**
-- Consumes: everything from Tasks 7–9
-- Produces: `beginReveal(state, now, deps)`; `expirePhase` extended for REVEAL → PICKING or FINAL; `disconnect(state, playerId) -> { state, events }`
-
-- [ ] **Step 1: Write the failing test**
+- [ ] **Step 4: Write the failing reveal test**
 
 Create `test/room-reveal.test.js`:
 
@@ -1620,7 +1623,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect } from "../src/engine/room.js";
 
-const CAREERS = { zlatan: ["Q1", "Q2", "Q3"], twoclub: ["Q1", "Q2"], oneclub: ["Q1"], nobody: [] };
+const CAREERS = {
+  zlatan: ["Q1", "Q2", "Q3"],
+  twoclub: ["Q1", "Q2"],
+  oneclub: ["Q1"],
+  nobody: [],
+  // Two separate spells at Q1, as Ibrahimović had at Milan. Still one club.
+  tworeturns: ["Q1", "Q1", "Q2"],
+};
 const DEPS = {
   clubs: [
     { id: "Q1", name: "Club One", country: "EN" },
@@ -1652,6 +1662,16 @@ test("scores equal the clubs matched from the round", () => {
   assert.equal(score("p0"), 3);
   assert.equal(score("p1"), 2);
   assert.equal(score("p2"), 1);
+});
+
+test("two spells at one club count once", () => {
+  // A raw filter over the career array would score 3 here and return
+  // ["Q1","Q1","Q2"] — the dedup is what makes it 2.
+  const state = revealed(["tworeturns", "oneclub", "nobody"]);
+  const r = state.round.results.find((x) => x.playerId === "p0");
+
+  assert.equal(r.points, 2, "Q1 twice plus Q2 is two clubs, not three");
+  assert.deepEqual(r.matchedClubIds.sort(), ["Q1", "Q2"]);
 });
 
 test("a footballer with none of the round's clubs scores zero", () => {
@@ -1709,22 +1729,24 @@ test("disconnecting keeps the score and marks the player offline", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [ ] **Step 5: Run test to verify it fails**
 
 Run: `./footfinder.sh test`
 Expected: FAIL — `beginReveal is not defined`.
 
-- [ ] **Step 3: Add the implementation to src/engine/room.js**
+- [ ] **Step 6: Add the implementation to src/engine/room.js**
 
 Append:
 
 ```javascript
 /** Score every answer, attach the best possible answer, enter REVEAL. */
 export function beginReveal(state, now, deps) {
-  const roundClubIds = Object.values(state.round.picks);
+  // Pure like every other state function here — see beginRound.
+  const state_ = clone(state);
+  const roundClubIds = Object.values(state_.round.picks);
 
-  state.round.results = state.players.map((player) => {
-    const answer = state.round.answers[player.id];
+  state_.round.results = state_.players.map((player) => {
+    const answer = state_.round.answers[player.id];
     if (!answer) {
       return { playerId: player.id, entityId: null, points: 0, matchedClubIds: [] };
     }
@@ -1734,18 +1756,18 @@ export function beginReveal(state, now, deps) {
     return { playerId: player.id, entityId: answer.entityId, points: matchedClubIds.length, matchedClubIds };
   });
 
-  for (const result of state.round.results) {
-    const player = state.players.find((p) => p.id === result.playerId);
+  for (const result of state_.round.results) {
+    const player = state_.players.find((p) => p.id === result.playerId);
     player.score += result.points;
   }
 
   // Shown so every round teaches something, and so the game can prove the
   // round was winnable.
-  state.round.bestAnswer = deps.findBest(roundClubIds);
+  state_.round.bestAnswer = deps.findBest(roundClubIds);
 
-  state.phase = "REVEAL";
-  state.phaseEndsAt = now + state.config.revealSeconds * 1000;
-  return state;
+  state_.phase = "REVEAL";
+  state_.phaseEndsAt = now + state_.config.revealSeconds * 1000;
+  return state_;
 }
 
 export function disconnect(state, playerId) {
@@ -1769,28 +1791,28 @@ Then extend `expirePhase` — replace its final `return ok(next);` with:
       next.standings = [...next.players].sort((a, b) => b.score - a.score);
       return ok(next, [{ type: "game_over" }]);
     }
-    beginRound(next, next.round.number + 1, now);
-    return ok(next, [{ type: "phase_changed", phase: "PICKING" }]);
+    // beginRound is pure, so its result is the state to return.
+    return ok(beginRound(next, next.round.number + 1, now), [{ type: "phase_changed", phase: "PICKING" }]);
   }
 
   return ok(next);
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [ ] **Step 7: Run tests to verify they pass**
 
 Run: `./footfinder.sh test`
-Expected: PASS — all reveal tests **and** the Task 9 answering tests that reach REVEAL.
+Expected: PASS — every answering test **and** every reveal test. Nothing red.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
-git add src/engine/room.js test/room-reveal.test.js
-git commit -m "Add reveal scoring, round progression and final standings"
+git add src/engine/room.js test/room-answering.test.js test/room-reveal.test.js
+git commit -m "Add answering, reveal scoring and game end"
 ```
 
 ---
 
-### Task 11: Protocol validation
+### Task 10: Protocol validation
 
 **Files:**
 - Create: `src/protocol.js`
@@ -1825,9 +1847,18 @@ test("an unknown message type is rejected", () => {
   assert.equal(parseMessage(JSON.stringify({ type: "dropTable" })).error, "unknown_type");
 });
 
-test("an oversized message is rejected before parsing", () => {
-  const big = JSON.stringify({ type: "join", payload: { nickname: "x".repeat(MAX_MESSAGE_BYTES) } });
+test("an oversized message is rejected before it is parsed", () => {
+  // Deliberately BOTH oversized and malformed: an implementation that parsed
+  // first would return bad_json, so this asserts the ordering rather than
+  // merely that both checks exist.
+  const big = "{" + "x".repeat(MAX_MESSAGE_BYTES);
   assert.equal(parseMessage(big).error, "too_large");
+});
+
+test("valid JSON that is not an object is rejected without throwing", () => {
+  for (const raw of ["null", "123", "[]", '"a string"']) {
+    assert.equal(parseMessage(raw).error, "unknown_type", `${raw} should be rejected`);
+  }
 });
 
 test("a nickname longer than 24 characters is rejected", () => {
@@ -1865,13 +1896,20 @@ test("the snapshot reveals everything at REVEAL", () => {
   assert.equal(snap.round.bestAnswer.points, 3);
 });
 
-test("the snapshot tells a player about their own grace window", () => {
+test("a player sees their own grace deadline and not another player's", () => {
+  // Two players with different deadlines: a single-player fixture cannot
+  // distinguish "keyed by the requester" from "returns whatever is in the map".
   const state = {
     phase: "ANSWERING", code: "ABC123", config: {}, phaseEndsAt: 5000,
-    players: [{ id: "p0", nickname: "A", score: 0, connected: true }],
-    round: { number: 1, picks: {}, answers: {}, grace: { p0: 7000 }, results: null, bestAnswer: null },
+    players: [
+      { id: "p0", nickname: "A", score: 0, connected: true },
+      { id: "p1", nickname: "B", score: 0, connected: true },
+    ],
+    round: { number: 1, picks: {}, answers: {}, grace: { p0: 7000, p1: 9999 }, results: null, bestAnswer: null },
   };
+
   assert.equal(snapshotFor(state, "p0").round.myGraceEndsAt, 7000);
+  assert.equal(snapshotFor(state, "p1").round.myGraceEndsAt, 9999, "must be keyed by the requesting player");
 });
 ```
 
@@ -1964,7 +2002,7 @@ git commit -m "Add protocol validation and answer-hiding snapshots"
 
 ---
 
-### Task 12: Server
+### Task 11: Server
 
 **Files:**
 - Create: `src/server.js`
@@ -2197,7 +2235,7 @@ git commit -m "Add server: static files, room API, WebSocket game loop"
 
 ---
 
-### Task 13: Playable UI
+### Task 12: Playable UI
 
 **Files:**
 - Create: `public/index.html`, `public/app.js`, `public/style.css`
@@ -2430,7 +2468,7 @@ git commit -m "Add playable four-screen UI"
 
 ---
 
-### Task 14: Tunnel and README
+### Task 13: Tunnel and README
 
 **Files:**
 - Create: `README.md`
@@ -2458,8 +2496,8 @@ git commit -m "Add README with run instructions and known limits"
 
 ## Self-Review
 
-**Spec coverage:** Room codes, nicknames, 2–8 players (Task 7); distinct club lock-out and timeout auto-assign (Task 8); claim race and 5s grace (Task 9); scoring as set intersection, best possible answer, fixed rounds, standings, disconnects (Tasks 2, 10); Wikidata build-time extraction, curated club list, adapter isolation (Tasks 4, 6); tiered disambiguation never showing clubs (Task 3); accent-insensitive autocomplete (Task 5); message caps and answer hiding (Task 11); rate-limited room creation (Task 12, step 4); loopback binding, non-root container, tunnel (Tasks 1, 14); playable-then-designed UI (Task 13). Early phase advance is covered in Tasks 8 and 9. No spec requirement is left without a task.
+**Spec coverage:** Room codes, nicknames, 2–8 players (Task 7); distinct club lock-out and timeout auto-assign (Task 8); claim race, 5s grace, reveal and game end (Task 9); scoring as set intersection, best possible answer, fixed rounds, standings, disconnects (Tasks 2, 9); Wikidata build-time extraction, curated club list, adapter isolation (Tasks 4, 6); uniform labels never showing clubs (Task 3); accent-insensitive autocomplete (Task 5); message caps and answer hiding (Task 10); rate-limited room creation (Task 11, step 4); loopback binding, non-root container, tunnel (Tasks 1, 13); playable-then-designed UI (Task 12). Early phase advance is covered in Tasks 8 and 9. No spec requirement is left without a task.
 
-**Deliberately deferred:** the reveal screen does not name the footballer each player chose, only their score. Adding it needs an entity-id-to-label lookup on the client; it is a one-line addition to `renderResults` once Task 13 is playable, and is better judged after playing than specified now.
+**Deliberately deferred:** the reveal screen does not name the footballer each player chose, only their score. Adding it needs an entity-id-to-label lookup on the client; it is a one-line addition to `renderResults` once Task 12 is playable, and is better judged after playing than specified now.
 
-**Type consistency:** `getPlayerClubs` and `findBest` keep the same signatures across Tasks 7–12; `scoreAnswer` returns `{points, matchedClubIds}` everywhere; `buildDisplayLabels` returns a `Map` consumed as such in Task 5; `snapshotFor` field names match what `app.js` reads in Task 13.
+**Type consistency:** `getPlayerClubs` and `findBest` keep the same signatures across Tasks 7–11; `scoreAnswer` returns `{points, matchedClubIds}` everywhere; `formatLabel` returns a string consumed per-player in Task 5; `snapshotFor` field names match what `app.js` reads in Task 12.
