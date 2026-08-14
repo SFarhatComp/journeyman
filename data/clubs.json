@@ -1,487 +1,584 @@
 [
   {
-    "id": "Q131215",
-    "name": "Rapid Wien",
-    "country": "AT"
-  },
-  {
-    "id": "Q994811",
-    "name": "Red Bull Salzburg",
-    "country": "AT"
-  },
-  {
-    "id": "Q187528",
-    "name": "Anderlecht",
-    "country": "BE"
-  },
-  {
-    "id": "Q190916",
-    "name": "Club Brugge",
-    "country": "BE"
-  },
-  {
-    "id": "Q189671",
-    "name": "FC Basel",
-    "country": "CH"
-  },
-  {
-    "id": "Q193481",
-    "name": "Sparta Prague",
-    "country": "CZ"
-  },
-  {
-    "id": "Q104770",
-    "name": "1. FC Köln",
-    "country": "DE"
-  },
-  {
-    "id": "Q104761",
-    "name": "Bayer Leverkusen",
-    "country": "DE"
-  },
-  {
-    "id": "Q15789",
-    "name": "Bayern Munich",
-    "country": "DE"
-  },
-  {
-    "id": "Q41420",
-    "name": "Borussia Dortmund",
-    "country": "DE"
-  },
-  {
-    "id": "Q101959",
-    "name": "Borussia Mönchengladbach",
-    "country": "DE"
-  },
-  {
-    "id": "Q38245",
-    "name": "Eintracht Frankfurt",
-    "country": "DE"
-  },
-  {
-    "id": "Q51974",
-    "name": "Hamburger SV",
-    "country": "DE"
-  },
-  {
-    "id": "Q702455",
-    "name": "RB Leipzig",
-    "country": "DE"
-  },
-  {
-    "id": "Q32494",
-    "name": "Schalke 04",
-    "country": "DE"
-  },
-  {
-    "id": "Q4512",
-    "name": "VfB Stuttgart",
-    "country": "DE"
-  },
-  {
-    "id": "Q101859",
-    "name": "VfL Wolfsburg",
-    "country": "DE"
-  },
-  {
-    "id": "Q51976",
-    "name": "Werder Bremen",
-    "country": "DE"
-  },
-  {
-    "id": "Q188430",
-    "name": "Copenhagen",
-    "country": "DK"
-  },
-  {
     "id": "Q9617",
     "name": "Arsenal",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18711",
     "name": "Aston Villa",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q19446",
     "name": "Blackburn Rovers",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q19453",
     "name": "Brighton & Hove Albion",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q9616",
     "name": "Chelsea",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q19467",
     "name": "Crystal Palace",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q5794",
     "name": "Everton",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18708",
     "name": "Fulham",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q1128631",
     "name": "Leeds United",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q19481",
     "name": "Leicester City",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q1130849",
     "name": "Liverpool",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q50602",
     "name": "Manchester City",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18656",
     "name": "Manchester United",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18716",
     "name": "Newcastle United",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q19490",
     "name": "Nottingham Forest",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18732",
     "name": "Southampton",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18739",
     "name": "Sunderland",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18741",
     "name": "Tottenham Hotspur",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q18747",
     "name": "West Ham United",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q19500",
     "name": "Wolverhampton Wanderers",
-    "country": "EN"
+    "country": "EN",
+    "league": "Premier League"
   },
   {
     "id": "Q8687",
     "name": "Athletic Bilbao",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q8701",
     "name": "Atlético Madrid",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q8749",
     "name": "Celta Vigo",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q8760",
     "name": "Deportivo La Coruña",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q8780",
     "name": "Espanyol",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q7156",
     "name": "FC Barcelona",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q8723",
     "name": "Real Betis",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q8682",
     "name": "Real Madrid",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q10315",
     "name": "Real Sociedad",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q10329",
     "name": "Sevilla",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q10333",
     "name": "Valencia",
-    "country": "ES"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q12297",
     "name": "Villarreal",
-    "country": "ES"
-  },
-  {
-    "id": "Q180305",
-    "name": "AS Monaco",
-    "country": "FR"
-  },
-  {
-    "id": "Q172476",
-    "name": "Bordeaux",
-    "country": "FR"
-  },
-  {
-    "id": "Q192071",
-    "name": "FC Nantes",
-    "country": "FR"
-  },
-  {
-    "id": "Q19516",
-    "name": "Lille",
-    "country": "FR"
-  },
-  {
-    "id": "Q185163",
-    "name": "OGC Nice",
-    "country": "FR"
-  },
-  {
-    "id": "Q704",
-    "name": "Olympique Lyonnais",
-    "country": "FR"
-  },
-  {
-    "id": "Q132885",
-    "name": "Olympique de Marseille",
-    "country": "FR"
-  },
-  {
-    "id": "Q483020",
-    "name": "Paris Saint-Germain",
-    "country": "FR"
-  },
-  {
-    "id": "Q19521",
-    "name": "Saint-Étienne",
-    "country": "FR"
-  },
-  {
-    "id": "Q19509",
-    "name": "Stade Rennais",
-    "country": "FR"
-  },
-  {
-    "id": "Q19628",
-    "name": "Olympiacos",
-    "country": "GR"
-  },
-  {
-    "id": "Q4122219",
-    "name": "Panathinaikos",
-    "country": "GR"
-  },
-  {
-    "id": "Q172803",
-    "name": "Dinamo Zagreb",
-    "country": "HR"
+    "country": "ES",
+    "league": "La Liga"
   },
   {
     "id": "Q1543",
     "name": "AC Milan",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q2739",
     "name": "AS Roma",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q1886",
     "name": "Atalanta",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q1893",
     "name": "Bologna",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q2052",
     "name": "Fiorentina",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q631",
     "name": "Inter Milan",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q1422",
     "name": "Juventus",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q2609",
     "name": "Lazio",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q2641",
     "name": "Napoli",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q1457",
     "name": "Sampdoria",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q2768",
     "name": "Torino",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
   },
   {
     "id": "Q2798",
     "name": "Udinese",
-    "country": "IT"
+    "country": "IT",
+    "league": "Serie A"
+  },
+  {
+    "id": "Q104770",
+    "name": "1. FC Köln",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q104761",
+    "name": "Bayer Leverkusen",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q15789",
+    "name": "Bayern Munich",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q41420",
+    "name": "Borussia Dortmund",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q101959",
+    "name": "Borussia Mönchengladbach",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q38245",
+    "name": "Eintracht Frankfurt",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q51974",
+    "name": "Hamburger SV",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q702455",
+    "name": "RB Leipzig",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q32494",
+    "name": "Schalke 04",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q4512",
+    "name": "VfB Stuttgart",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q101859",
+    "name": "VfL Wolfsburg",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q51976",
+    "name": "Werder Bremen",
+    "country": "DE",
+    "league": "Bundesliga"
+  },
+  {
+    "id": "Q180305",
+    "name": "AS Monaco",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q172476",
+    "name": "Bordeaux",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q192071",
+    "name": "FC Nantes",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q19516",
+    "name": "Lille",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q185163",
+    "name": "OGC Nice",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q704",
+    "name": "Olympique Lyonnais",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q132885",
+    "name": "Olympique de Marseille",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q483020",
+    "name": "Paris Saint-Germain",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q19521",
+    "name": "Saint-Étienne",
+    "country": "FR",
+    "league": "Ligue 1"
+  },
+  {
+    "id": "Q19509",
+    "name": "Stade Rennais",
+    "country": "FR",
+    "league": "Ligue 1"
   },
   {
     "id": "Q81888",
     "name": "AFC Ajax",
-    "country": "NL"
+    "country": "NL",
+    "league": "Eredivisie"
   },
   {
     "id": "Q191264",
     "name": "AZ Alkmaar",
-    "country": "NL"
+    "country": "NL",
+    "league": "Eredivisie"
   },
   {
     "id": "Q134241",
     "name": "Feyenoord",
-    "country": "NL"
+    "country": "NL",
+    "league": "Eredivisie"
   },
   {
     "id": "Q11938",
     "name": "PSV Eindhoven",
-    "country": "NL"
-  },
-  {
-    "id": "Q186785",
-    "name": "Rosenborg",
-    "country": "NO"
-  },
-  {
-    "id": "Q193749",
-    "name": "Legia Warsaw",
-    "country": "PL"
+    "country": "NL",
+    "league": "Eredivisie"
   },
   {
     "id": "Q131499",
     "name": "Benfica",
-    "country": "PT"
+    "country": "PT",
+    "league": "Primeira Liga"
   },
   {
     "id": "Q128446",
     "name": "FC Porto",
-    "country": "PT"
+    "country": "PT",
+    "league": "Primeira Liga"
   },
   {
     "id": "Q75729",
     "name": "Sporting CP",
-    "country": "PT"
-  },
-  {
-    "id": "Q173009",
-    "name": "Red Star Belgrade",
-    "country": "RS"
-  },
-  {
-    "id": "Q176371",
-    "name": "CSKA Moscow",
-    "country": "RU"
-  },
-  {
-    "id": "Q29112",
-    "name": "Spartak Moscow",
-    "country": "RU"
-  },
-  {
-    "id": "Q29108",
-    "name": "Zenit Saint Petersburg",
-    "country": "RU"
+    "country": "PT",
+    "league": "Primeira Liga"
   },
   {
     "id": "Q19593",
     "name": "Celtic",
-    "country": "SC"
+    "country": "SC",
+    "league": "Scottish Premiership"
   },
   {
     "id": "Q19597",
     "name": "Rangers",
-    "country": "SC"
-  },
-  {
-    "id": "Q204881",
-    "name": "Malmö FF",
-    "country": "SE"
+    "country": "SC",
+    "league": "Scottish Premiership"
   },
   {
     "id": "Q172567",
     "name": "Beşiktaş",
-    "country": "TR"
+    "country": "TR",
+    "league": "Süper Lig"
   },
   {
     "id": "Q6601875",
     "name": "Fenerbahçe",
-    "country": "TR"
+    "country": "TR",
+    "league": "Süper Lig"
   },
   {
     "id": "Q495299",
     "name": "Galatasaray",
-    "country": "TR"
+    "country": "TR",
+    "league": "Süper Lig"
+  },
+  {
+    "id": "Q187528",
+    "name": "Anderlecht",
+    "country": "BE",
+    "league": "Belgian Pro League"
+  },
+  {
+    "id": "Q190916",
+    "name": "Club Brugge",
+    "country": "BE",
+    "league": "Belgian Pro League"
+  },
+  {
+    "id": "Q19628",
+    "name": "Olympiacos",
+    "country": "GR",
+    "league": "Super League Greece"
+  },
+  {
+    "id": "Q4122219",
+    "name": "Panathinaikos",
+    "country": "GR",
+    "league": "Super League Greece"
+  },
+  {
+    "id": "Q176371",
+    "name": "CSKA Moscow",
+    "country": "RU",
+    "league": "Russian Premier League"
+  },
+  {
+    "id": "Q29112",
+    "name": "Spartak Moscow",
+    "country": "RU",
+    "league": "Russian Premier League"
+  },
+  {
+    "id": "Q29108",
+    "name": "Zenit Saint Petersburg",
+    "country": "RU",
+    "league": "Russian Premier League"
   },
   {
     "id": "Q179075",
     "name": "Dynamo Kyiv",
-    "country": "UA"
+    "country": "UA",
+    "league": "Ukrainian Premier League"
   },
   {
     "id": "Q172969",
     "name": "Shakhtar Donetsk",
-    "country": "UA"
+    "country": "UA",
+    "league": "Ukrainian Premier League"
+  },
+  {
+    "id": "Q131215",
+    "name": "Rapid Wien",
+    "country": "AT",
+    "league": "Austrian Bundesliga"
+  },
+  {
+    "id": "Q994811",
+    "name": "Red Bull Salzburg",
+    "country": "AT",
+    "league": "Austrian Bundesliga"
+  },
+  {
+    "id": "Q189671",
+    "name": "FC Basel",
+    "country": "CH",
+    "league": "Swiss Super League"
+  },
+  {
+    "id": "Q172803",
+    "name": "Dinamo Zagreb",
+    "country": "HR",
+    "league": "Croatian Football League"
+  },
+  {
+    "id": "Q193481",
+    "name": "Sparta Prague",
+    "country": "CZ",
+    "league": "Czech First League"
+  },
+  {
+    "id": "Q193749",
+    "name": "Legia Warsaw",
+    "country": "PL",
+    "league": "Ekstraklasa"
+  },
+  {
+    "id": "Q173009",
+    "name": "Red Star Belgrade",
+    "country": "RS",
+    "league": "Serbian SuperLiga"
+  },
+  {
+    "id": "Q188430",
+    "name": "Copenhagen",
+    "country": "DK",
+    "league": "Danish Superliga"
+  },
+  {
+    "id": "Q186785",
+    "name": "Rosenborg",
+    "country": "NO",
+    "league": "Eliteserien"
+  },
+  {
+    "id": "Q204881",
+    "name": "Malmö FF",
+    "country": "SE",
+    "league": "Allsvenskan"
   }
 ]

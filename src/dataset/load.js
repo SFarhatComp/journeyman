@@ -53,6 +53,9 @@ export function createDataset({ clubs, players }) {
     clubs,
     players,
     getPlayer: (id) => byId.get(id) ?? null,
+    // The same label shown in the autocomplete, so the reveal names a player
+    // exactly as they were chosen — no second naming scheme to reconcile.
+    getPlayerLabel: (id) => { const p = byId.get(id); return p ? formatLabel(p) : null; },
     getPlayerClubs: (id) => byId.get(id)?.clubIds ?? [],
     search,
   };

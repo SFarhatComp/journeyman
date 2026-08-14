@@ -1,7 +1,7 @@
 const $ = (id) => document.getElementById(id);
 const screens = ["home", "lobby", "picking", "answering", "reveal", "final"];
 
-let ws, me = null, snap = null, clubs = [];
+let ws, me = null, snap = null, clubs = [], lastRound = null;
 // playerId, room code and nickname persist across a reload so the client can
 // rejoin the same seat without the user retyping anything.
 const saved = (k, v) => (v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v));
@@ -68,6 +68,18 @@ function render() {
   $("phase").textContent = snap.phase.toLowerCase();
   $("room-code").textContent = snap.code;
 
+  // A new round means a fresh answer: leaving last round's name in the box
+  // reads as though it were already submitted.
+  if (snap.round && snap.round.number !== lastRound) {
+    lastRound = snap.round.number;
+    $("answer").value = "";
+    $("answer").disabled = false;
+    $("suggestions").innerHTML = "";
+    $("answer-status").textContent = "";
+  }
+
+  renderScoreboard();
+
   if (snap.phase === "LOBBY") {
     show("lobby");
     $("lobby-players").innerHTML = snap.players.map((p) => `<li>${esc(p.nickname)}</li>`).join("");
@@ -78,23 +90,61 @@ function render() {
   if (snap.phase === "REVEAL") { show("reveal"); renderResults(); }
   if (snap.phase === "FINAL") {
     show("final");
-    $("standings").innerHTML = snap.standings.map((p) => `<li>${esc(p.nickname)} — <span class="pts">${p.score}</span></li>`).join("");
+    $("standings").innerHTML = snap.standings
+      .map((p) => `<li>${esc(p.nickname)} — <span class="pts">${p.score}</span></li>`).join("");
+    // Host restarts; everyone else is told who they are waiting on, so the
+    // screen never looks like a dead end.
+    const host = snap.players.find((p) => p.id === snap.hostId);
+    const iAmHost = snap.you === snap.hostId;
+    $("play-again").hidden = !iAmHost;
+    $("final-note").textContent = iAmHost
+      ? "Starting again returns everyone to the lobby, so new players can join."
+      : `Waiting for ${host ? host.nickname : "the host"} to start another game.`;
   }
+}
+
+// Running totals, so players can see where they stand mid-game rather than
+// only on the final screen.
+function renderScoreboard() {
+  const playing = snap.phase !== "HOME" && snap.phase !== "LOBBY";
+  $("scoreboard").innerHTML = !playing ? "" : [...snap.players]
+    .sort((a, b) => b.score - a.score)
+    .map((p) => {
+      const cls = [p.id === snap.you ? "me" : "", p.connected ? "" : "off"].filter(Boolean).join(" ");
+      return `<li class="${cls}">${esc(p.nickname)}<span class="pts">${p.score}</span></li>`;
+    }).join("");
+
+  // Host only, and only while a game is actually running.
+  $("end-game").hidden = !(playing && snap.phase !== "FINAL" && snap.you === snap.hostId);
 }
 
 function renderClubs() {
   const taken = snap.round.picks;
   const mine = taken[snap.you];
+
+  // clubs arrives pre-sorted by league then name, so a header goes in wherever
+  // the league changes — no client-side grouping or sorting needed.
+  let league = null;
   $("club-grid").innerHTML = clubs.map((c) => {
+    const header = c.league !== league ? `<h3 class="league">${esc(c.league ?? "")}</h3>` : "";
+    league = c.league;
     const takenByOther = Object.entries(taken).some(([pid, cid]) => cid === c.id && pid !== snap.you);
-    return `<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}" ${takenByOther ? "disabled" : ""}>${c.name}</button>`;
+    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}" ${takenByOther ? "disabled" : ""}>${esc(c.name)}</button>`;
   }).join("");
 }
 
 function renderRoundClubs() {
-  const names = Object.values(snap.round.picks)
-    .map((id) => clubs.find((c) => c.id === id)?.name ?? id);
-  $("round-clubs").innerHTML = names.map((n) => `<li>${n}</li>`).join("");
+  // Attribute each club to whoever claimed it — knowing Sam took Juventus is
+  // half the fun, and it makes the round's set easier to hold in your head.
+  const who = (pid) => snap.players.find((p) => p.id === pid);
+  $("round-clubs").innerHTML = Object.entries(snap.round.picks)
+    .map(([pid, cid]) => {
+      const club = clubs.find((c) => c.id === cid)?.name ?? cid;
+      const player = who(pid);
+      const mine = pid === snap.you;
+      const owner = player ? esc(player.nickname) : "?";
+      return `<li><strong>${club}</strong> <span class="owner">${mine ? "you" : owner}</span></li>`;
+    }).join("");
   const answered = snap.round.answered[snap.you];
   $("answer").disabled = !!answered;
   $("answer-status").textContent = answered ? "Answer locked in." : "";
@@ -102,8 +152,20 @@ function renderRoundClubs() {
 
 function renderResults() {
   const name = (id) => esc(snap.players.find((p) => p.id === id)?.nickname ?? id);
-  $("results").innerHTML = snap.round.results.map((r) =>
-    `<li>${name(r.playerId)} — <span class="pts">${r.points}</span>${r.entityId ? "" : " (no answer)"}</li>`).join("");
+  const clubName = (id) => clubs.find((c) => c.id === id)?.name ?? id;
+
+  $("results").innerHTML = [...snap.round.results]
+    .sort((a, b) => b.points - a.points)
+    .map((r) => {
+      const chose = r.entityLabel
+        ? `<span class="chose">${esc(r.entityLabel)}</span>`
+        : `<span class="chose none">no answer</span>`;
+      // Which clubs the pick actually covered — the reason for the score.
+      const hit = r.matchedClubIds.length
+        ? `<span class="hit">${r.matchedClubIds.map(clubName).map(esc).join(", ")}</span>`
+        : "";
+      return `<li><strong>${name(r.playerId)}</strong> <span class="pts">${r.points}</span><br>${chose}${hit ? "<br>" + hit : ""}</li>`;
+    }).join("");
   const best = snap.round.bestAnswer;
   $("best-answer").textContent = best
     ? `Best possible: ${best.name} (${best.points})`
@@ -133,6 +195,10 @@ $("join").onclick = () => {
   connect($("join-code").value.trim().toUpperCase(), nick);
 };
 $("start").onclick = () => send("start");
+$("play-again").onclick = () => send("playAgain");
+$("end-game").onclick = () => {
+  if (confirm("End the game now and show final scores?")) send("endGame");
+};
 $("club-grid").onclick = (e) => {
   const btn = e.target.closest(".club");
   if (btn && !btn.disabled) send("pickClub", { clubId: btn.dataset.id });

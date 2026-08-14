@@ -11,6 +11,8 @@ const VALIDATORS = {
     && p.nickname.trim().length > 0
     && p.nickname.length <= MAX_NICKNAME_LENGTH,
   start: () => true,
+  endGame: () => true,
+  playAgain: () => true,
   pickClub: (p) => typeof p?.clubId === "string" && p.clubId.length <= 32,
   submitAnswer: (p) => typeof p?.entityId === "string" && p.entityId.length <= 32,
   search: (p) => typeof p?.query === "string" && p.query.length <= 64,

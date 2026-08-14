@@ -216,12 +216,20 @@ export function beginReveal(state, now, deps) {
   next.round.results = next.players.map((player) => {
     const answer = next.round.answers[player.id];
     if (!answer) {
-      return { playerId: player.id, entityId: null, points: 0, matchedClubIds: [] };
+      return { playerId: player.id, entityId: null, entityLabel: null, points: 0, matchedClubIds: [] };
     }
     const clubIds = deps.getPlayerClubs(answer.entityId);
     // Two spells at one club is still one club: dedupe the matched set.
     const matchedClubIds = [...new Set(clubIds.filter((c) => roundClubSet.has(c)))];
-    return { playerId: player.id, entityId: answer.entityId, points: matchedClubIds.length, matchedClubIds };
+    return {
+      playerId: player.id,
+      entityId: answer.entityId,
+      // Carried through the snapshot so the reveal can say who was named.
+      // Resolved here via deps, keeping the engine free of the dataset.
+      entityLabel: deps.getPlayerLabel?.(answer.entityId) ?? null,
+      points: matchedClubIds.length,
+      matchedClubIds,
+    };
   });
 
   for (const result of next.round.results) {
@@ -244,4 +252,52 @@ export function disconnect(state, playerId) {
   if (!player) return ok(next);
   player.connected = false; // score retained; phases advance without them
   return ok(next, [{ type: "player_disconnected", playerId }]);
+}
+
+/**
+ * End the game now, keeping scores as they stand.
+ *
+ * A fixed round count is the normal ending, but real games get cut short —
+ * someone has to leave, or eight rounds turns out to be too many. Without
+ * this the only way out is abandoning the room.
+ */
+export function endGame(state) {
+  // Nothing to end in the lobby, and ending twice would re-sort standings
+  // over a game that is already finished.
+  if (state.phase === "LOBBY" || state.phase === "FINAL") return fail(state, "wrong_phase");
+
+  const next = clone(state);
+  next.phase = "FINAL";
+  next.phaseEndsAt = null;
+  next.standings = [...next.players].sort((a, b) => b.score - a.score);
+  return ok(next, [{ type: "game_over", endedEarly: true }]);
+}
+
+/**
+ * Start over with the same room and the same people.
+ *
+ * Returns to the LOBBY rather than straight into a new game, which also
+ * reopens joining — new players are blocked mid-game, so a fresh lobby is the
+ * only moment someone can be added without a new room code.
+ */
+export function playAgain(state) {
+  if (state.phase !== "FINAL") return fail(state, "wrong_phase");
+
+  const next = clone(state);
+  // Drop players who left rather than carrying them as permanent ghosts on
+  // every future scoreboard. The lobby is open again, so anyone still around
+  // rejoins normally.
+  next.players = next.players.filter((p) => p.connected);
+  if (next.players.length === 0) return fail(state, "no_players");
+  // The host may have been one of the leavers; without this the room would
+  // have nobody able to start it.
+  if (!next.players.some((p) => p.id === next.hostId)) next.hostId = next.players[0].id;
+
+  for (const p of next.players) p.score = 0;
+  next.phase = "LOBBY";
+  next.round = null;
+  next.phaseEndsAt = null;
+  next.history = [];
+  delete next.standings;
+  return ok(next, [{ type: "game_reset" }]);
 }

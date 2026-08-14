@@ -6,7 +6,7 @@ import { createDataset } from "./dataset/load.js";
 import { findBestAnswer } from "./engine/scoring.js";
 import { parseMessage, snapshotFor } from "./protocol.js";
 import {
-  createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect,
+  createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect, endGame, playAgain,
 } from "./engine/room.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
@@ -19,6 +19,7 @@ console.log(`dataset: ${dataset.players.length} players, ${dataset.clubs.length}
 const deps = {
   clubs: dataset.clubs,
   getPlayerClubs: (id) => dataset.getPlayerClubs(id),
+  getPlayerLabel: (id) => dataset.getPlayerLabel(id),
   findBest: (roundClubIds) => findBestAnswer(roundClubIds, dataset.players),
 };
 
@@ -126,6 +127,15 @@ wss.on("connection", (ws, req) => {
       case "join":
         result = addPlayer(room.state, { id: playerId, nickname: msg.payload.nickname.trim() });
         if (!result.error) room.sockets.set(playerId, ws);
+        break;
+      case "playAgain":
+        if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
+        else result = playAgain(room.state);
+        break;
+      case "endGame":
+        // Host only: ending someone else's game would be a griefing vector.
+        if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
+        else result = endGame(room.state);
         break;
       case "start":
         if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
