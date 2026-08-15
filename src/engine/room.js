@@ -18,7 +18,7 @@ export const DEFAULT_CONFIG = {
   pickSeconds: 20,
   pickMaxSeconds: 60,
   answerSeconds: 30,
-  revealSeconds: 5,
+  revealSeconds: 4,
   graceSeconds: 5,
   maxPlayers: 8,
   minPlayers: 2,

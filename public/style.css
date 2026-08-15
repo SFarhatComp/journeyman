@@ -110,6 +110,10 @@ button {
 button:active { transform:scale(.98); }
 .row { display:flex; gap:var(--base); } .row input { margin:0; }
 
+/* The name field sat 8px under the big gold CTA, which read as one attached
+   control rather than "type this, then tap that". */
+#create { margin-top:var(--gutter); }
+
 /* ---------------- club draft ---------------- */
 #club-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--base); }
 @media (max-width:359px) { #club-grid { grid-template-columns:repeat(2,1fr); } }
