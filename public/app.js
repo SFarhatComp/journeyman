@@ -78,6 +78,7 @@ function render() {
     $("answer").value = "";
     $("answer").disabled = false;
     $("suggestions").innerHTML = "";
+    $("club-search").value = ""; // a new round starts from the whole grid
     $("answer-status").textContent = "";
   }
 
@@ -85,6 +86,7 @@ function render() {
 
   if (snap.phase === "LOBBY") {
     show("lobby");
+    renderRounds();
     const min = snap.config?.minPlayers ?? 2;
     const max = snap.config?.maxPlayers ?? 8;
     $("lobby-count").textContent = `${snap.players.length} / ${max}`;
@@ -210,11 +212,43 @@ function renderClubs() {
     league = c.league;
     // loading="lazy" matters: 97 crests is ~1.5MB, and only a handful are on
     // screen at once.
-    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}">
+    // data-s carries what the search matches against: name, league and
+    // country, so "prem" or "esp" find things the name alone would not.
+    const hay = `${c.name} ${c.league ?? ""} ${c.country ?? ""}`.toLowerCase();
+    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}" data-s="${esc(hay)}">
       <img src="/crests/${c.id}.png" alt="" loading="lazy" decoding="async">
       <span class="nm">${esc(c.name)}</span>
     </button>`;
   }).join("");
+  applyClubFilter(); // a rebuild drops the DOM the filter was applied to
+}
+
+// Host-only game length. Everyone sees the setting; only the host can move it,
+// and only in the lobby — the engine enforces both, this just reflects them.
+const ROUND_OPTIONS = [4, 6, 8];
+function renderRounds() {
+  const iAmHost = snap.you === snap.hostId;
+  const current = snap.config?.rounds;
+  $("rounds").innerHTML = ROUND_OPTIONS.map((n) =>
+    `<button class="${n === current ? "on" : ""}" data-rounds="${n}" ${iAmHost ? "" : "disabled"}>${n}</button>`
+  ).join("");
+}
+
+// Filtering toggles a class on cards that are already in the DOM. Re-rendering
+// the grid on every keystroke would rebuild 97 nodes and restart 97 image
+// loads, which is exactly the cost the pick phase cannot afford.
+function applyClubFilter() {
+  const q = $("club-search").value.trim().toLowerCase();
+  const grid = $("club-grid");
+  grid.classList.toggle("filtering", q.length > 0);
+  let shown = 0;
+  for (const el of grid.children) {
+    if (el.tagName !== "BUTTON") continue;
+    const hide = q && !el.dataset.s.includes(q);
+    el.classList.toggle("hide", !!hide);
+    if (!hide) shown++;
+  }
+  $("club-empty").hidden = shown > 0;
 }
 
 function renderPickStatus() {
@@ -320,16 +354,22 @@ function renderResults() {
 // grace window (granted when your claim lost a race) extends past the phase
 // deadline, so show that instead when you have one.
 setInterval(() => {
-  if (!snap?.phaseEndsAt) {
-    // No clock at all while several players are still choosing. Drop the
-    // urgent styling too, or it survives from the previous phase.
+  const deadline = snap?.phaseEndsAt ?? null;
+  const grace = snap?.round?.myGraceEndsAt ?? null;
+  // Grace can outlive a deadline, and can now exist while there is no visible
+  // deadline at all — the phase clock only arms when one player is left, but
+  // losing a race for a footballer puts you on your own clock regardless.
+  const usingGrace = grace !== null && (deadline === null || grace > deadline);
+  const target = usingGrace ? grace : deadline;
+
+  if (target === null) {
+    // No clock while several players are still deciding. Clear the urgent
+    // styling too, or it survives from the previous phase.
     $("timer").textContent = "";
     $("timer").classList.remove("urgent");
     return;
   }
-  const grace = snap.round?.myGraceEndsAt;
-  const usingGrace = grace && grace > snap.phaseEndsAt;
-  const left = Math.max(0, Math.ceil(((usingGrace ? grace : snap.phaseEndsAt) - Date.now()) / 1000));
+  const left = Math.max(0, Math.ceil((target - Date.now()) / 1000));
   $("timer").textContent = usingGrace ? `${left}+` : String(left);
   $("timer").classList.toggle("urgent", left <= 10 && snap.phase !== "REVEAL");
 }, 250);
@@ -367,6 +407,11 @@ $("share").onclick = async () => {
     // screen right above it anyway.
     notice(url, "ok");
   }
+};
+$("club-search").oninput = applyClubFilter;
+$("rounds").onclick = (e) => {
+  const btn = e.target.closest("button[data-rounds]");
+  if (btn && !btn.disabled) send("setRounds", { rounds: Number(btn.dataset.rounds) });
 };
 $("start").onclick = () => send("start");
 $("play-again").onclick = () => send("playAgain");

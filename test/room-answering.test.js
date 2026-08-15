@@ -20,7 +20,7 @@ function answering(t = 2000) {
   state = pickClub(state, { playerId: "p0", clubId: "Q1" }, t, DEPS).state;
   state = pickClub(state, { playerId: "p1", clubId: "Q2" }, t, DEPS).state;
   state = pickClub(state, { playerId: "p2", clubId: "Q3" }, t, DEPS).state;
-  return state; // now ANSWERING, phaseEndsAt = t + 30s
+  return state; // now ANSWERING, on the backstop until one player is left
 }
 
 test("an answer is recorded", () => {
@@ -42,21 +42,52 @@ test("a rejected claim grants a personal grace extension", () => {
   assert.equal(res.state.round.grace.p1, 2200 + DEFAULT_CONFIG.graceSeconds * 1000);
 });
 
-test("grace lets a player answer after the phase deadline", () => {
+// p0 and p2 answer, which arms the clock and leaves p1 as the last player.
+// p1 then loses a race for zlatan and is put into grace. Both grace tests
+// start from here, because a deadline that has not armed cannot expire, and
+// asserting "still ANSWERING" against a phase that was never going to end
+// would pass without testing anything.
+function lastPlayerInGrace() {
   let state = submitAnswer(answering(2000), { playerId: "p0", entityId: "zlatan" }, 2100, DEPS).state;
-  // p1 loses the race one second before time.
-  state = submitAnswer(state, { playerId: "p1", entityId: "zlatan" }, 31_000, DEPS).state;
+  // "nobody", not "oneclub": p1 needs oneclub free to answer with after grace.
+  state = submitAnswer(state, { playerId: "p2", entityId: "nobody" }, 2200, DEPS).state;
+  return state;
+}
+
+test("the clock arms only when one player is left to answer", () => {
+  let state = submitAnswer(answering(2000), { playerId: "p0", entityId: "zlatan" }, 2100, DEPS).state;
+  assert.equal(state.round.answerTimerArmed, false, "two players are still thinking");
+  assert.equal(state.phaseEndsAt, 2000 + DEFAULT_CONFIG.answerMaxSeconds * 1000, "backstop only");
+
+  const res = submitAnswer(state, { playerId: "p2", entityId: "nobody" }, 2200, DEPS);
+  assert.equal(res.state.round.answerTimerArmed, true, "only p1 is left");
+  assert.equal(res.state.phaseEndsAt, 2200 + DEFAULT_CONFIG.answerSeconds * 1000);
+  assert.ok(res.events.some((e) => e.type === "answer_timer_armed"));
+});
+
+test("losing a race does not start the clock on everyone else", () => {
+  // A rejected answer never reaches the arming branch. If it did, being beaten
+  // to a footballer would put the whole room on a countdown.
+  let state = submitAnswer(answering(2000), { playerId: "p0", entityId: "zlatan" }, 2100, DEPS).state;
+  const res = submitAnswer(state, { playerId: "p1", entityId: "zlatan" }, 2200, DEPS);
+  assert.equal(res.error, "already_claimed");
+  assert.equal(res.state.round.answerTimerArmed, false);
+  assert.equal(res.state.phaseEndsAt, 2000 + DEFAULT_CONFIG.answerMaxSeconds * 1000, "unchanged");
+});
+
+test("grace lets a player answer after the phase deadline", () => {
+  // Armed at 2200, so the deadline is 32_200. p1 loses the race just before.
+  let state = submitAnswer(lastPlayerInGrace(), { playerId: "p1", entityId: "zlatan" }, 31_000, DEPS).state;
   // Deadline passes, but p1 is mid-grace so the phase must wait.
-  const expired = expirePhase(state, 32_100, DEPS);
+  const expired = expirePhase(state, 32_300, DEPS);
   assert.equal(expired.state.phase, "ANSWERING", "must not end while a player is in grace");
-  const late = submitAnswer(expired.state, { playerId: "p1", entityId: "oneclub" }, 32_200, DEPS);
+  const late = submitAnswer(expired.state, { playerId: "p1", entityId: "oneclub" }, 32_400, DEPS);
   assert.equal(late.error, undefined);
   assert.equal(late.state.round.answers.p1.entityId, "oneclub");
 });
 
 test("the phase ends once every grace window has lapsed", () => {
-  let state = submitAnswer(answering(2000), { playerId: "p0", entityId: "zlatan" }, 2100, DEPS).state;
-  state = submitAnswer(state, { playerId: "p1", entityId: "zlatan" }, 31_000, DEPS).state;
+  let state = submitAnswer(lastPlayerInGrace(), { playerId: "p1", entityId: "zlatan" }, 31_000, DEPS).state;
   const expired = expirePhase(state, 36_001, DEPS); // grace ended at 36_000
   assert.equal(expired.state.phase, "REVEAL");
 });

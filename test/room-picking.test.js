@@ -122,7 +122,7 @@ test("the phase advances early once everyone has picked", () => {
   assert.equal(state.phase, "PICKING", "still waiting on p2");
   state = pickClub(state, { playerId: "p2", clubId: "Q3" }, 1300, DEPS).state;
   assert.equal(state.phase, "ANSWERING", "all picked — advance without waiting out the clock");
-  assert.equal(state.phaseEndsAt, 1300 + DEFAULT_CONFIG.answerSeconds * 1000);
+  assert.equal(state.phaseEndsAt, 1300 + DEFAULT_CONFIG.answerMaxSeconds * 1000, "backstop, not the visible clock");
 });
 
 test("expiry auto-assigns a club to anyone who did not pick", () => {

@@ -115,6 +115,12 @@ button:active { transform:scale(.98); }
 #create { margin-top:var(--gutter); }
 
 /* ---------------- club draft ---------------- */
+#club-search { margin-bottom:var(--base); }
+#club-empty { color:var(--outline); font-size:14px; text-align:center; padding:var(--md) 0; }
+.club.hide { display:none; }
+/* Headers name a league; with a filter on, the sections they head are gone. */
+#club-grid.filtering .league { display:none; }
+
 #club-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--base); }
 @media (max-width:359px) { #club-grid { grid-template-columns:repeat(2,1fr); } }
 
@@ -348,6 +354,17 @@ button:active { transform:scale(.98); }
   margin:var(--gutter) 0 var(--sm);
 }
 .lobby-head .count { font:700 14px/1 var(--display); color:var(--outline); letter-spacing:.08em; }
+
+/* Segmented control: one choice out of a few, no dropdown to open. */
+.seg { display:flex; gap:var(--base); }
+.seg button {
+  flex:1; padding:12px; font-size:16px; box-shadow:none;
+  background:var(--surface); color:var(--on-surface-variant);
+  border:1px solid var(--outline-variant);
+}
+.seg button.on { background:var(--gold); color:var(--on-gold); border-color:var(--gold); }
+.seg button:disabled { cursor:default; opacity:.75; }
+.seg button.on:disabled { opacity:1; }
 
 #lobby-players { list-style:none; padding:0; }
 #lobby-players li {

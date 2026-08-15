@@ -9,16 +9,23 @@
  * Phases: LOBBY -> PICKING -> ANSWERING -> REVEAL -> (PICKING | FINAL)
  */
 
+/** Selectable game lengths. Eight rounds runs long; six is the default. */
+export const ROUND_OPTIONS = [4, 6, 8];
+
 export const DEFAULT_CONFIG = {
-  rounds: 8,
+  rounds: 6,
   // The picking clock does not run while several people are still deciding —
   // it starts only once everyone but one has locked in, and pickSeconds is
   // what that last player gets. pickMaxSeconds is a backstop nobody sees:
   // without it, two players walking away would hang the room forever.
   pickSeconds: 20,
   pickMaxSeconds: 60,
+  // Answering works the same way: no clock while several people are still
+  // thinking, and answerSeconds is what the last one gets once everybody
+  // else has locked in. answerMaxSeconds is the unseen backstop.
   answerSeconds: 30,
-  revealSeconds: 4,
+  answerMaxSeconds: 90,
+  revealSeconds: 5,
   graceSeconds: 5,
   maxPlayers: 8,
   minPlayers: 2,
@@ -62,6 +69,20 @@ export function addPlayer(state, { id, nickname }) {
   next.players.push({ id, nickname, score: 0, connected: true });
   if (!next.hostId) next.hostId = id;
   return ok(next, [{ type: "player_joined", playerId: id }]);
+}
+
+/**
+ * Set how many rounds the game runs for. Lobby only: changing it mid-game
+ * would move the finish line under players who had already paced themselves
+ * against it, and could end a game retroactively.
+ */
+export function setRounds(state, rounds) {
+  if (state.phase !== "LOBBY") return fail(state, "wrong_phase");
+  if (!ROUND_OPTIONS.includes(rounds)) return fail(state, "bad_rounds");
+
+  const next = clone(state);
+  next.config = { ...next.config, rounds };
+  return ok(next, [{ type: "config_changed" }]);
 }
 
 export function startGame(state, now, deps) {
@@ -172,7 +193,9 @@ function beginAnswering(state, now) {
   // has to know whether a helper mutates.
   const next = clone(state);
   next.phase = "ANSWERING";
-  next.phaseEndsAt = now + next.config.answerSeconds * 1000;
+  next.round.answerTimerArmed = false;
+  // Backstop only, hidden by snapshotFor until the real clock arms.
+  next.phaseEndsAt = now + next.config.answerMaxSeconds * 1000;
   return next;
 }
 
@@ -213,9 +236,18 @@ export function submitAnswer(state, { playerId, entityId }, now, deps) {
   delete next.round.grace[playerId];
 
   const events = [{ type: "answer_accepted", playerId }];
-  if (Object.keys(next.round.answers).length === next.players.length) {
+  const answered = Object.keys(next.round.answers).length;
+  if (answered === next.players.length) {
     next = beginReveal(next, now, deps);
     events.push({ type: "phase_changed", phase: "REVEAL" });
+  } else if (answered === next.players.length - 1 && !next.round.answerTimerArmed) {
+    // Everyone but one has answered. Only the last player is put on a clock —
+    // there is no reason to rush a room where several people are still
+    // searching. A rejected answer does not reach here, so losing a race for
+    // a footballer cannot start the countdown on everyone else.
+    next.round.answerTimerArmed = true;
+    next.phaseEndsAt = now + next.config.answerSeconds * 1000;
+    events.push({ type: "answer_timer_armed" });
   }
   return ok(next, events);
 }

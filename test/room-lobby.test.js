@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRoom, addPlayer, startGame, beginRound, DEFAULT_CONFIG } from "../src/engine/room.js";
+import { createRoom, addPlayer, startGame, beginRound, DEFAULT_CONFIG , setRounds, ROUND_OPTIONS } from "../src/engine/room.js";
 
 const DEPS = {
   clubs: [
@@ -136,4 +136,33 @@ test("an existing player may still reconnect mid-game", () => {
 
   assert.equal(res.error, undefined, "reconnect must not be blocked by the phase guard");
   assert.equal(res.state.players.find((p) => p.id === "p0").connected, true);
+});
+
+test("the host can set the game length to any offered option", () => {
+  for (const rounds of ROUND_OPTIONS) {
+    const res = setRounds(withPlayers(2), rounds);
+    assert.equal(res.error, undefined);
+    assert.equal(res.state.config.rounds, rounds);
+  }
+});
+
+test("a game length that is not on offer is refused", () => {
+  // Otherwise a crafted message could ask for 500 rounds, or 0.
+  for (const bad of [0, 1, 7, 100, -4, 2.5]) {
+    assert.equal(setRounds(withPlayers(2), bad).error, "bad_rounds", `${bad} must be refused`);
+  }
+});
+
+test("the game length cannot be changed once play has started", () => {
+  // Moving the finish line mid-game could end it retroactively, or move it
+  // out from under players who had paced themselves against it.
+  const playing = { ...withPlayers(2), phase: "PICKING" };
+  assert.equal(setRounds(playing, 4).error, "wrong_phase");
+});
+
+test("setting the game length leaves the state it was given untouched", () => {
+  const base = withPlayers(2);
+  const snapshot = structuredClone(base);
+  setRounds(base, 4);
+  assert.deepEqual(base, snapshot, "setRounds mutated its input");
 });

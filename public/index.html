@@ -30,6 +30,11 @@
       <strong id="room-code"></strong>
       <button id="share">Share invite link</button>
       <div class="lobby-head">
+        <span class="lbl">Rounds</span>
+      </div>
+      <div id="rounds" class="seg"></div>
+
+      <div class="lobby-head">
         <span class="lbl">In the room</span>
         <span id="lobby-count" class="count"></span>
       </div>
@@ -44,6 +49,9 @@
         <span id="pick-progress" class="count"></span>
       </div>
       <p class="prompt">Claim a club. Nobody can see what you take.</p>
+      <input id="club-search" placeholder="Search clubs" autocomplete="off"
+             autocorrect="off" spellcheck="false" enterkeyhint="search">
+      <p id="club-empty" hidden>No club matches that.</p>
       <div id="club-grid"></div>
     </section>
 

@@ -11,6 +11,7 @@ const VALIDATORS = {
     && p.nickname.trim().length > 0
     && p.nickname.length <= MAX_NICKNAME_LENGTH,
   start: () => true,
+  setRounds: (p) => Number.isInteger(p?.rounds),
   endGame: () => true,
   playAgain: () => true,
   pickClub: (p) => typeof p?.clubId === "string" && p.clubId.length <= 32,
@@ -44,13 +45,17 @@ export function parseMessage(raw) {
  */
 export function snapshotFor(state, playerId) {
   const picking = state.phase === "PICKING";
+  const answering = state.phase === "ANSWERING";
+  // Both clocks start late, so both deadlines are withheld until they arm.
+  const clockHidden = (picking && !state.round?.pickTimerArmed)
+    || (answering && !state.round?.answerTimerArmed);
   const base = {
     code: state.code,
     phase: state.phase,
     config: state.config,
     // While picking, the deadline is a backstop nobody is meant to feel. It
     // becomes real, and visible, only once one player is left to choose.
-    phaseEndsAt: picking && !state.round?.pickTimerArmed ? null : state.phaseEndsAt,
+    phaseEndsAt: clockHidden ? null : state.phaseEndsAt,
     hostId: state.hostId,
     you: playerId,
     players: state.players.map((p) => ({ id: p.id, nickname: p.nickname, score: p.score, connected: p.connected })),

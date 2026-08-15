@@ -8,6 +8,7 @@ import { parseMessage, snapshotFor } from "./protocol.js";
 import { resolveStaticPath } from "./static-path.js";
 import {
   createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect, endGame, playAgain,
+  setRounds,
 } from "./engine/room.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
@@ -171,6 +172,12 @@ wss.on("connection", (ws, req) => {
         // Host only: ending someone else's game would be a griefing vector.
         if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
         else result = endGame(room.state);
+        break;
+      case "setRounds":
+        // Host only, like start and endGame: the game length is not something
+        // any player should be able to change out from under the room.
+        if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
+        else result = setRounds(room.state, msg.payload.rounds);
         break;
       case "start":
         if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
