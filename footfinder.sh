@@ -42,6 +42,11 @@ case "${1:-help}" in
   dataset) docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-dataset.mjs ;;
 
+  # Second pass over dataset.json, filling career gaps from Wikipedia infoboxes.
+  # Takes ~15 minutes and resumes if interrupted. Pass --dry to preview.
+  enrich)  shift; docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
+             -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/enrich-careers.mjs "$@" ;;
+
   *)       sed -n '2,4p' "${BASH_SOURCE[0]}"; echo
-           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests}"; exit 1 ;;
+           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich}"; exit 1 ;;
 esac
