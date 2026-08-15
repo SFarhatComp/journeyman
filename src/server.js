@@ -1,10 +1,11 @@
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import { WebSocketServer } from "ws";
 import { randomUUID } from "node:crypto";
 import { createDataset } from "./dataset/load.js";
 import { findBestAnswer } from "./engine/scoring.js";
 import { parseMessage, snapshotFor } from "./protocol.js";
+import { resolveStaticPath } from "./static-path.js";
 import {
   createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect, endGame, playAgain,
 } from "./engine/room.js";
@@ -70,7 +71,27 @@ function apply(room, result) {
 }
 
 // Static files. Tiny hand-rolled server — three files, no framework needed.
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css" };
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
+               ".png": "image/png", ".svg": "image/svg+xml",
+               ".woff2": "font/woff2" };
+
+/**
+ * Nothing was sending cache headers, so 1.5MB of crests came down the tunnel
+ * again on every load and every reconnect — and with no validator either, the
+ * browser could not even ask "still fresh?".
+ *
+ * Crests are named by Wikidata QID and fonts by script subset, so a given
+ * filename's bytes never change; those cache hard. The page, script and
+ * stylesheet do change on every deploy and carry no content hash in their
+ * names, so they must revalidate — the ETag turns that into a 304 rather than
+ * a re-download. Crests get a month rather than a year, so re-running the
+ * crest fetch is not pinned behind a stale cache until 2027.
+ */
+function cacheControl(path) {
+  if (path.startsWith("/fonts/")) return "public, max-age=31536000, immutable";
+  if (path.startsWith("/crests/")) return "public, max-age=2592000";
+  return "no-cache";
+}
 const server = createServer(async (req, res) => {
   if (req.url === "/api/clubs") {
     res.writeHead(200, { "content-type": "application/json" });
@@ -92,13 +113,27 @@ const server = createServer(async (req, res) => {
     return res.end(JSON.stringify({ code }));
   }
 
-  const path = req.url === "/" ? "/index.html" : req.url.split("?")[0];
-  if (!/^\/[\w.-]+$/.test(path)) { res.writeHead(404); return res.end(); }
+  const path = resolveStaticPath(req.url);
+  if (!path) {
+    res.writeHead(404);
+    return res.end();
+  }
   try {
-    const body = await readFile(new URL(`../public${path}`, import.meta.url));
+    const file = new URL(`../public${path}`, import.meta.url);
+    const info = await stat(file);
     const ext = path.slice(path.lastIndexOf("."));
-    res.writeHead(200, { "content-type": MIME[ext] ?? "application/octet-stream" });
-    res.end(body);
+    const etag = `W/"${info.size.toString(16)}-${Math.floor(info.mtimeMs).toString(16)}"`;
+    const headers = {
+      "content-type": MIME[ext] ?? "application/octet-stream",
+      "cache-control": cacheControl(path),
+      etag,
+    };
+    if (req.headers["if-none-match"] === etag) {
+      res.writeHead(304, headers);
+      return res.end();
+    }
+    res.writeHead(200, headers);
+    res.end(await readFile(file));
   } catch {
     res.writeHead(404);
     res.end("not found");
@@ -188,8 +223,11 @@ setInterval(() => {
     const before = room.state.phase;
     const result = expirePhase(room.state, now, deps);
     room.state = result.state;
-    // Broadcast every tick so countdowns stay in sync, not just on transitions.
-    broadcast(room);
+    // Only broadcast when the tick actually changed something. Clients run
+    // their own countdown from phaseEndsAt, so a per-second snapshot to every
+    // player was pure traffic — and it forced a full re-render every second on
+    // the one screen where people are trying to tap.
+    if (result.events.length > 0) broadcast(room);
     if (before !== room.state.phase) console.log(`${room.state.code}: ${before} -> ${room.state.phase}`);
   }
 }, 1000);
