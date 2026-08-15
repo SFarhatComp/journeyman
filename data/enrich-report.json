@@ -1,7 +1,8 @@
 {
-  "generatedAt": "2026-08-15T03:48:39.626Z",
-  "playersChanged": 0,
-  "linksAdded": 0,
+  "generatedAt": "2026-08-15T03:49:57.124Z",
+  "note": "Diff of data/dataset.json before and after the Wikipedia enrichment pass.",
+  "playersChanged": 1477,
+  "linksAdded": 1885,
   "renamed": [
     "don panini -> Carlo Parola",
     "zanaalikarami -> Zana Allée",
@@ -12,5 +13,9276 @@
     "resul yörük -> Hakkı Yeten",
     "florin petre -> Ciprian Deac"
   ],
-  "gained": []
+  "gained": [
+    {
+      "name": "Nicolas Jackson",
+      "added": [
+        "Villarreal",
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Daniel Peretz",
+      "added": [
+        "Hamburger SV",
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Marko Stamenic",
+      "added": [
+        "Red Star Belgrade",
+        "Nottingham Forest",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Andrea Romanò",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "José Francisco Leandro Filho",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "João Carlos Teixeira",
+      "added": [
+        "FC Porto",
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Yasin Ayari",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Diant Ramaj",
+      "added": [
+        "AFC Ajax",
+        "Borussia Dortmund",
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Carlo Parola",
+      "added": [
+        "Juventus"
+      ]
+    },
+    {
+      "name": "Koba Leïn Koindredi",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Arjan Raikhy",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Harrison Sohna",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Victor Kristiansen",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Chadi Riad",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Luke Ayling",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Harry Bagge",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Noah Mbamba",
+      "added": [
+        "Club Brugge"
+      ]
+    },
+    {
+      "name": "Thomas Urwin",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Diacko Fofana",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Édouard Michut",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Sékou Mara",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Quentin Merlin",
+      "added": [
+        "Olympique de Marseille",
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Gabriel Appelt Pires",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Benjamin Verbič",
+      "added": [
+        "Legia Warsaw",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Lorenzo Lucca",
+      "added": [
+        "Torino",
+        "Napoli",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Andrej Đurić",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Mark Mampassi",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Iliman Ndiaye",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Kristjan Asllani",
+      "added": [
+        "Torino",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Lesley Ugochukwu",
+      "added": [
+        "Southampton",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Nemanja Motika",
+      "added": [
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Ebrima Darboe",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Cher Ndour",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Castello Lukeba",
+      "added": [
+        "RB Leipzig"
+      ]
+    },
+    {
+      "name": "Sidney Raebiger",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Zeki Amdouni",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Marquinhos",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Tommie Hoban",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Luciano Gondou",
+      "added": [
+        "CSKA Moscow"
+      ]
+    },
+    {
+      "name": "Raphael Onyedika",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "James Trafford",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Mathys Tel",
+      "added": [
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Santiago Castro",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Mamadou Sarr",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Lorenz Assignon",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Hákon Arnar Haraldsson",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Antonio Sanabria",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Jim Iley",
+      "added": [
+        "Tottenham Hotspur",
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Alessandro Zanoli",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Lewis Dobbin",
+      "added": [
+        "Aston Villa",
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Jude Soonsup-Bell",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Mateusz Klich",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Flávio Nazinho",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Elias Jelert",
+      "added": [
+        "Galatasaray",
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Bryan Zaragoza",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Ferran Jutglà",
+      "added": [
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Neal Maupay",
+      "added": [
+        "Brighton & Hove Albion",
+        "Everton",
+        "Olympique de Marseille",
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Jake O'Brien",
+      "added": [
+        "Crystal Palace",
+        "Everton"
+      ]
+    },
+    {
+      "name": "Diego Moreira",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Júnior Alonso",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Ethan Mbappé",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Ismaël Koné",
+      "added": [
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Ivan Režić",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Hugo Larsson",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Oscar Gloukh",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Djeidi Gassama",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Cesare Casadei",
+      "added": [
+        "Chelsea",
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Julien Duranville",
+      "added": [
+        "Borussia Dortmund",
+        "FC Basel",
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Devis Vásquez",
+      "added": [
+        "AS Roma",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Justin Smith",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Ibrahim Salah",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Arthur Vermeeren",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Chemsdine Talbi",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Pa Konate",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Quilindschy Hartman",
+      "added": [
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Ermal Krasniqi",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Bobby Clark",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Sergi Altimira",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Víctor Barberà",
+      "added": [
+        "Club Brugge"
+      ]
+    },
+    {
+      "name": "Giovanni Fabbian",
+      "added": [
+        "Inter Milan",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Ethan Nwaneri",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Arijon Ibrahimović",
+      "added": [
+        "Lazio"
+      ]
+    },
+    {
+      "name": "Silvan Widmer",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Assan Ouédraogo",
+      "added": [
+        "RB Leipzig"
+      ]
+    },
+    {
+      "name": "Divin Mubama",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Jorrel Hato",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Thomas Cannon",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Giorgi Gocholeishvili",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Nicolò Savona",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Ángel Alarcón",
+      "added": [
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Philipp Mwene",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Nicolas Isimat-Mirin",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Ousmane Diomande",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Santiago Mouriño",
+      "added": [
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Danila Kozlov",
+      "added": [
+        "CSKA Moscow"
+      ]
+    },
+    {
+      "name": "Aleksei Miranchuk",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Adam Aznou",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "David Button",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "David Fairclough",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Marc Guiu Paz",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Glen Kamara",
+      "added": [
+        "Leeds United",
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Omar Colley",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Sébastien Faure",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Enric Cuxart i Vaquer",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Isidro Rovira",
+      "added": [
+        "Real Madrid"
+      ]
+    },
+    {
+      "name": "Manuel Polinario Muñoz",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Hamza Igamane",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Otto Haftl",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Gabriel Moscardo",
+      "added": [
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Oscar Højlund",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Frans Krätzig",
+      "added": [
+        "VfB Stuttgart",
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Lucas Lavallée",
+      "added": [
+        "Lille",
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Yusuf Kabadayı",
+      "added": [
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Nicolas Priet",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Damion Downs",
+      "added": [
+        "Southampton",
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Bilal Nadir",
+      "added": [
+        "OGC Nice",
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Tom Watson",
+      "added": [
+        "Brighton & Hove Albion",
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Hugo Buyla",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Aaron Anselmino",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Victor Froholdt",
+      "added": [
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Amadou Diallo",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Dominick Drexler",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Maximilian Ibrahimović",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Joel Pohjanpalo",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Steven Berghuis",
+      "added": [
+        "Feyenoord",
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Diagné Fallou",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Yuri Lodygin",
+      "added": [
+        "Olympiacos",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Nikos Alefantos",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Gaëtan Bong",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Mats Rits",
+      "added": [
+        "Anderlecht"
+      ]
+    },
+    {
+      "name": "Stefano Denswil",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Joël Veltman",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Mitchell Dijks",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Manolo Gabbiadini",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Ayodele Thomas",
+      "added": [
+        "RB Leipzig"
+      ]
+    },
+    {
+      "name": "Kerim Alajbegović",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Zépiqueno Redmond",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Jorge Vital",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Clint Hill",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Izzy Brown",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Omri Altman",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Guillermo Varela",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Abdoulaye Doucouré",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Noham Kamara",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Chuba Akpom",
+      "added": [
+        "AFC Ajax",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Erdal Rakip",
+      "added": [
+        "Benfica",
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Pontus Jansson",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Yohan Mollo",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Paweł Cibicki",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Semih Kaya",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Younousse Sankharé",
+      "added": [
+        "Lille",
+        "Bordeaux",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Kyle Lafferty",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Walter Berg",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Bernard",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Noah Nsoki",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Helmut Jagielski",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Youssouf Sabaly",
+      "added": [
+        "Bordeaux",
+        "Real Betis"
+      ]
+    },
+    {
+      "name": "Luis Pedro Cavanda",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Cesare Benedetti",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Maxime Dupé",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Sidney Pugh",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Nenad Krstičić",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Andrija Luković",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Mijat Gaćinović",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Jorrit Hendrix",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Richairo Zivkovic",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Kenny Tete",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Levin Öztunalı",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Farès Bahlouli",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Michael Frey",
+      "added": [
+        "Fenerbahçe",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Lucas Evangelista",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Roland Weidle",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Tim Leibold",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Leander Dendoncker",
+      "added": [
+        "Wolverhampton Wanderers",
+        "Aston Villa",
+        "Napoli"
+      ]
+    },
+    {
+      "name": "Vincent Janssen",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Keita Balde",
+      "added": [
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Ridgeciano Haps",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Marcel Tisserand",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Maxwel Cornet",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Saïd Benrahma",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Georges-Kévin Nkoudou",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Wendell Nascimento Borges",
+      "added": [
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Franck Honorat",
+      "added": [
+        "Saint-Étienne",
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Alfred Duncan",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Oscar Hiljemark",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Karim Rekik",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Josef de Souza",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Haris Tabaković",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Nick Viergever",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Mattias Johansson",
+      "added": [
+        "Panathinaikos",
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Jens Grahl",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Jaïro Riedewald",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Nabil Bentaleb",
+      "added": [
+        "Schalke 04",
+        "Newcastle United",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Timo Baumgartl",
+      "added": [
+        "PSV Eindhoven",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Antonio Čolak",
+      "added": [
+        "Rangers",
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "John Phillips",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Kelechi Iheanacho",
+      "added": [
+        "Sevilla",
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Guillermo Molins",
+      "added": [
+        "Panathinaikos",
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Lewis Baker",
+      "added": [
+        "Leeds United",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Laurent Abergel",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "José Antonio Morante Gutiérrez",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Hans Hateboer",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Sam Gallagher",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Salif Sané",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Liam Henderson",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Andreas Ivan",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Daniele Rugani",
+      "added": [
+        "Stade Rennais",
+        "AFC Ajax",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Peter Wurz",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Benjamin van Leer",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Gabriel Boschilia",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Tyias Browning",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Asger Sørensen",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Joachim Andersen",
+      "added": [
+        "Olympique Lyonnais",
+        "Fulham",
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Cauley Woodrow",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Nikos Vergos",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Saša Zdjelar",
+      "added": [
+        "CSKA Moscow",
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Philipp Max",
+      "added": [
+        "Eintracht Frankfurt",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Dawid Kownacki",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Alfred Gomis",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Jimmy Gordon",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Arthur Masuaku",
+      "added": [
+        "Beşiktaş",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Daley Sinkgraven",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Adam Armstrong",
+      "added": [
+        "Blackburn Rovers",
+        "Southampton",
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Jimmy Galt",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Santos Bedoya",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Lukas Lerager",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Sheraldo Becker",
+      "added": [
+        "Real Sociedad"
+      ]
+    },
+    {
+      "name": "James Low",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "William Cooke",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Fred Hall",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Sam Adekugbe",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Albian Ajeti",
+      "added": [
+        "West Ham United",
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Adama Soumaoro",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Gboly Ariyibi",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Marcus Bettinelli",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Srđan Babić",
+      "added": [
+        "Spartak Moscow"
+      ]
+    },
+    {
+      "name": "Marc-Aurèle Caillard",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Renato Steffen",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Aleksandar Pešić",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Carlos Salcedo",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Cyriel Dessers",
+      "added": [
+        "Feyenoord",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Tom Lawrence",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Matthew Pennington",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Enzo Crivelli",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Stuart Findlay",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Matt Grimes",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Matt Miazga",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Jonathan Calleri",
+      "added": [
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Beto da Silva",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Maximilian Philipp",
+      "added": [
+        "VfL Wolfsburg",
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Gilberto Moraes Junior",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Youssouf Koné",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Amer Gojak",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Alberto Brignoli",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Ezequiel Ponce",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "José Vicente Forment",
+      "added": [
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Peter Hrstic",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Alexander Jeremejeff",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Vyacheslav Karavayev",
+      "added": [
+        "Sparta Prague",
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Almoatasembellah Mohamed",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Jack Diment",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "James Squair",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Jayson Leutwiler",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Ehud Rogers",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "José Antonio Urtiaga",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "James Bree",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Erik Palmer-Brown",
+      "added": [
+        "Manchester City",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Daniel Schwaab",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Miha Zajc",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Erick Pulgar",
+      "added": [
+        "Fiorentina",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Adrian Sedlo",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Cyle Larin",
+      "added": [
+        "Club Brugge",
+        "Feyenoord",
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Kostas Lamprou",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Stefano Vecchia",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Joris Kayembe",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Petros Marinakis",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Ihor Kharatin",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Orlando Ramón Giménez Álvarez",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Walter Benítez",
+      "added": [
+        "PSV Eindhoven",
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Michael Zetterer",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Mike Maignan",
+      "added": [
+        "Paris Saint-Germain"
+      ]
+    },
+    {
+      "name": "Kalifa Coulibaly",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Milan Gajić",
+      "added": [
+        "Red Star Belgrade",
+        "CSKA Moscow"
+      ]
+    },
+    {
+      "name": "Karl Darlow",
+      "added": [
+        "Manchester United"
+      ]
+    },
+    {
+      "name": "Marlon",
+      "added": [
+        "OGC Nice",
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Kevin Müller",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Emil Audero Mulyadi",
+      "added": [
+        "Inter Milan"
+      ]
+    },
+    {
+      "name": "Dino Islamovic",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Anwar El Ghazi",
+      "added": [
+        "Lille",
+        "Everton",
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Joaquín Correa",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Rúnar Alex Rúnarsson",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Ramy Bensebaini",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Rúben Neves",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Rick Karsdorp",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Raif Husic",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Rafinha",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Emerson Hyndman",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Steven Bergwijn",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Khaled Narey",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Vanja Milinković-Savić",
+      "added": [
+        "Napoli"
+      ]
+    },
+    {
+      "name": "Smail Prevljak",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Bryan Dabo",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Elton Monteiro",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Jérémie Porsan-Clemente",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Marins Alves de Araújo Viana",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Jamie Murphy",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Ulisses Garcia",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Kevin Diks",
+      "added": [
+        "Feyenoord",
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Orkan Çınar",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Saidy Janko",
+      "added": [
+        "Saint-Étienne",
+        "FC Porto",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Henry Uche Agbo",
+      "added": [
+        "Deportivo La Coruña"
+      ]
+    },
+    {
+      "name": "Mahmoud Dahoud",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Ricardo Zamora De Grassa",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Jak Alnwick",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Shani Tarashaj",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Timothée Kolodziejczak",
+      "added": [
+        "Borussia Mönchengladbach",
+        "Saint-Étienne",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Sebastian De Maio",
+      "added": [
+        "Bologna",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Abdoulaye Diallo",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Orestis Karnezis",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Gaëtan Laborde",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Francis Coquelin",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Antonio Barreca",
+      "added": [
+        "AS Monaco",
+        "Newcastle United",
+        "Fiorentina",
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Marvin Friedrich",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Samuel Gigot",
+      "added": [
+        "Olympique de Marseille",
+        "Lazio"
+      ]
+    },
+    {
+      "name": "Bernard Mensah",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Derrick Luckassen",
+      "added": [
+        "PSV Eindhoven",
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Leart Paqarada",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Jordan Rossiter",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Nikita Chernov",
+      "added": [
+        "Spartak Moscow"
+      ]
+    },
+    {
+      "name": "Danilo Barbosa",
+      "added": [
+        "Benfica",
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Oliver Burke",
+      "added": [
+        "Celtic",
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Mihailo Ristić",
+      "added": [
+        "Sparta Prague",
+        "Benfica",
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Aaron Tshibola",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Ivica Ivušić",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Anton Zinkovskiy",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Aboubakar Kamara",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Leopold Zingerle",
+      "added": [
+        "RB Leipzig"
+      ]
+    },
+    {
+      "name": "Guido Rodríguez",
+      "added": [
+        "West Ham United",
+        "Valencia"
+      ]
+    },
+    {
+      "name": "John Jairo Ruiz",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Veljko Simić",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Tom Sinclair",
+      "added": [
+        "Rangers",
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Rolando Mandragora",
+      "added": [
+        "Torino",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Ivan Provedel",
+      "added": [
+        "Lazio",
+        "Inter Milan"
+      ]
+    },
+    {
+      "name": "Aaron Leya Iseka",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Stefan O'Connor",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Gerson Santos Putin",
+      "added": [
+        "Olympique de Marseille",
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Lewis Morgan",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "David Kinsombi",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Kieran Dowell",
+      "added": [
+        "Nottingham Forest",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Seko Fofana",
+      "added": [
+        "Stade Rennais",
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Rey Manaj",
+      "added": [
+        "FC Barcelona"
+      ]
+    },
+    {
+      "name": "Clinton Mata",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Anthony Briançon",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Abdou Diallo",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Cecil Blakemore",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Mohamed Farès",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Gerry McAloon",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Josh Onomah",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Aly Cissokho",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Jonathan Bamba",
+      "added": [
+        "Lille",
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Dálcio",
+      "added": [
+        "Rangers",
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Ryan Hedges",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Mason Holgate",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Alexandru Maxim",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Timon Wellenreuther",
+      "added": [
+        "Feyenoord",
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Björn Engels",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Yann M'Vila",
+      "added": [
+        "Saint-Étienne",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Arturo Vidal",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Hatem Ben Arfa",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Danny Ward",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Paul-Jose M'Poku",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Almamy Touré",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Omar Elabdellaoui",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Calvin Verdonk",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Ouasim Bouy",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Nicola Leali",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Victor Pálsson",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Jeffrey Bruma",
+      "added": [
+        "VfL Wolfsburg",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Maryan Shved",
+      "added": [
+        "Celtic",
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Sada Thioub",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Václav Černý",
+      "added": [
+        "VfL Wolfsburg",
+        "Rangers",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Joe Rothwell",
+      "added": [
+        "Blackburn Rovers",
+        "Southampton",
+        "Leeds United",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Hwang In-beom",
+      "added": [
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Loïs Diony",
+      "added": [
+        "Saint-Étienne",
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Omenuke Mfulu",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Felix Beijmo",
+      "added": [
+        "Werder Bremen",
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Jean-Kévin Augustin",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Jordy Clasie",
+      "added": [
+        "Club Brugge",
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Luca Waldschmidt",
+      "added": [
+        "Hamburger SV",
+        "Benfica",
+        "VfL Wolfsburg",
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Panos Armenakas",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Kieran Tierney",
+      "added": [
+        "Real Sociedad"
+      ]
+    },
+    {
+      "name": "Paul Bernardoni",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Pape Abou Cissé",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Frédéric Guilbert",
+      "added": [
+        "Aston Villa",
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Sead Hakšabanović",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Gennaro Tutino",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Tasos Donis",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Ethan Horvath",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Odsonne Édouard",
+      "added": [
+        "Crystal Palace",
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Olivier Boscagli",
+      "added": [
+        "PSV Eindhoven",
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Zinédine Machach",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Alexandre Mendy",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Davide Calabria",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Danylo Ihnatenko",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Yaw Yeboah",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Mamadou Doucouré",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Ruben Aguilar",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Zelimkhan Bakayev",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Thomas Didillon",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Aleix Febas",
+      "added": [
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Freddie Woodman",
+      "added": [
+        "Liverpool"
+      ]
+    },
+    {
+      "name": "Janis Blaswich",
+      "added": [
+        "RB Leipzig",
+        "Red Bull Salzburg",
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Carlos Santiago Pereira",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Robert Cunning",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Rafael Souto",
+      "added": [
+        "Deportivo La Coruña"
+      ]
+    },
+    {
+      "name": "Léo Dubois",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Reece Oxford",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Florian Lejeune",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Benjamin Lecomte",
+      "added": [
+        "Atlético Madrid",
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Alfred Gettins",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Zlatko Junuzović",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Adam Masina",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Ola Aina",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Davit Khocholava",
+      "added": [
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Dávinson Sánchez",
+      "added": [
+        "AFC Ajax",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "James Young",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Jeff Reine-Adélaïde",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Ismaël Bennacer",
+      "added": [
+        "Olympique de Marseille",
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Nikita Contini Baranovsky",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Arianit Ferati",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Max Besuschkow",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Alexander Schlager",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Angus Gunn",
+      "added": [
+        "Southampton",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Liam Bridcutt",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Patson Daka",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Ben Godfrey",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Nicolás Castillo",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Jean-Victor Makengo",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Rafik Zekhnini",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Arturo Calabresi",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Andrea Conti",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Lorenzo Venuti",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Aurelio Campa",
+      "added": [
+        "Real Madrid"
+      ]
+    },
+    {
+      "name": "Adrien Tameze",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Allan",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Jérémie Boga",
+      "added": [
+        "Chelsea",
+        "Atalanta",
+        "OGC Nice",
+        "Juventus"
+      ]
+    },
+    {
+      "name": "Olivier Ntcham",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Aldo Kalulu",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Sam Lammers",
+      "added": [
+        "Atalanta",
+        "Eintracht Frankfurt",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Aitor Cantalapiedra",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Tino Kadewere",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Jhon Córdoba",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Pedro Chirivella",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Qazim Laçi",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Marcelo Saracchi",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Joe Dodoo",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Pedro Pereira",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Tomás Rincón",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Jérôme Onguéné",
+      "added": [
+        "Red Bull Salzburg",
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Xavi Quintillà",
+      "added": [
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Edoardo Soleri",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Donald Love",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "James Meunier",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Ryan Kent",
+      "added": [
+        "Rangers",
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Matheus Pereira",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Johannes Geis",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Jack Byrne",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Hugh Goldie",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Alexander Milošević",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Víctor Ibarbo",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Tonny Vilhena",
+      "added": [
+        "Espanyol",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Jerome Sinclair",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Dodi Lukebakio",
+      "added": [
+        "VfL Wolfsburg",
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Antonín Barák",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Cameron Borthwick-Jackson",
+      "added": [
+        "Wolverhampton Wanderers",
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Adam Ounas",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Maxwell",
+      "added": [
+        "Inter Milan",
+        "FC Barcelona"
+      ]
+    },
+    {
+      "name": "Domenico Criscito",
+      "added": [
+        "Juventus",
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Fabian Reese",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Markus Schubert",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Alban Lafont",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Youssef Aït Bennasser",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Cameron Carter-Vickers",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Matteo Pessina",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Pantelis Hatzidiakos",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Terence Kongolo",
+      "added": [
+        "AS Monaco",
+        "Fulham",
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Marco Bizot",
+      "added": [
+        "AZ Alkmaar",
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Guillaume Gillet",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Rick van Drongelen",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Thomas Ouwejan",
+      "added": [
+        "Udinese",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Ashley Fletcher",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Levi Garcia",
+      "added": [
+        "Spartak Moscow",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Wilf Nixon",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Fred Collinson",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Ted Juggins",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Carles Pérez",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Jack Harrison",
+      "added": [
+        "Everton",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Joe Worrall",
+      "added": [
+        "Rangers",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Wout Weghorst",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Arkadiusz Reca",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Brandon Barker",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Valentin Vada",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Joris Gnagnon",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Armand Traoré",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Santiago Bernabéu Yeste",
+      "added": [
+        "Atlético Madrid"
+      ]
+    },
+    {
+      "name": "Josip Brekalo",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Eric Oelschlägel",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Jonas Omlin",
+      "added": [
+        "Borussia Mönchengladbach",
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Mix Diskerud",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Bernardo Fernandes da Silva Junior",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Francesco Rizzo",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Sinan Gümüş",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Guilherme dos Santos Torres",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Antony Ranieri",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Maximilian Wöber",
+      "added": [
+        "AFC Ajax",
+        "Sevilla",
+        "Red Bull Salzburg",
+        "Leeds United",
+        "Borussia Mönchengladbach",
+        "Werder Bremen",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Hannes Wolf",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Giuseppe Santagostino",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Cedric Itten",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Giuseppe Pezzella",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Thomas Mayer",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Liam Burt",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Oussama Idrissi",
+      "added": [
+        "Sevilla",
+        "AFC Ajax",
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Srđan Spiridonović",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Marcos Senesi",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Waldemar Anton",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Juan Ignacio Ramírez",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Radosław Majecki",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Roli Pereira de Sa",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Gaëtan Perrin",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Manolis Siopis",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Danilho Doekhi",
+      "added": [
+        "Lazio"
+      ]
+    },
+    {
+      "name": "Yann Karamoh",
+      "added": [
+        "Bordeaux",
+        "Torino",
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Paul Seguin",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Antonio Gausí",
+      "added": [
+        "Real Madrid"
+      ]
+    },
+    {
+      "name": "Marko Johansson",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Mattias Svanberg",
+      "added": [
+        "Malmö FF",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Jens Petter Hauge",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Auston Trusty",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Maximiliano Caufriez",
+      "added": [
+        "Valencia",
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Attila Szalai",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Tammy Abraham",
+      "added": [
+        "Chelsea",
+        "AS Roma",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Eray Cömert",
+      "added": [
+        "FC Nantes",
+        "Torino"
+      ]
+    },
+    {
+      "name": "Emiliano Viviano",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Jonas Martin",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Henri Bedimo",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Sergio Reguilón",
+      "added": [
+        "Real Madrid"
+      ]
+    },
+    {
+      "name": "Harry Salt",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Wally Hanlon",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Benjamin Stambouli",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Matt Turner",
+      "added": [
+        "Crystal Palace",
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Ronaldo Vieira",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Willian José",
+      "added": [
+        "Spartak Moscow"
+      ]
+    },
+    {
+      "name": "Alec Farmer",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Jesper Karlsson",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Oleksandr Haydash",
+      "added": [
+        "CSKA Moscow"
+      ]
+    },
+    {
+      "name": "Harry Wilson",
+      "added": [
+        "Fulham",
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Tongo Doumbia",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Federico Viviani",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Tahith Chong",
+      "added": [
+        "Werder Bremen",
+        "Club Brugge"
+      ]
+    },
+    {
+      "name": "Andy Lonergan",
+      "added": [
+        "Wolverhampton Wanderers",
+        "Liverpool",
+        "Everton"
+      ]
+    },
+    {
+      "name": "Bill Holmes",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Dick Foss",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Yohan Benalouane",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Tom Dunbar",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Charlie Briggs",
+      "added": [
+        "Tottenham Hotspur",
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "William Green",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Thomas Brennan",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Jimmy Hindson",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Santiago Bueno",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Sokratis Dioudis",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Tasos Avlonitis",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Willi Soya",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Sebastian Szymański",
+      "added": [
+        "Feyenoord",
+        "Fenerbahçe",
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Gideon Mensah",
+      "added": [
+        "Bordeaux",
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Igor Julio dos Santos de Paulo",
+      "added": [
+        "Fiorentina",
+        "Brighton & Hove Albion",
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Emmanuel Dennis",
+      "added": [
+        "1. FC Köln",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Amine Harit",
+      "added": [
+        "Schalke 04",
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Dalbert",
+      "added": [
+        "OGC Nice",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Kévin Théophile-Catherine",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Epaminondas Pantelakis",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Alan Pulido",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Steven Caulker",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Idrissa Doumbia",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Maksim Glushenkov",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Jannes Horn",
+      "added": [
+        "1. FC Köln",
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Roman Neustädter",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Berkay Özcan",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Deyovaisio Zeefuik",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Vegard Forren",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "James Justin",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Jens Odgaard",
+      "added": [
+        "AZ Alkmaar",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Domingos Quina",
+      "added": [
+        "Fulham",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Luca de la Torre",
+      "added": [
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Tayo Edun",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Pol Lirola",
+      "added": [
+        "Fiorentina",
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Jota",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Gedson Fernandes",
+      "added": [
+        "Tottenham Hotspur",
+        "Galatasaray",
+        "Beşiktaş",
+        "Spartak Moscow"
+      ]
+    },
+    {
+      "name": "George Dobson",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Rémy Descamps",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "William Charles Lambe",
+      "added": [
+        "Arsenal",
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Noussair Mazraoui",
+      "added": [
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Philippe Sandler",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Danilo Larangeira",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Josuha Guilavogui",
+      "added": [
+        "Bordeaux",
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Guus Til",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Malang Sarr",
+      "added": [
+        "Chelsea",
+        "FC Porto",
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Adama Diakhaby",
+      "added": [
+        "AS Monaco",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Tolga Ciğerci",
+      "added": [
+        "Galatasaray",
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Bruno Jordão",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Jovane Cabral",
+      "added": [
+        "Lazio",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Yan Brice Eteki",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Robert Mudražija",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Jonny Maddison",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Orel Mangala",
+      "added": [
+        "Hamburger SV",
+        "Nottingham Forest",
+        "Olympique Lyonnais",
+        "Everton"
+      ]
+    },
+    {
+      "name": "Mouctar Diakhaby",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Florentino Luís",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Luquinhas",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Ismaïla Sarr",
+      "added": [
+        "Olympique de Marseille",
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Justin Kluivert",
+      "added": [
+        "AFC Ajax",
+        "AS Roma",
+        "OGC Nice",
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Stan Dixon",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Axel Tuanzebe",
+      "added": [
+        "Napoli"
+      ]
+    },
+    {
+      "name": "Panagiotis Retsos",
+      "added": [
+        "Bayer Leverkusen",
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Henry Onyekuru",
+      "added": [
+        "AS Monaco",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "João Félix",
+      "added": [
+        "Benfica",
+        "Atlético Madrid",
+        "FC Barcelona"
+      ]
+    },
+    {
+      "name": "Fyodor Chalov",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Arnaud Nordin",
+      "added": [
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Julian Pollersbeck",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Joachim Moitzi",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Victor Nelsson",
+      "added": [
+        "Galatasaray",
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Rasmus Kristensen",
+      "added": [
+        "Red Bull Salzburg",
+        "Leeds United",
+        "AS Roma",
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Felix Uduokhai",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Håkan Lindman",
+      "added": [
+        "Anderlecht"
+      ]
+    },
+    {
+      "name": "Jimmy Harrold",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Roberto Fernández",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Joe Aribo",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Ruben Sammut",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Zymer Bytyqi",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Vito Mannone",
+      "added": [
+        "AS Monaco",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Tom Huddlestone",
+      "added": [
+        "Manchester United"
+      ]
+    },
+    {
+      "name": "Dujon Sterling",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Javi Galán",
+      "added": [
+        "Atlético Madrid",
+        "Real Sociedad"
+      ]
+    },
+    {
+      "name": "Mustapha Bundu",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Ivan Obradović",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Édouard Mendy",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Jean-Eudes Aholou",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "James Raine",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Óscar Rodríguez Arnaiz",
+      "added": [
+        "Sevilla",
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "George Payne",
+      "added": [
+        "Tottenham Hotspur",
+        "Crystal Palace",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Jack Thomas",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Jordan Jones",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "James Maxwell",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Joe Walters",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Ibrahim Sangaré",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Jan Hassink",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Perr Schuurs",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Aymen Barkok",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Walter Scott",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Thomas Gardner",
+      "added": [
+        "Liverpool"
+      ]
+    },
+    {
+      "name": "Cuco Martina",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Nikola Moro",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Jérémy Guillemenot",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Marc Gual",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Bob Craig",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Houssem Aouar شيبان",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Ivan Zlobin",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Aleksandr Sobolev",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Martin Terrier",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Pietro Pellegri",
+      "added": [
+        "AC Milan",
+        "Torino"
+      ]
+    },
+    {
+      "name": "William McAulay",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Facundo Medina",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Andrea Vassallo",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Anel Ahmedhodžić",
+      "added": [
+        "Bordeaux",
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Şener Özbayraklı",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Jacob Rasmussen",
+      "added": [
+        "Fiorentina",
+        "Feyenoord",
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Ryan Loft",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Harry Lewis",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Alex Venters",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Alf Hanson",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Allan Martin",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Patrick Cutrone",
+      "added": [
+        "AC Milan",
+        "Fiorentina",
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Keinan Davis",
+      "added": [
+        "Nottingham Forest",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Stefanos Evangelou",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Joël Piroe",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Abdelhamid Sabiri",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Rajiv van La Parra",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Ramazan Özcan",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Ben Brereton",
+      "added": [
+        "Villarreal",
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Billy Kettle",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Billy Kirksop",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Stephy Mavididi",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Owen Wijndal",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Aïssa Mandi",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Jimmy Miller",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Dani de Wit",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Gian-Luca Itter",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Fashion Sakala",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Jørgen Strand Larsen",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Luca Vido",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Kevin Bonifazi",
+      "added": [
+        "Udinese",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Manor Solomon",
+      "added": [
+        "Villarreal",
+        "Fiorentina",
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Evan Ndicka",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "David Okereke",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Christian Kouamé",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Nicolò Zaniolo",
+      "added": [
+        "AS Roma",
+        "Galatasaray",
+        "Aston Villa",
+        "Atalanta",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Tom Peacock",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Axel Bakayoko",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Yordan Osorio",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Bobby Parker",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Ivan Ilić",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Ajdin Hrustic",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Aliou Badji",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Marin Pongračić",
+      "added": [
+        "Red Bull Salzburg",
+        "VfL Wolfsburg",
+        "Borussia Dortmund",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Anders Dreyer",
+      "added": [
+        "Anderlecht"
+      ]
+    },
+    {
+      "name": "Noa Lang",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Filip Helander",
+      "added": [
+        "Bologna",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Martin Graiciar",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Kouadio-Yves Dabila",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Enock Mwepu",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Charalampos Lykogiannis",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Josh Bowler",
+      "added": [
+        "Nottingham Forest",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Boubacar Kamara",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Alex Král",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Angel Gomes",
+      "added": [
+        "Olympique de Marseille",
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Wout Faes",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Amine Gouiri",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Rafael Leão",
+      "added": [
+        "Lille",
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Oleksandr Pikhalyonok",
+      "added": [
+        "Dynamo Kyiv"
+      ]
+    },
+    {
+      "name": "Berke Özer",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Mohamed Camara",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Kyle Walker-Peters",
+      "added": [
+        "Southampton",
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Dan-Axel Zagadou",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Dominik Szoboszlai",
+      "added": [
+        "RB Leipzig"
+      ]
+    },
+    {
+      "name": "Valentin Eysseric",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Valentin Rosier",
+      "added": [
+        "Beşiktaş",
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "El Fardou Ben Nabouhane",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Bernard Joy",
+      "added": [
+        "Southampton",
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Fabrice Grange",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Daniel James",
+      "added": [
+        "Leeds United",
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Francis Llacer",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Hiroki Itō",
+      "added": [
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Papiss Cissé",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Diego Cavalieri",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Emanuel Pogatetz",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Lewis Holtby",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Gustav Putzendopler",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Gérard Lanthier",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Kostas Mitroglou",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Renat Dadashov",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Jack Butland",
+      "added": [
+        "Crystal Palace",
+        "Manchester United",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Naldo",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Luciano Narsingh",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Håvard Nordtveit",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Patrick van Aanholt",
+      "added": [
+        "Chelsea",
+        "Crystal Palace",
+        "Galatasaray",
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Hadi Sacko",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Patrick Müller",
+      "added": [
+        "Juventus"
+      ]
+    },
+    {
+      "name": "Jack Bell",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Cristian Daniel Ledesma",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Radosav Petrović",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Vurnon Anita",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Abdul Majeed Waris",
+      "added": [
+        "FC Porto",
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Baba Rahman",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Andrejs Ciganiks",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Rogério",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Rachid Ghezzal",
+      "added": [
+        "Leicester City",
+        "Fiorentina",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Kaan Ayhan",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Chancel Mbemba",
+      "added": [
+        "FC Porto",
+        "Olympique de Marseille",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Marcin Kamiński",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Lindsay Rose",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Max Grün",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Simon Terodde",
+      "added": [
+        "Hamburger SV",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Patrick Bamford",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Sammy Ameobi",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Anthony Knockaert",
+      "added": [
+        "Fulham",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Sam Johnstone",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Nathan Redmond",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Mbwana Samatta",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Luciano Vietto",
+      "added": [
+        "Valencia",
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Tolgay Arslan",
+      "added": [
+        "Fenerbahçe",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Papy Djilobodji",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Henri Lansbury",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Mohamed Elyounoussi",
+      "added": [
+        "FC Basel",
+        "Southampton",
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Fredrik Midtsjø",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Arnaud Souquet",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Lee Tomlin",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Queensy Menig",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Stefano Okaka",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Jimmy Briand",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Riechedly Bazoer",
+      "added": [
+        "VfL Wolfsburg",
+        "FC Porto",
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Jimmy Turnbull",
+      "added": [
+        "Rangers",
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Romain Saïss",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Marc Janko",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "İsmail Köybaşı",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Henry Littlewort",
+      "added": [
+        "Fulham",
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Daniel Ayala",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Younès Belhanda",
+      "added": [
+        "OGC Nice",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Jores Okore",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Bart Schenkeveld",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Reiss Nelson",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Alfa Semedo",
+      "added": [
+        "Espanyol",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Fodé Ballo-Touré",
+      "added": [
+        "AC Milan",
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Wally Hardinge",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Niall Ennis",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Vasilis Lampropoulos",
+      "added": [
+        "Deportivo La Coruña"
+      ]
+    },
+    {
+      "name": "Gerard Deulofeu",
+      "added": [
+        "AC Milan",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "William Devlin",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Carlos Vinícius",
+      "added": [
+        "AS Monaco",
+        "Benfica",
+        "Tottenham Hotspur",
+        "PSV Eindhoven",
+        "Fulham",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Yannis Salibur",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Gaetano Castrovilli",
+      "added": [
+        "Lazio"
+      ]
+    },
+    {
+      "name": "Matt O'Riley",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Pierre Kunde",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Miku",
+      "added": [
+        "Deportivo La Coruña"
+      ]
+    },
+    {
+      "name": "Sejad Salihović",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Dejan Meleg",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Trevoh Chalobah",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Luc Castaignos",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Jonathan Biabiany",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Luka Milivojević",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Nicolás Gaitán",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Jack Robinson",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Severiano Goiburu Lopetegui",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Giancarlo Galdiolo",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Darío Poveda",
+      "added": [
+        "Atlético Madrid"
+      ]
+    },
+    {
+      "name": "Dimitri Foulquier",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Cenk Tosun",
+      "added": [
+        "Crystal Palace",
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Mitch Clark",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Higinio Ortúzar",
+      "added": [
+        "Real Sociedad"
+      ]
+    },
+    {
+      "name": "Cheick Touré",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Juan Urquizu",
+      "added": [
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Juan Miranda",
+      "added": [
+        "Schalke 04",
+        "Real Betis",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Myron Boadu",
+      "added": [
+        "AS Monaco",
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Mile Svilar",
+      "added": [
+        "Anderlecht",
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Wilfried Kanga",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Ondřej Čelůstka",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Marko Petković",
+      "added": [
+        "Spartak Moscow"
+      ]
+    },
+    {
+      "name": "Jérémy Pied",
+      "added": [
+        "Southampton",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Zinho Vanheusden",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Saúl Coco",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Peter Davies",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Lukas Nmecha",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Ignatius Ganago",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Aaron Nemane",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Remko Pasveer",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Stephen Henderson",
+      "added": [
+        "Nottingham Forest",
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Jordan Ferri",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Ramiro Funes Mori",
+      "added": [
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Ferdy Druijf",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Antonio Donnarumma",
+      "added": [
+        "AC Milan",
+        "Torino"
+      ]
+    },
+    {
+      "name": "Milan Rodić",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Paul Akouokou",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Michaël Cuisance",
+      "added": [
+        "Olympique de Marseille",
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Molla Wagué",
+      "added": [
+        "Leicester City",
+        "Nottingham Forest",
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Nair Tiknizyan",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Ernie Beecham",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Stuart Armstrong",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Paddy Kelly",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Marcus McGuane",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Joël Abu Hanna",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Josimar Quintero",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Fiete Arp",
+      "added": [
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Aaron Connolly",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Nathan Trott",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Matt Doherty",
+      "added": [
+        "Atlético Madrid"
+      ]
+    },
+    {
+      "name": "Mehdi Léris",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Carlo Holse",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Ludovit Reis",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Roman Sub",
+      "added": [
+        "Dynamo Kyiv"
+      ]
+    },
+    {
+      "name": "Simone Verdi",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Andreas Skov Olsen",
+      "added": [
+        "Club Brugge",
+        "VfL Wolfsburg",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Andrea Petagna",
+      "added": [
+        "Napoli"
+      ]
+    },
+    {
+      "name": "Edon Zhegrova",
+      "added": [
+        "Lille",
+        "Juventus"
+      ]
+    },
+    {
+      "name": "Pavle Vagić",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Giacomo Vrioni",
+      "added": [
+        "Juventus"
+      ]
+    },
+    {
+      "name": "Stefano Gori",
+      "added": [
+        "Juventus"
+      ]
+    },
+    {
+      "name": "Dylan McGeouch",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Billy Gilmour",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Archie Livingstone",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Simone Romagnoli",
+      "added": [
+        "Bologna",
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Samuele Perisan",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Oumar Solet",
+      "added": [
+        "Red Bull Salzburg",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Jimmy Millar",
+      "added": [
+        "Sunderland",
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Viktor Nastashevskyi",
+      "added": [
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Jonathan Panzo",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Nicolás González",
+      "added": [
+        "Atlético Madrid"
+      ]
+    },
+    {
+      "name": "Morgan Feeney",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Yann Aurel Bisseck",
+      "added": [
+        "Inter Milan"
+      ]
+    },
+    {
+      "name": "Nikolas Nartey",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Nazariy Rusyn",
+      "added": [
+        "Legia Warsaw",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Dave Wright",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Carlos Zambrano",
+      "added": [
+        "Dynamo Kyiv",
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Bixente Lizarazu",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Mevlüt Erdinç",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Lorenzo De Silvestri",
+      "added": [
+        "Torino",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Anthony Mounier",
+      "added": [
+        "Saint-Étienne",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Willy Caballero",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Giovanni Trapattoni",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Nya Kirby",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "James Brennan",
+      "added": [
+        "Liverpool"
+      ]
+    },
+    {
+      "name": "Tyrell Malacia",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Adam Forshaw",
+      "added": [
+        "Leeds United",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Fraser Hornby",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Joe Garner",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Nathan Broadhead",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Jan Kuchta",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Manu Morlanes",
+      "added": [
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "Mykola Yurchenko",
+      "added": [
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Juan Jesus",
+      "added": [
+        "Napoli"
+      ]
+    },
+    {
+      "name": "Sam Dominique Abouo",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Lee Camp",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Youssef El-Arabi",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Eldin Jakupović",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Sam Chedgzoy",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Mario Gavranović",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Pape Gueye",
+      "added": [
+        "Olympique de Marseille",
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Lenny Pintor",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Victor Wanyama",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Garry Mendes Rodrigues",
+      "added": [
+        "Fenerbahçe",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Stanley Nsoki",
+      "added": [
+        "Club Brugge"
+      ]
+    },
+    {
+      "name": "John Bardsley",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Joe Cartwright",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Bartosz Bereszyński",
+      "added": [
+        "Napoli"
+      ]
+    },
+    {
+      "name": "Albert Sambi Lokonga",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Sébastien Pocognoli",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Lassina Traoré",
+      "added": [
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Mitchel Bakker",
+      "added": [
+        "AFC Ajax",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Arnór Sigurðsson",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Alassane Pléa",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Marcus Barnes",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Albert Day",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Albert Wilkes",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Amin Younes",
+      "added": [
+        "AFC Ajax",
+        "Eintracht Frankfurt",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Aleksandar Pantić",
+      "added": [
+        "Dynamo Kyiv"
+      ]
+    },
+    {
+      "name": "Alex Pritchard",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Alex Wilson",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Alexander King",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Alf Bishop",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Yassine Benzia",
+      "added": [
+        "Fenerbahçe",
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Lewis Ferguson",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Pep Biel",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Elvis Rexhbeçaj",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Victor Jensen",
+      "added": [
+        "Rosenborg"
+      ]
+    },
+    {
+      "name": "Ernest Muçi",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Charlie Crossley",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Andraž Šporar",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Andy Penman",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Angus Douglas",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Jacob Davenport",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Anton Zabolotny",
+      "added": [
+        "Zenit Saint Petersburg",
+        "Spartak Moscow"
+      ]
+    },
+    {
+      "name": "Luke Freeman",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Arthur Beadsworth",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Artur Augusto",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Danny da Costa",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Edwin van der Sar",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Junior Firpo",
+      "added": [
+        "Real Betis"
+      ]
+    },
+    {
+      "name": "Musa Barrow",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Barney Ramsden",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Barry Lloyd",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Harry Logan",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Bill McPherson",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Billy Henry",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Miro Muheim",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Bob Turnbull",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Brendan Galloway",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Brian Dear",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Francesco Bardi",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Romário Baró",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Callum Wilson",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Jusuf Gazibegović",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Freddie Haycock",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Willie Murray",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Josha Vagnoman",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Sepp van den Berg",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Carlos Alberto Peña",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Liam Millar",
+      "added": [
+        "Liverpool",
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Derek Mayers",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Frank Boulton",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Álex Collado",
+      "added": [
+        "Real Betis"
+      ]
+    },
+    {
+      "name": "Roberto Soriano",
+      "added": [
+        "Villarreal",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Aslak Fonn Witry",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Baktiyor Zaynutdinov",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Nicolas Kühn",
+      "added": [
+        "Rapid Wien",
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Giangiacomo Magnani",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Rayan Aït-Nouri",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Charlie Taylor",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Leon Balogun",
+      "added": [
+        "Brighton & Hove Albion",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Ezequiel Schelotto",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Manuel De Luca",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Christian Nørgaard",
+      "added": [
+        "Arsenal",
+        "Everton"
+      ]
+    },
+    {
+      "name": "Dominik Kotarski",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Vakoun Issouf Bayo",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Kazenga LuaLua",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Alex Teixeira",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Nathan Bishop",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Cristiano Piccini",
+      "added": [
+        "Valencia",
+        "Atalanta",
+        "Red Star Belgrade",
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Ferenc Plattkó",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Kamal Sowah",
+      "added": [
+        "Club Brugge"
+      ]
+    },
+    {
+      "name": "André Hahn",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Lionel Watson",
+      "added": [
+        "Manchester City",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Jeremain Lens",
+      "added": [
+        "Fenerbahçe",
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Harry Hindle",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Lars Lukas Mai",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Damir Milinović",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Danny Batth",
+      "added": [
+        "Sunderland",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Danny Ings",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Boy Martin",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "André Ramalho",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Meritan Shabani",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "David Burnside",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "David Hannah",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "David Moberg Karlsson",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "David Nelson",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "David Taylor",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Dennis Appiah",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Derrick Williams",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Diego Falcinelli",
+      "added": [
+        "Bologna",
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Moussa Sylla",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Dimitrios Kolovos",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Oğuzhan Özyakup",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Anthony Stokes",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Donald Gow",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Douglas Dick",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Taxiarchis Fountas",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Dwight Gayle",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Eddie Burbanks",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Mario Santana",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Mert Müldür",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Dwight McNeil",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Yacine Adli",
+      "added": [
+        "AC Milan",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Quinten Timber",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Wouter Burger",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Lewis Grabban",
+      "added": [
+        "Sunderland",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Filip Stojković",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Filippo Perucchini",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Joel Robles",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Fouad Bachirou",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Renato Tapia",
+      "added": [
+        "Feyenoord",
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Ron-Thorben Hoffmann",
+      "added": [
+        "Sunderland",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Frank Englefield",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Frank Mitchell",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Fred Blackman",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Fred Briggs",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Fred Hollands",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Frederick Groves",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Fábio Cardoso",
+      "added": [
+        "FC Porto",
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Nicolai Müller",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Marco Davide Faraoni",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Kyle Bartley",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Mehdi Carcela-González",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Noah Okafor",
+      "added": [
+        "Red Bull Salzburg",
+        "AC Milan",
+        "Napoli",
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Roger Ibañez",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Ken Morgan",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "George Crowther",
+      "added": [
+        "Manchester United"
+      ]
+    },
+    {
+      "name": "George Goddard",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Salih Uçan",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "George Harrison",
+      "added": [
+        "Leicester City",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "George Hedley",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Christoph Moritz",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Daniel Amartey",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Gerry Baker",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Russell Martin",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Gianluca Lapadula",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "James Boyle",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Jim Brown",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Tom Russell",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Rodrigo Becão",
+      "added": [
+        "Udinese",
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Youssouf Mulumbu",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Modou Barrow",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Aleksa Terzić",
+      "added": [
+        "Fiorentina",
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Sebastiaan Bornauw",
+      "added": [
+        "1. FC Köln",
+        "VfL Wolfsburg",
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Anton Donkor",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Emile Smith Rowe",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Melvin Bard",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Jake Vokins",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Sam Byram",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Sherwin Seedorf",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Sofiane Diop",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Morgan Ferrier",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Mahdi Camara",
+      "added": [
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "Rabbi Matondo",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Abdoulaye Dabo",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Mikael Tørset Johnsen",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Sven Norman Botman",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Matthias Hamrol",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Djed Spence",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Makhtar Gueye",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Grant Smith",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Jacob Maddox",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Illan Meslier",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Pedro António Pereira Gonçalves",
+      "added": [
+        "Wolverhampton Wanderers",
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Serhiy Chobotenko",
+      "added": [
+        "Dynamo Kyiv"
+      ]
+    },
+    {
+      "name": "Argyris Kampetsis",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Javairô Dilrosun",
+      "added": [
+        "Bordeaux"
+      ]
+    },
+    {
+      "name": "Kamil Grabara",
+      "added": [
+        "Liverpool",
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Jamal Blackman",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Sandro Kulenović",
+      "added": [
+        "Dinamo Zagreb",
+        "Torino"
+      ]
+    },
+    {
+      "name": "Daniel Ballard",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Philipp Köhn",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Simon Funnell",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Harry Earle",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Adrian Fein",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Harry Walker",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Ibrahima Diallo",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Harry Woods",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Harvey Elliott",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Luca Pellegrini",
+      "added": [
+        "Juventus",
+        "Eintracht Frankfurt",
+        "Lazio"
+      ]
+    },
+    {
+      "name": "Simone Muratore",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Nicolò Fagioli",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Ross McCormack",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Samuel Chukwueze",
+      "added": [
+        "Villarreal",
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Jack Clarke",
+      "added": [
+        "Tottenham Hotspur",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "John Fleck",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Henry Horton",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Santiago Eneme",
+      "added": [
+        "Sparta Prague"
+      ]
+    },
+    {
+      "name": "Tommaso Pobega",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Gonçalo Cardoso",
+      "added": [
+        "West Ham United",
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Thiago Almada",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "João Virgínia",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Kevin Vogt",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Anthony Jung",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Robbie Burton",
+      "added": [
+        "Dinamo Zagreb"
+      ]
+    },
+    {
+      "name": "Altay Bayındır",
+      "added": [
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Brian Brobbey",
+      "added": [
+        "AFC Ajax",
+        "RB Leipzig",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Julian Krahl",
+      "added": [
+        "RB Leipzig"
+      ]
+    },
+    {
+      "name": "Daniel Fagiani",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Emanuel Insúa",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Spencer",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Manuel Iturra",
+      "added": [
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Wilson Isidor",
+      "added": [
+        "Zenit Saint Petersburg",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Jean Marcelin",
+      "added": [
+        "Bordeaux",
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Lucien Agoumé",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Felipe Pardo",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Nehuén Pérez",
+      "added": [
+        "Udinese",
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Dan Neil",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Sebastian Walukiewicz",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Bob Redfern",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Andros Townsend",
+      "added": [
+        "Crystal Palace",
+        "Everton"
+      ]
+    },
+    {
+      "name": "Yari Verschaeren",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Sandro Raniere",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Giulian Biancone",
+      "added": [
+        "Nottingham Forest",
+        "Olympiacos",
+        "Anderlecht"
+      ]
+    },
+    {
+      "name": "Joaquín Sierra",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Cyril Ngonge",
+      "added": [
+        "Napoli",
+        "Torino",
+        "Espanyol"
+      ]
+    },
+    {
+      "name": "José Antonio Barrios",
+      "added": [
+        "FC Barcelona"
+      ]
+    },
+    {
+      "name": "José Iglesias",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "José Izquierdo",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Kara Mbodji",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Ebor Reed",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Tommy McDermott",
+      "added": [
+        "Celtic",
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Leon Dajaku",
+      "added": [
+        "Bayern Munich",
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Sebastian Polter",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Hélder Costa",
+      "added": [
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Ahmed Kutucu",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Eversley Mansfield",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Billy Kirsopp",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Martin Hansen",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Róbert Mak",
+      "added": [
+        "Zenit Saint Petersburg"
+      ]
+    },
+    {
+      "name": "Ian McPherson",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Ryan Giles",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Davide Bettella",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Elia Caprile",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Simone Ghidotti",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Giacomo Raspadori",
+      "added": [
+        "Atlético Madrid",
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Tom Carroll",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Ömer Faruk Beyaz",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Manuel Wintzheimer",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Mustafa Kapı",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Eddy Sylvestre",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Romain Faivre",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Antonio Mirante el flecheiro",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Bjarne Thoelke",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Fabrice Nsakala",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Ki-Jana Hoever",
+      "added": [
+        "Liverpool",
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Rafael Camacho",
+      "added": [
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Cheikh M'Bengue",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Sadık Çiftpınar",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Gianluca Gaetano",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Crysencio Summerville",
+      "added": [
+        "Feyenoord",
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Mohamed Daramy",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Ernie Rhodes",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Víctor Mollejo",
+      "added": [
+        "Deportivo La Coruña"
+      ]
+    },
+    {
+      "name": "Ken Davies",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Jesús Manuel Corona",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "James Prescott",
+      "added": [
+        "Liverpool"
+      ]
+    },
+    {
+      "name": "Vladimir Nikolovski",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Mehmet Ekici",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Tetê",
+      "added": [
+        "Olympique Lyonnais",
+        "Leicester City",
+        "Galatasaray",
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Rodrigo Zalazar",
+      "added": [
+        "Schalke 04",
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Danylo Sikan",
+      "added": [
+        "Anderlecht"
+      ]
+    },
+    {
+      "name": "Felix Nmecha",
+      "added": [
+        "VfL Wolfsburg",
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Tarik Elyounoussi",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Erkan Avseren",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Rafael de Diego Larrañaga",
+      "added": [
+        "Real Madrid",
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Varol Ürkmez",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Mohamed Ihattaren",
+      "added": [
+        "Juventus",
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Peter Vindahl Jensen",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Jack Angus",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Jack Smith",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "James Cameron",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "James Stark",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Dan Ndoye",
+      "added": [
+        "FC Basel",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Jamie Jones",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Kemal Ademi",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Sophie Harris",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Derek Jackman",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Tom Krauß",
+      "added": [
+        "Schalke 04",
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "John McMaster",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Andy Pelmard",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "James Garner",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Leroy Abanda Mfomo",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Jimmy Paterson",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Jock Davie",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Jock McDougall",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Joe Bryan",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Joe Norton",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "John Bovill",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Luis Palma",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "John Harvey",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "John Lundstram",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "John McDonald",
+      "added": [
+        "Rangers",
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "John McPherson",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "John Walker",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Jordan Archer",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "José Sá",
+      "added": [
+        "Olympiacos",
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Eduardo Camavinga",
+      "added": [
+        "Stade Rennais"
+      ]
+    },
+    {
+      "name": "João Teixeira",
+      "added": [
+        "Wolverhampton Wanderers",
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Rıdvan Yılmaz",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Juan Familia Castillo",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Justin Eilers",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Roberto Piccoli",
+      "added": [
+        "Fiorentina",
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Armel Bella-Kotchap",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Josep Martínez",
+      "added": [
+        "Inter Milan"
+      ]
+    },
+    {
+      "name": "Adil Aouchiche",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Arthur Zagré",
+      "added": [
+        "AS Monaco"
+      ]
+    },
+    {
+      "name": "Loïc Mbe Soh",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Karol Linetty",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "DeAndre Yedlin",
+      "added": [
+        "Newcastle United",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Ken Wimshurst",
+      "added": [
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Devyne Rensch",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Kevin Mbabu",
+      "added": [
+        "VfL Wolfsburg",
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Marco Tilio",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Andrea Colpani",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Nicola Zalewski",
+      "added": [
+        "Inter Milan",
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Leo Greiml",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Kortney Hause",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Moussa N'Diaye",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Nemanja Gudelj",
+      "added": [
+        "Sporting CP",
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Kévin Malcuit",
+      "added": [
+        "Lille",
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Elias Achouri",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Luan Capanni",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "David Stokes",
+      "added": [
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Billy Milne",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Leandro Trossard",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Anass Salah-Eddine",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Ognjen Vranješ",
+      "added": [
+        "Anderlecht"
+      ]
+    },
+    {
+      "name": "Ilaix Moriba",
+      "added": [
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Matt Kingsley",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Igor Paixão",
+      "added": [
+        "Feyenoord"
+      ]
+    },
+    {
+      "name": "Michael Folorunsho",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Jimmy Caldwell",
+      "added": [
+        "Tottenham Hotspur",
+        "Everton"
+      ]
+    },
+    {
+      "name": "George Horler",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "Sidney Crawford",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Robert Pilch",
+      "added": [
+        "Tottenham Hotspur"
+      ]
+    },
+    {
+      "name": "Reginald Weaver",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Bill Healey",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Flavius Daniliuc",
+      "added": [
+        "Red Bull Salzburg",
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Josip Stanišić",
+      "added": [
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Jesper Lindstrøm",
+      "added": [
+        "Everton",
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Alexander Meyer",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Brennan Johnson",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Dominik Franke",
+      "added": [
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Thomas Hickersberger",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Jannik Vestergaard",
+      "added": [
+        "Southampton",
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "George Heineman",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Lucas Perrin",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Marley Aké",
+      "added": [
+        "Juventus",
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Tobias Raschl",
+      "added": [
+        "Borussia Dortmund"
+      ]
+    },
+    {
+      "name": "Mads Bidstrup",
+      "added": [
+        "Red Bull Salzburg",
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Ben Chrisene",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Cheikh Niasse",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Aleksandar Dragović",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "João Victor",
+      "added": [
+        "CSKA Moscow"
+      ]
+    },
+    {
+      "name": "Neraysho Kasanwirjo",
+      "added": [
+        "Feyenoord",
+        "Rapid Wien",
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Alexis Flips",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Doğan Alemdar",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Tanguy Nianzou",
+      "added": [
+        "Bayern Munich",
+        "Sevilla",
+        "Lille"
+      ]
+    },
+    {
+      "name": "Issa Kaboré",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Troy Parrott",
+      "added": [
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Tom Trybull",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Lorenzo Pirola",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Marcel Ritzmaier",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Simone Panada",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Mame Thiam",
+      "added": [
+        "Fenerbahçe"
+      ]
+    },
+    {
+      "name": "Ignace Van Der Brempt",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Marc McNulty",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Marco Silvestri",
+      "added": [
+        "Udinese",
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Marco Sportiello",
+      "added": [
+        "AC Milan"
+      ]
+    },
+    {
+      "name": "Marcus Antonsson",
+      "added": [
+        "Leeds United",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Massimo Coda",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Matthew Smailes",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Maurice Parry",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Maurício dos Santos Nascimento",
+      "added": [
+        "Spartak Moscow",
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Michael Lang",
+      "added": [
+        "Borussia Mönchengladbach",
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Robin Olsen",
+      "added": [
+        "Everton",
+        "Aston Villa"
+      ]
+    },
+    {
+      "name": "Luka Sučić",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Salis Abdul Samed",
+      "added": [
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Michael Griffin",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Mick Coady",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Miguel Trauco",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Mike Pinner",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Isaac Lihadji",
+      "added": [
+        "Lille"
+      ]
+    },
+    {
+      "name": "Taylor Harwood-Bellis",
+      "added": [
+        "Blackburn Rovers",
+        "Southampton"
+      ]
+    },
+    {
+      "name": "Yorbe Vertessen",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Tino Anjorin",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Evan Ferguson",
+      "added": [
+        "West Ham United",
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Angelo Stiller",
+      "added": [
+        "Bayern Munich"
+      ]
+    },
+    {
+      "name": "Leonardo Bittencourt",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Miroslav Polak",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Christoph Knasmüllner",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Daniel Pavlović",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Niklas Hult",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Marwin Hitz",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Nadir Zortea",
+      "added": [
+        "Bologna"
+      ]
+    },
+    {
+      "name": "Mustapha Carayol",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Nathan Taylor",
+      "added": [
+        "FC Barcelona"
+      ]
+    },
+    {
+      "name": "Noah Katterbach",
+      "added": [
+        "FC Basel",
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Tiago Gouveia",
+      "added": [
+        "Benfica",
+        "OGC Nice"
+      ]
+    },
+    {
+      "name": "Matej Mitrović",
+      "added": [
+        "Beşiktaş"
+      ]
+    },
+    {
+      "name": "Arnaud Kalimuendo",
+      "added": [
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Derrick Köhn",
+      "added": [
+        "Galatasaray",
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Nicolaj Thomsen",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Gavin Bazunu",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Olarenwaju Kayode",
+      "added": [
+        "Manchester City"
+      ]
+    },
+    {
+      "name": "Pablo Marí",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Federico Fernández",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Rémy Cabella",
+      "added": [
+        "Lille",
+        "Olympiacos",
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Mato Jajalo",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Percy Hislop",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Peter McKennan",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Mateo Pavlović",
+      "added": [
+        "Saint-Étienne"
+      ]
+    },
+    {
+      "name": "Lisandro Ezequiel López",
+      "added": [
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Aguibou Camara",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Vadis Odjidja-Ofoe",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Conor Coady",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Geoffrey Kondogbia",
+      "added": [
+        "Atlético Madrid",
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Barney Lee",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Radosav Bulić",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Tommy Doyle",
+      "added": [
+        "Hamburger SV",
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Dion Sanderson",
+      "added": [
+        "Sunderland",
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Alexander Esswein",
+      "added": [
+        "VfB Stuttgart"
+      ]
+    },
+    {
+      "name": "Michał Karbownik",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Ísak Bergmann Jóhannesson",
+      "added": [
+        "1. FC Köln"
+      ]
+    },
+    {
+      "name": "Robert Neil",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Kamil Piątkowski",
+      "added": [
+        "Legia Warsaw"
+      ]
+    },
+    {
+      "name": "Rodrigo Ely",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Ruslan Malinovskyi",
+      "added": [
+        "Shakhtar Donetsk"
+      ]
+    },
+    {
+      "name": "Ivan Ivanov",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Brandon Soppy",
+      "added": [
+        "Udinese",
+        "Atalanta",
+        "Torino",
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Dom Kelly",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Sandy Higgins",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Sandy McNab",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Ismail Jakobs",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Melker Ellborg",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Jay Gorter",
+      "added": [
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Carlos Bacca",
+      "added": [
+        "AC Milan",
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Steven van der Sloot",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Soualiho Meïté",
+      "added": [
+        "AS Monaco",
+        "Bordeaux",
+        "Benfica"
+      ]
+    },
+    {
+      "name": "Stan Earle",
+      "added": [
+        "Arsenal"
+      ]
+    },
+    {
+      "name": "Stephen Hendrie",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Steve Cook",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Steve Wignall",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Largie Ramazani",
+      "added": [
+        "Manchester United",
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Talbot Lewis",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Iñaki Peña",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Paul McKinnon",
+      "added": [
+        "Malmö FF"
+      ]
+    },
+    {
+      "name": "Thomas Bennett",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Thomas Fitchie",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Paul Caddis",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Tom Hutchinson",
+      "added": [
+        "Celtic"
+      ]
+    },
+    {
+      "name": "Tom Morrison",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Tommy Fitzgerald",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Tommy McInally",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Pascal Struijk",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Toni Martínez",
+      "added": [
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Owen Otasowie",
+      "added": [
+        "Club Brugge"
+      ]
+    },
+    {
+      "name": "Wilfried Singo",
+      "added": [
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Manu Sánchez",
+      "added": [
+        "Celta Vigo"
+      ]
+    },
+    {
+      "name": "Billy Koumetio",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Leighton Clarkson",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Barrie McKay",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Vic Wright",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Felipe Anderson",
+      "added": [
+        "FC Porto"
+      ]
+    },
+    {
+      "name": "Walter Spratt",
+      "added": [
+        "Chelsea"
+      ]
+    },
+    {
+      "name": "Walter Tull",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Wayne Entwistle",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Charles Aránguiz",
+      "added": [
+        "Udinese"
+      ]
+    },
+    {
+      "name": "Wes Foderingham",
+      "added": [
+        "West Ham United"
+      ]
+    },
+    {
+      "name": "William Cringan",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Tariq Lamptey",
+      "added": [
+        "Fiorentina"
+      ]
+    },
+    {
+      "name": "Willie Kivlichan",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Tarik Bengelloun",
+      "added": [
+        "FC Nantes"
+      ]
+    },
+    {
+      "name": "Germán Valera",
+      "added": [
+        "Real Sociedad",
+        "Valencia"
+      ]
+    },
+    {
+      "name": "Karl Putzendopler",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Ben Marshall",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Loïc Bade",
+      "added": [
+        "Nottingham Forest",
+        "Sevilla",
+        "Bayer Leverkusen"
+      ]
+    },
+    {
+      "name": "Josip Radošević",
+      "added": [
+        "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Kerem Demirbay",
+      "added": [
+        "Bayer Leverkusen",
+        "Galatasaray"
+      ]
+    },
+    {
+      "name": "Bernd Lorenz",
+      "added": [
+        "Werder Bremen",
+        "Eintracht Frankfurt"
+      ]
+    },
+    {
+      "name": "Cristiano Biraghi",
+      "added": [
+        "Torino"
+      ]
+    },
+    {
+      "name": "Bertrand Traoré",
+      "added": [
+        "AFC Ajax",
+        "Villarreal"
+      ]
+    },
+    {
+      "name": "Felix Wiedwald",
+      "added": [
+        "Leeds United"
+      ]
+    },
+    {
+      "name": "Nathan Patterson",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Cuqui Bienzobas",
+      "added": [
+        "Real Sociedad"
+      ]
+    },
+    {
+      "name": "Bayli Spencer-Adams",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Adam Karabec",
+      "added": [
+        "Hamburger SV",
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Wes Brown",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Ruben Kluivert",
+      "added": [
+        "Olympique Lyonnais"
+      ]
+    },
+    {
+      "name": "Daniel Maldini",
+      "added": [
+        "Atalanta",
+        "Lazio"
+      ]
+    },
+    {
+      "name": "Joe Hardy",
+      "added": [
+        "Liverpool"
+      ]
+    },
+    {
+      "name": "Clinton Mola",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Georgios Vagiannidis",
+      "added": [
+        "Inter Milan",
+        "Sporting CP"
+      ]
+    },
+    {
+      "name": "Corry Evans",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Henry Thompson",
+      "added": [
+        "Newcastle United"
+      ]
+    },
+    {
+      "name": "Andri Baldursson",
+      "added": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "name": "Tomáš Kalas",
+      "added": [
+        "Schalke 04"
+      ]
+    },
+    {
+      "name": "Jean Onana",
+      "added": [
+        "Lille",
+        "Bordeaux",
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "Kevin Stöger",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
+      "name": "Carlos Alcaraz",
+      "added": [
+        "Everton"
+      ]
+    },
+    {
+      "name": "Alex McCarthy",
+      "added": [
+        "Southampton",
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Steve Greaves",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Davy Pröpper",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Dimos Chantzaras",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Pedro Ruiz Delgado",
+      "added": [
+        "Olympique de Marseille"
+      ]
+    },
+    {
+      "name": "John Bostock",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Konstantinos Panagou",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Francisco Belaustegigoitia",
+      "added": [
+        "Atlético Madrid"
+      ]
+    },
+    {
+      "name": "Alexis Trouillet",
+      "added": [
+        "Panathinaikos"
+      ]
+    },
+    {
+      "name": "Oliver Norwood",
+      "added": [
+        "Brighton & Hove Albion"
+      ]
+    },
+    {
+      "name": "Jagoš Vuković",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Stefanos Kapino",
+      "added": [
+        "Nottingham Forest",
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Odion Ighalo",
+      "added": [
+        "Manchester United"
+      ]
+    },
+    {
+      "name": "Kenneth Hunt",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Cédric Bakambu",
+      "added": [
+        "Olympiacos",
+        "Galatasaray",
+        "Real Betis"
+      ]
+    },
+    {
+      "name": "Charlie Mulgrew",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Gareth McAuley",
+      "added": [
+        "Rangers"
+      ]
+    },
+    {
+      "name": "Jonas Meffert",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Glenn Murray",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Paulo Gazzaniga",
+      "added": [
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Christian Groß",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Dennis Westcott",
+      "added": [
+        "Liverpool"
+      ]
+    },
+    {
+      "name": "Andreas Bouchalakis",
+      "added": [
+        "Nottingham Forest"
+      ]
+    },
+    {
+      "name": "Kristijan Belić",
+      "added": [
+        "Olympiacos",
+        "AZ Alkmaar"
+      ]
+    },
+    {
+      "name": "Lazar Samardžić",
+      "added": [
+        "Udinese",
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Joel Lynch",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Frits Soetekouw",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    },
+    {
+      "name": "Glen Andrews",
+      "added": [
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Andri Guðjohnsen",
+      "added": [
+        "Blackburn Rovers"
+      ]
+    },
+    {
+      "name": "Andrija Radulović",
+      "added": [
+        "Rapid Wien"
+      ]
+    },
+    {
+      "name": "Joelson Fernandes",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Lazar Marković",
+      "added": [
+        "Sporting CP",
+        "Fulham"
+      ]
+    },
+    {
+      "name": "Max Thompson",
+      "added": [
+        "Sunderland"
+      ]
+    },
+    {
+      "name": "Hannibal Mejbri",
+      "added": [
+        "Sevilla"
+      ]
+    },
+    {
+      "name": "Calvin Bassey",
+      "added": [
+        "Rangers",
+        "AFC Ajax"
+      ]
+    },
+    {
+      "name": "Lucas Gourna-Douath",
+      "added": [
+        "Red Bull Salzburg",
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Amin Sarr",
+      "added": [
+        "Olympique Lyonnais",
+        "VfL Wolfsburg"
+      ]
+    },
+    {
+      "name": "Ishak Belfodil",
+      "added": [
+        "Werder Bremen"
+      ]
+    },
+    {
+      "name": "Ferdinando Coppola",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Richmond Boakye",
+      "added": [
+        "Red Star Belgrade"
+      ]
+    },
+    {
+      "name": "Álvaro Fidalgo",
+      "added": [
+        "Real Madrid"
+      ]
+    },
+    {
+      "name": "Alfred N'Diaye",
+      "added": [
+        "Villarreal",
+        "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Albert Grønbæk",
+      "added": [
+        "Hamburger SV"
+      ]
+    },
+    {
+      "name": "Evann Guessand",
+      "added": [
+        "Crystal Palace"
+      ]
+    },
+    {
+      "name": "Francesco Baldini",
+      "added": [
+        "AS Roma"
+      ]
+    },
+    {
+      "name": "Filip Stanković",
+      "added": [
+        "Sampdoria"
+      ]
+    },
+    {
+      "name": "Fran Vieites",
+      "added": [
+        "Leicester City"
+      ]
+    },
+    {
+      "name": "Yunus Musah",
+      "added": [
+        "Atalanta"
+      ]
+    },
+    {
+      "name": "Bandiougou Fadiga",
+      "added": [
+        "Olympiacos"
+      ]
+    },
+    {
+      "name": "Hugo Novoa",
+      "added": [
+        "FC Basel"
+      ]
+    },
+    {
+      "name": "Diego Conde",
+      "added": [
+        "Atlético Madrid",
+        "Real Betis"
+      ]
+    },
+    {
+      "name": "Sven Mijnans",
+      "added": [
+        "PSV Eindhoven"
+      ]
+    }
+  ]
 }

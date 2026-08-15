@@ -300,9 +300,17 @@ if (gained.length > 25) console.error(`  … and ${gained.length - 25} more`);
 const felix = players.find((p) => p.name === "João Félix");
 if (felix) console.error(`\nJoão Félix now: ${felix.clubIds.map((q) => clubName[q] ?? q).join(", ")}`);
 
-await writeFile(new URL("../data/enrich-report.json", import.meta.url),
-  JSON.stringify({ generatedAt: new Date().toISOString(), playersChanged: gained.length, linksAdded: addedTotal, renamed, gained }, null, 2));
-console.error("\nFull diff: data/enrich-report.json");
+// Only when there is something to record. The pass is idempotent, so a second
+// run finds nothing to add — and writing that empty result would clobber the
+// report of the run that actually changed the dataset, which is the one worth
+// keeping.
+if (gained.length || renamed.length) {
+  await writeFile(new URL("../data/enrich-report.json", import.meta.url),
+    JSON.stringify({ generatedAt: new Date().toISOString(), playersChanged: gained.length, linksAdded: addedTotal, renamed, gained }, null, 2));
+  console.error("\nFull diff: data/enrich-report.json");
+} else {
+  console.error("\nNothing to add — dataset already enriched. Report left as it was.");
+}
 
 if (DRY) {
   console.error("--dry: dataset.json not written.");
