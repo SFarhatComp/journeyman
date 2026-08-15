@@ -83,3 +83,54 @@ test("a player sees their own grace deadline and not another player's", () => {
   assert.equal(snapshotFor(state, "p0").round.myGraceEndsAt, 7000);
   assert.equal(snapshotFor(state, "p1").round.myGraceEndsAt, 9999, "must be keyed by the requesting player");
 });
+
+const picking = (round) => ({
+  phase: "PICKING", code: "ABC123", config: {}, phaseEndsAt: 60_000,
+  players: [{ id: "p0", nickname: "A", score: 0, connected: true },
+            { id: "p1", nickname: "B", score: 0, connected: true }],
+  round: { number: 1, answers: {}, grace: {}, reassigned: {}, pickTimerArmed: false,
+           results: null, bestAnswer: null, ...round },
+});
+
+test("the snapshot hides other players' club picks while picking", () => {
+  // Watching the grid fill up turns choosing into reacting to everyone else,
+  // which is the whole reason picks are hidden.
+  const snap = snapshotFor(picking({ picks: { p0: "Q1", p1: "Q2" } }), "p0");
+  assert.deepEqual(snap.round.picks, { p0: "Q1" }, "own pick only");
+});
+
+test("a player who has not picked sees no picks at all", () => {
+  const snap = snapshotFor(picking({ picks: { p1: "Q2" } }), "p0");
+  assert.deepEqual(snap.round.picks, {});
+});
+
+test("the picking snapshot says how many have chosen, not who or what", () => {
+  const snap = snapshotFor(picking({ picks: { p0: "Q1", p1: "Q2" } }), "p0");
+  assert.equal(snap.round.pickedCount, 2);
+});
+
+test("every pick becomes public once the round is under way", () => {
+  // From ANSWERING on, the set of clubs IS the round — hiding it would hide
+  // the question being asked.
+  const state = { ...picking({ picks: { p0: "Q1", p1: "Q2" } }), phase: "ANSWERING" };
+  assert.deepEqual(snapshotFor(state, "p0").round.picks, { p0: "Q1", p1: "Q2" });
+});
+
+test("the picking deadline is withheld until the clock actually arms", () => {
+  // The backstop exists so an abandoned room cannot hang forever. Showing it
+  // would put a 60-second countdown on screen that means nothing.
+  assert.equal(snapshotFor(picking({ picks: {} }), "p0").phaseEndsAt, null);
+
+  const armed = picking({ picks: { p0: "Q1" }, pickTimerArmed: true });
+  assert.equal(snapshotFor(armed, "p0").phaseEndsAt, 60_000);
+});
+
+test("a player is told about their own collision and nobody else's", () => {
+  const state = picking({
+    picks: { p0: "Q3", p1: "Q1" },
+    reassigned: { p0: { from: "Q1", to: "Q3" } },
+  });
+  assert.deepEqual(snapshotFor(state, "p0").round.myReassignment, { from: "Q1", to: "Q3" });
+  // Telling p1 that p0 was moved off Q1 would leak that p1 holds Q1.
+  assert.equal(snapshotFor(state, "p1").round.myReassignment, null);
+});

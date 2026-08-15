@@ -37,13 +37,20 @@ export function parseMessage(raw) {
 /**
  * What one player may see. Answers stay hidden until REVEAL — knowing what a
  * rival typed would let you copy it or dodge their claim.
+ *
+ * Club picks are hidden for the same reason, but only while PICKING: seeing
+ * the grid fill up turns choosing into reacting to everyone else. From
+ * ANSWERING onward the whole set is public, because it IS the round.
  */
 export function snapshotFor(state, playerId) {
+  const picking = state.phase === "PICKING";
   const base = {
     code: state.code,
     phase: state.phase,
     config: state.config,
-    phaseEndsAt: state.phaseEndsAt,
+    // While picking, the deadline is a backstop nobody is meant to feel. It
+    // becomes real, and visible, only once one player is left to choose.
+    phaseEndsAt: picking && !state.round?.pickTimerArmed ? null : state.phaseEndsAt,
     hostId: state.hostId,
     you: playerId,
     players: state.players.map((p) => ({ id: p.id, nickname: p.nickname, score: p.score, connected: p.connected })),
@@ -51,11 +58,19 @@ export function snapshotFor(state, playerId) {
   if (state.phase === "FINAL") return { ...base, standings: state.standings };
   if (!state.round) return base;
 
+  const mine = state.round.picks[playerId];
   const round = {
     number: state.round.number,
-    picks: state.round.picks, // club lock-out must be visible to everyone
+    // Own pick only while choosing; everyone's once the round is under way.
+    picks: picking ? (mine ? { [playerId]: mine } : {}) : state.round.picks,
+    // How many have chosen, without saying who or what — enough to know the
+    // room is moving, not enough to shadow anyone's pick.
+    pickedCount: Object.keys(state.round.picks).length,
     answered: Object.fromEntries(Object.keys(state.round.answers).map((id) => [id, true])),
     myGraceEndsAt: state.round.grace[playerId] ?? null,
+    // Only your own collision. Telling you someone else was moved off a club
+    // would leak the pick that the hiding is there to protect.
+    myReassignment: state.round.reassigned?.[playerId] ?? null,
   };
   if (state.phase === "REVEAL") {
     round.results = state.round.results;

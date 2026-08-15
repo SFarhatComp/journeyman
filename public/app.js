@@ -107,9 +107,10 @@ function render() {
   }
   if (snap.phase === "PICKING") {
     show("picking");
-    // Rebuilding 97 cards is expensive, so only do it when the pick set
-    // actually changed — not on every snapshot that happens to arrive.
-    const sig = JSON.stringify(snap.round.picks);
+    renderPickStatus();
+    // Rebuilding 97 cards is expensive. The grid now depends only on YOUR
+    // pick, so other people choosing no longer redraws anything.
+    const sig = snap.round.picks[snap.you] ?? "";
     if (sig !== lastPicks) { lastPicks = sig; renderClubs(); }
   } else {
     lastPicks = null; // next round starts from a fresh grid
@@ -196,8 +197,10 @@ function renderScoreboard() {
 }
 
 function renderClubs() {
-  const taken = snap.round.picks;
-  const mine = taken[snap.you];
+  // The snapshot only carries your own pick during PICKING, so there is no
+  // lock state to render: every club stays takeable and nothing gives away
+  // what anyone else has done.
+  const mine = snap.round.picks[snap.you];
 
   // clubs arrives pre-sorted by league then name, so a header goes in wherever
   // the league changes — no client-side grouping or sorting needed.
@@ -205,16 +208,23 @@ function renderClubs() {
   $("club-grid").innerHTML = clubs.map((c) => {
     const header = c.league !== league ? `<h3 class="league">${esc(c.league ?? "")}</h3>` : "";
     league = c.league;
-    const byOther = Object.entries(taken).find(([pid, cid]) => cid === c.id && pid !== snap.you);
-    const owner = byOther && snap.players.find((p) => p.id === byOther[0]);
     // loading="lazy" matters: 97 crests is ~1.5MB, and only a handful are on
-    // screen at once under a 15-second timer.
-    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}" ${byOther ? "disabled" : ""}>
+    // screen at once.
+    return `${header}<button class="club ${mine === c.id ? "mine" : ""}" data-id="${c.id}">
       <img src="/crests/${c.id}.png" alt="" loading="lazy" decoding="async">
       <span class="nm">${esc(c.name)}</span>
-      ${byOther ? `<span class="lock">taken by<b>${esc(owner ? owner.nickname : "someone")}</b></span>` : ""}
     </button>`;
   }).join("");
+}
+
+function renderPickStatus() {
+  $("pick-no").textContent = `Round ${snap.round.number} of ${snap.config.rounds ?? "?"}`;
+  const total = snap.players.length;
+  const done = snap.round.pickedCount ?? 0;
+  // How many have chosen, never who or what. Enough to see the room moving.
+  $("pick-progress").textContent = snap.round.picks[snap.you]
+    ? `${done} of ${total} chosen`
+    : `${done} of ${total} chosen — your turn`;
 }
 
 // Who has locked an answer in. The snapshot gives THAT they answered, never
@@ -230,6 +240,17 @@ function renderSubmitted() {
 
 function renderRoundClubs() {
   $("round-no").textContent = `Round ${snap.round.number} of ${snap.config.rounds ?? "?"}`;
+
+  // If two people picked the same club, one was moved. Say so plainly — the
+  // club they are about to play is not the one they chose, and finding that
+  // out by squinting at the list would feel like a bug.
+  const moved = snap.round.myReassignment;
+  const label = (id) => clubs.find((c) => c.id === id)?.name ?? id;
+  $("reassigned").hidden = !moved;
+  if (moved) {
+    $("reassigned").textContent =
+      `${label(moved.from)} was taken by someone else, so you were moved to ${label(moved.to)}.`;
+  }
   // Attribute each club to whoever claimed it — knowing Sam took Juventus is
   // half the fun, and it makes the round's set easier to hold in your head.
   const who = (pid) => snap.players.find((p) => p.id === pid);
@@ -299,7 +320,13 @@ function renderResults() {
 // grace window (granted when your claim lost a race) extends past the phase
 // deadline, so show that instead when you have one.
 setInterval(() => {
-  if (!snap?.phaseEndsAt) return ($("timer").textContent = "");
+  if (!snap?.phaseEndsAt) {
+    // No clock at all while several players are still choosing. Drop the
+    // urgent styling too, or it survives from the previous phase.
+    $("timer").textContent = "";
+    $("timer").classList.remove("urgent");
+    return;
+  }
   const grace = snap.round?.myGraceEndsAt;
   const usingGrace = grace && grace > snap.phaseEndsAt;
   const left = Math.max(0, Math.ceil(((usingGrace ? grace : snap.phaseEndsAt) - Date.now()) / 1000));

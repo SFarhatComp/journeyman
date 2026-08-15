@@ -11,9 +11,14 @@
 
 export const DEFAULT_CONFIG = {
   rounds: 8,
-  pickSeconds: 15,
+  // The picking clock does not run while several people are still deciding —
+  // it starts only once everyone but one has locked in, and pickSeconds is
+  // what that last player gets. pickMaxSeconds is a backstop nobody sees:
+  // without it, two players walking away would hang the room forever.
+  pickSeconds: 20,
+  pickMaxSeconds: 60,
   answerSeconds: 30,
-  revealSeconds: 8,
+  revealSeconds: 5,
   graceSeconds: 5,
   maxPlayers: 8,
   minPlayers: 2,
@@ -62,7 +67,8 @@ export function addPlayer(state, { id, nickname }) {
 export function startGame(state, now, deps) {
   if (state.phase !== "LOBBY") return fail(state, "already_started");
   if (state.players.length < state.config.minPlayers) return fail(state, "not_enough_players");
-  // Clubs lock out when taken, so every player needs one available.
+  // Every player ends the round holding a distinct club, whether they picked
+  // it, collided and were moved, or ran out of time and were assigned one.
   if (deps.clubs.length < state.players.length) return fail(state, "not_enough_clubs");
 
   const next = clone(state);
@@ -81,10 +87,14 @@ export function beginRound(state, number, now) {
     picks: {}, // playerId -> clubId
     answers: {}, // playerId -> { entityId, submittedAt }
     grace: {}, // playerId -> deadline ms
+    reassigned: {}, // playerId -> { from, to }, set when a collision moved them
+    pickTimerArmed: false,
     results: null,
     bestAnswer: null,
   };
-  next.phaseEndsAt = now + next.config.pickSeconds * 1000;
+  // The visible clock starts later, when one player is left. This is only the
+  // backstop, and snapshotFor hides it until the real one arms.
+  next.phaseEndsAt = now + next.config.pickMaxSeconds * 1000;
   return next;
 }
 
@@ -92,21 +102,68 @@ export function pickClub(state, { playerId, clubId }, now, deps) {
   if (state.phase !== "PICKING") return fail(state, "wrong_phase");
   if (!deps.clubs.some((c) => c.id === clubId)) return fail(state, "unknown_club");
 
-  const takenBy = Object.entries(state.round.picks).find(([pid, cid]) => cid === clubId && pid !== playerId);
-  if (takenBy) return fail(state, "club_taken");
-
+  // Clubs are no longer claimed on a first-come basis. Nobody can see what
+  // anyone else has taken, so rejecting a pick would be punishing a player for
+  // information they were never given. Collisions are settled at the end of
+  // the phase instead, by resolveCollisions.
   let next = clone(state);
   next.round.picks[playerId] = clubId;
 
   const events = [{ type: "club_picked", playerId, clubId }];
+  const picked = Object.keys(next.round.picks).length;
 
   // Advance the moment everyone has acted — otherwise a room of fast players
   // watches a dead countdown every round.
-  if (Object.keys(next.round.picks).length === next.players.length) {
-    next = beginAnswering(next, now);
+  if (picked === next.players.length) {
+    next = beginAnswering(resolveCollisions(next, deps), now);
     events.push({ type: "phase_changed", phase: "ANSWERING" });
+  } else if (picked === next.players.length - 1 && !next.round.pickTimerArmed) {
+    // Everyone but one has locked in. Only now does a clock appear, and only
+    // the last player is under it — there is no reason to rush a room where
+    // several people are still reading a grid of ninety-seven clubs.
+    next.round.pickTimerArmed = true;
+    next.phaseEndsAt = now + next.config.pickSeconds * 1000;
+    events.push({ type: "pick_timer_armed" });
   }
   return ok(next, events);
+}
+
+/**
+ * Settle players who picked the same club.
+ *
+ * Picks are hidden while choosing, so a collision is bad luck, not a race
+ * anybody lost. Who keeps the club is therefore decided at random rather than
+ * by who tapped first — rewarding speed here would reward nothing but a faster
+ * phone. Everyone else in the collision is moved to a random free club.
+ *
+ * The round still ends with one distinct club per player, which is what keeps
+ * the maximum score equal to the player count.
+ */
+function resolveCollisions(state, deps) {
+  const next = clone(state);
+  const rand = deps.random ?? Math.random;
+
+  const byClub = new Map();
+  for (const [pid, cid] of Object.entries(next.round.picks)) {
+    if (!byClub.has(cid)) byClub.set(cid, []);
+    byClub.get(cid).push(pid);
+  }
+
+  const free = deps.clubs.filter((c) => !byClub.has(c.id));
+
+  for (const [clubId, pids] of byClub) {
+    if (pids.length === 1) continue;
+    const keeper = Math.floor(rand() * pids.length);
+    pids.forEach((pid, i) => {
+      if (i === keeper) return;
+      // splice, not index: the club leaves the pool, so two reassignments can
+      // never land on the same one.
+      const club = free.splice(Math.floor(rand() * free.length), 1)[0];
+      next.round.picks[pid] = club.id;
+      next.round.reassigned[pid] = { from: clubId, to: club.id };
+    });
+  }
+  return next;
 }
 
 function beginAnswering(state, now) {
@@ -178,7 +235,9 @@ export function expirePhase(state, now, deps) {
 
   const next = clone(state);
   if (next.phase === "PICKING") {
-    return ok(beginAnswering(autoAssign(next, deps), now), [
+    // Collisions first, so autoAssign draws from a pool that already accounts
+    // for the clubs the reassigned players were moved onto.
+    return ok(beginAnswering(autoAssign(resolveCollisions(next, deps), deps), now), [
       { type: "phase_changed", phase: "ANSWERING" },
     ]);
   }

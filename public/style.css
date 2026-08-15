@@ -137,17 +137,8 @@ button:active { transform:scale(.98); }
 .club img { width:44px; height:44px; object-fit:contain; }
 .club .nm { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .club.mine { border-color:var(--gold); box-shadow:0 0 0 1px var(--gold), 0 0 16px rgba(255,225,109,.2); }
-.club[disabled] { background:var(--surface-highest); cursor:not-allowed; }
-.club[disabled] img { filter:grayscale(1); opacity:.35; }
-.club[disabled] .nm { opacity:.35; }
-/* The lock names who took it, rather than the card just going quiet. */
-.club .lock {
-  position:absolute; inset:0; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:2px;
-  background:rgba(0,0,0,.55); backdrop-filter:blur(2px);
-  font:500 10px/13px var(--body); color:var(--on-surface-variant); padding:4px;
-}
-.club .lock b { font-weight:700; color:var(--on-surface); }
+/* No locked state: clubs are never taken out of the grid now, because that
+   would show what other players have picked. */
 
 /* ---------------- gameplay ---------------- */
 #round-clubs { list-style:none; padding:0; margin:0 0 var(--gutter); }
@@ -170,6 +161,13 @@ button:active { transform:scale(.98); }
 }
 #suggestions li:active { border-color:var(--gold); }
 #answer-status { color:var(--on-surface-variant); font-size:14px; }
+
+.reassigned {
+  background:var(--surface-high); border-left:3px solid var(--gold);
+  border-radius:var(--r-xl); padding:var(--sm); margin-bottom:var(--base);
+  font-size:14px; color:var(--on-surface);
+}
+#pick-progress { margin-left:auto; }
 
 /* The connecting line threads the crests together — these clubs are the
    link you are hunting, not an unrelated list. */

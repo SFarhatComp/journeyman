@@ -78,7 +78,10 @@ test("starting moves to PICKING with round 1 and a deadline", () => {
   const res = startGame(withPlayers(3), 1000, DEPS);
   assert.equal(res.state.phase, "PICKING");
   assert.equal(res.state.round.number, 1);
-  assert.equal(res.state.phaseEndsAt, 1000 + DEFAULT_CONFIG.pickSeconds * 1000);
+  // The backstop, not the visible clock — that one only arms when one player
+  // is left to choose.
+  assert.equal(res.state.phaseEndsAt, 1000 + DEFAULT_CONFIG.pickMaxSeconds * 1000);
+  assert.equal(res.state.round.pickTimerArmed, false);
 });
 
 test("the game will not start without enough clubs for every player", () => {

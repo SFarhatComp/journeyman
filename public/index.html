@@ -39,12 +39,17 @@
     </section>
 
     <section id="screen-picking" hidden>
-      <p>Pick a club — taken ones are locked.</p>
+      <div class="round-bar">
+        <h2 id="pick-no">Round 1</h2>
+        <span id="pick-progress" class="count"></span>
+      </div>
+      <p class="prompt">Claim a club. Nobody can see what you take.</p>
       <div id="club-grid"></div>
     </section>
 
     <section id="screen-answering" hidden>
       <div class="round-bar"><span class="live-dot"></span><h2 id="round-no">Round 1</h2></div>
+      <p id="reassigned" class="reassigned" hidden></p>
       <p class="prompt">Name one footballer who played for</p>
       <ul id="round-clubs"></ul>
       <input id="answer" placeholder="Search a footballer" autocomplete="off"
