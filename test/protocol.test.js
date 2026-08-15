@@ -134,3 +134,27 @@ test("a player is told about their own collision and nobody else's", () => {
   // Telling p1 that p0 was moved off Q1 would leak that p1 holds Q1.
   assert.equal(snapshotFor(state, "p1").round.myReassignment, null);
 });
+
+test("footballers named in finished rounds are listed for everyone", () => {
+  // Those were revealed when their round ended, so republishing them leaks
+  // nothing — it stops people burning a guess on a name already used.
+  const state = {
+    ...picking({ picks: { p0: "Q1" } }),
+    history: [
+      { number: 1, results: [{ entityLabel: "Z. Ibrahimović (1981, SE)" }, { entityLabel: null }] },
+      { number: 2, results: [{ entityLabel: "X. Hernández (1980, ES)" }] },
+    ],
+  };
+  assert.deepEqual(snapshotFor(state, "p0").namedSoFar,
+    ["Z. Ibrahimović (1981, SE)", "X. Hernández (1980, ES)"]);
+});
+
+test("a player who never answered contributes no name", () => {
+  // Their result carries a null label, which must not reach the list as a gap.
+  const state = { ...picking({ picks: {} }), history: [{ number: 1, results: [{ entityLabel: null }] }] };
+  assert.deepEqual(snapshotFor(state, "p0").namedSoFar, []);
+});
+
+test("the first round has nothing named yet", () => {
+  assert.deepEqual(snapshotFor(picking({ picks: {} }), "p0").namedSoFar, []);
+});

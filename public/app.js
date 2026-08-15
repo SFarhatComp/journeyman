@@ -16,13 +16,13 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
 let noticeTimer;
 // The banner is red, because everything that used it was a failure. "Invite
 // link copied" through a red bar reads as an error, so it takes a kind now.
-function notice(msg, kind = "error") {
+function notice(msg, kind = "error", ms = 6000) {
   const el = $("notice");
   el.textContent = msg;
   el.hidden = !msg;
   el.className = kind;
   clearTimeout(noticeTimer);
-  if (msg) noticeTimer = setTimeout(() => { $("notice").hidden = true; }, 6000);
+  if (msg) noticeTimer = setTimeout(() => { $("notice").hidden = true; }, ms);
 }
 
 function show(name) {
@@ -48,10 +48,25 @@ async function connect(code, nickname) {
       send("join", { nickname: saved("nickname") });
     }
     if (type === "snapshot") { snap = payload; render(); }
-    if (type === "error") notice(payload.error.replace(/_/g, " "));
+    if (type === "error") {
+      if (payload.error === "already_claimed") {
+        // The box still holds the name that was just refused. Leaving it there
+        // means retyping over it under a clock, and it reads as though the
+        // answer went through. Clear it and put the cursor back.
+        $("answer").value = "";
+        $("suggestions").innerHTML = "";
+        $("answer").focus();
+        answerNote = { text: "Someone already named that footballer. Name a different one — you have extra time.", cls: "taken" };
+        renderAnswerNote();
+        notice("That footballer is taken. Name someone else.", "error", 15000);
+      } else {
+        notice(payload.error.replace(/_/g, " "));
+      }
+    }
   };
 
   ws.onclose = (e) => {
+    if (ws === null) return; // we left on purpose
     // 4004 = no such room. Retrying would loop forever against a reaped room.
     if (e.code === 4004) {
       localStorage.clear();
@@ -79,6 +94,7 @@ function render() {
     $("answer").disabled = false;
     $("suggestions").innerHTML = "";
     $("club-search").value = ""; // a new round starts from the whole grid
+    answerNote = null;
     $("answer-status").textContent = "";
   }
 
@@ -117,7 +133,7 @@ function render() {
   } else {
     lastPicks = null; // next round starts from a fresh grid
   }
-  if (snap.phase === "ANSWERING") { show("answering"); renderRoundClubs(); renderSubmitted(); }
+  if (snap.phase === "ANSWERING") { show("answering"); renderRoundClubs(); renderSubmitted(); renderNamedSoFar(); }
   if (snap.phase === "REVEAL") { show("reveal"); renderResults(); }
   if (snap.phase === "FINAL") {
     show("final");
@@ -272,6 +288,31 @@ function renderSubmitted() {
     }).join("");
 }
 
+// Set when an answer is refused, cleared when the round moves on or the answer
+// lands. Kept outside render() because a snapshot arrives immediately after the
+// rejection and would otherwise wipe the only explanation on screen.
+let answerNote = null;
+function renderAnswerNote() {
+  const el = $("answer-status");
+  if (answerNote) {
+    el.textContent = answerNote.text;
+    el.className = answerNote.cls;
+    return;
+  }
+  const answered = snap?.round?.answered?.[snap.you];
+  el.textContent = answered ? "Answer locked in." : "";
+  el.className = answered ? "locked" : "";
+}
+
+function renderNamedSoFar() {
+  const names = snap.namedSoFar ?? [];
+  const box = $("named-so-far");
+  box.hidden = names.length === 0;
+  if (names.length === 0) return;
+  box.querySelector("summary").textContent = `Already named this game (${names.length})`;
+  $("named-list").innerHTML = names.map((n) => `<li>${esc(n)}</li>`).join("");
+}
+
 function renderRoundClubs() {
   $("round-no").textContent = `Round ${snap.round.number} of ${snap.config.rounds ?? "?"}`;
 
@@ -302,7 +343,8 @@ function renderRoundClubs() {
     }).join("");
   const answered = snap.round.answered[snap.you];
   $("answer").disabled = !!answered;
-  $("answer-status").textContent = answered ? "Answer locked in." : "";
+  if (answered) answerNote = null; // it landed; the refusal no longer applies
+  renderAnswerNote();
 }
 
 function renderResults() {
@@ -412,6 +454,20 @@ $("club-search").oninput = applyClubFilter;
 $("rounds").onclick = (e) => {
   const btn = e.target.closest("button[data-rounds]");
   if (btn && !btn.disabled) send("setRounds", { rounds: Number(btn.dataset.rounds) });
+};
+// Creating a room by misclick should not trap anyone in it. Closing the socket
+// marks them disconnected, and an empty room is reaped a couple of minutes
+// later — no new server message needed.
+$("leave").onclick = () => {
+  if (snap && snap.phase !== "LOBBY" && !confirm("Leave the game?")) return;
+  const sock = ws;
+  ws = null;              // stop onclose from reconnecting us straight back in
+  sock?.close();
+  localStorage.clear();
+  snap = null;
+  lastRound = lastPicks = lastPhase = null;
+  notice("");
+  show("home");
 };
 $("start").onclick = () => send("start");
 $("play-again").onclick = () => send("playAgain");

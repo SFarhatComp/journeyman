@@ -100,3 +100,45 @@ test("search strips accents from the query, not just the data", () => {
   const ds = createDataset(FIXTURE);
   assert.equal(ds.search("josé")[0].id, "Q3");
 });
+
+test("an exact word beats a longer name that merely starts with the query", () => {
+  // Typing "messi" returned Messias Timula, Danilo Messina and Junior Messias
+  // before Lionel Messi: they sort earlier alphabetically and all four were
+  // treated as equally good matches.
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      { id: "TIMULA", name: "Messias Timula", birthYear: 1948, country: "PT", clubIds: ["Q1"] },
+      { id: "MESSINA", name: "Danilo Messina", birthYear: 1992, country: "IT", clubIds: ["Q1"] },
+      { id: "MESSIAS", name: "Junior Messias", birthYear: 1991, country: "BR", clubIds: ["Q1"] },
+      { id: "MESSI", name: "Lionel Messi", birthYear: 1987, country: "AR", clubIds: ["Q1"] },
+    ],
+  });
+  assert.equal(ds.search("messi")[0].id, "MESSI", "the exact surname must win");
+});
+
+test("within a tier the player in more of this game's clubs comes first", () => {
+  // Both are exactly "Zlatan". Nothing in a name says which one anyone meant,
+  // but appearing in eight of the ninety-seven clubs the game is played with
+  // is a strong signal, and alphabetical order is none at all.
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      { id: "ALO", name: "Zlatan Alomerovic", birthYear: 1991, country: "DE", clubIds: ["Q1"] },
+      { id: "IBRA", name: "Zlatan Ibrahimovic", birthYear: 1981, country: "SE",
+        clubIds: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8"] },
+    ],
+  });
+  assert.equal(ds.search("zlatan")[0].id, "IBRA");
+});
+
+test("an exact full name outranks an exact word", () => {
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      { id: "WORD", name: "Ronaldo Nazario", birthYear: 1976, country: "BR", clubIds: ["Q1", "Q2", "Q3"] },
+      { id: "FULL", name: "Ronaldo", birthYear: 1985, country: "PT", clubIds: ["Q1"] },
+    ],
+  });
+  assert.equal(ds.search("ronaldo")[0].id, "FULL", "even with fewer clubs, the whole name is the better match");
+});

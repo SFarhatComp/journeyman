@@ -24,29 +24,42 @@ export function createDataset({ clubs, players }) {
   // "Zlatan" both hit.
   const searchable = players.map((p) => {
     const norm = normalize(p.name);
-    return { id: p.id, label: formatLabel(p), norm, words: norm.split(/\s+/) };
+    // clubCount is a fame proxy, and a well-aimed one: it counts only the 97
+    // clubs this game is played with, so a player who turned out for eight of
+    // them is exactly the player someone typing a common surname meant.
+    return {
+      id: p.id, label: formatLabel(p), norm,
+      words: norm.split(/\s+/), clubCount: p.clubIds.length,
+    };
   });
 
   function search(query, limit = 8) {
     const q = normalize(query);
     if (q.length < 2) return [];
 
-    // Partitioned, not truncated-then-sorted: a whole-name match must outrank
-    // every word match regardless of where it sits in the array. Scanning all
-    // entries is cheap (~25k prefix checks) and removes the ordering bug that
-    // an early break introduced.
-    const whole = [];
-    const word = [];
+    // Partitioned, not truncated-then-sorted: a better match must outrank a
+    // worse one regardless of where it sits in the array. Scanning all entries
+    // is cheap (~50k prefix checks) and removes the ordering bug an early
+    // break once introduced.
+    //
+    // An exact word beats a prefix, which is the whole point: typing "messi"
+    // used to return Messias Timula, Danilo Messina, Giuseppe Messina and
+    // Junior Messias before Lionel Messi, because those sort earlier
+    // alphabetically and every one of them was merely a prefix match.
+    const tiers = [[], [], [], []];
     for (const entry of searchable) {
-      if (entry.norm.startsWith(q)) whole.push(entry);
-      else if (entry.words.some((w) => w.startsWith(q))) word.push(entry);
+      if (entry.norm === q) tiers[0].push(entry);
+      else if (entry.words.includes(q)) tiers[1].push(entry);
+      else if (entry.norm.startsWith(q)) tiers[2].push(entry);
+      else if (entry.words.some((w) => w.startsWith(q))) tiers[3].push(entry);
     }
 
-    const byName = (a, b) => a.norm.localeCompare(b.norm);
-    whole.sort(byName);
-    word.sort(byName);
+    // Within a tier, prefer the player who appears in more of this game's
+    // clubs, then fall back to name order so the result is deterministic.
+    const rank = (a, b) => b.clubCount - a.clubCount || a.norm.localeCompare(b.norm);
+    for (const t of tiers) t.sort(rank);
 
-    return [...whole, ...word].slice(0, limit).map(({ id, label }) => ({ id, label }));
+    return tiers.flat().slice(0, limit).map(({ id, label }) => ({ id, label }));
   }
 
   return {

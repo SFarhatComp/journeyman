@@ -25,7 +25,7 @@ export const DEFAULT_CONFIG = {
   // else has locked in. answerMaxSeconds is the unseen backstop.
   answerSeconds: 30,
   answerMaxSeconds: 90,
-  revealSeconds: 5,
+  revealSeconds: 10,
   graceSeconds: 5,
   maxPlayers: 8,
   minPlayers: 2,

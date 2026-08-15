@@ -60,6 +60,12 @@ export function snapshotFor(state, playerId) {
     you: playerId,
     players: state.players.map((p) => ({ id: p.id, nickname: p.nickname, score: p.score, connected: p.connected })),
   };
+  // Footballers named in rounds that are over. Those were all revealed at the
+  // time, so this leaks nothing — it just saves people burning a guess on a
+  // name the room has already used.
+  base.namedSoFar = (state.history ?? [])
+    .flatMap((h) => h.results.map((r) => r.entityLabel).filter(Boolean));
+
   if (state.phase === "FINAL") return { ...base, standings: state.standings };
   if (!state.round) return base;
 
