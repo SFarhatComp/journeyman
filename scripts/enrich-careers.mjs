@@ -22,6 +22,7 @@ import { careerClubTitles, normalizeTitle } from "../src/dataset/fromWikipedia.j
 
 const UA = "footfinder/0.1 (personal football trivia game)";
 const API = "https://en.wikipedia.org/w/api.php";
+const SPARQL = "https://query.wikidata.org/sparql";
 const BATCH = 50;        // the API's title limit for anonymous requests
 const GAP_MS = 650;
 const CACHE = new URL("../data/.enrich-cache.json", import.meta.url);
@@ -97,6 +98,48 @@ async function sitelinks(qids, cache) {
   }
   if (todo.length) process.stderr.write("\n");
   return out;
+}
+
+/**
+ * QID -> article title for every player on our clubs' rosters.
+ *
+ * One query per club, joining P54 straight to the sitelink — the same shape
+ * build-dataset.mjs already runs 97 times without trouble, and every player in
+ * the dataset came from one of these rosters by construction, so the union is
+ * complete.
+ *
+ * The obvious alternative, asking wbgetentities for 52,000 ids fifty at a
+ * time, gets rate-limited to roughly 75 lookups a minute once it warms up:
+ * an eleven-hour run for the same answer. 97 queries beats 1,040 requests.
+ */
+async function playerArticles(clubs, cache) {
+  const done = new Set(cache.rosters ?? []);
+  for (const [i, club] of clubs.entries()) {
+    if (!done.has(club.id)) {
+      const query = `SELECT ?player ?article WHERE {
+        ?player p:P54/ps:P54 wd:${club.id} .
+        ?player wdt:P31 wd:Q5 .
+        ?article schema:about ?player ; schema:isPartOf <https://en.wikipedia.org/> .
+      }`;
+      const res = await politeFetch(`${SPARQL}?query=${encodeURIComponent(query)}`,
+        "application/sparql-results+json");
+      if (res) {
+        for (const b of (await res.json()).results.bindings) {
+          cache.sitelinks[b.player.value.split("/").pop()] =
+            normalizeTitle(decodeURIComponent(b.article.value.split("/wiki/").pop()));
+        }
+        // Only mark the club done if the query actually came back, or a
+        // resumed run would skip a roster it never read.
+        done.add(club.id);
+        cache.rosters = [...done];
+      }
+      await sleep(GAP_MS);
+    }
+    process.stderr.write(`\r  rosters ${i + 1}/${clubs.length}`);
+    if ((i + 1) % 10 === 0) await flush();
+  }
+  process.stderr.write("\n");
+  await flush();
 }
 
 /**
@@ -178,7 +221,7 @@ const clubName = Object.fromEntries(dataset.clubs.map((c) => [c.id, c.name]));
 // Two caches in one file: which article an entity has, and what that article's
 // infobox says. Both are expensive and neither changes hour to hour, so an
 // interrupted run picks up where it stopped.
-let cache = { sitelinks: {}, careers: {} };
+let cache = { sitelinks: {}, careers: {}, rosters: [] };
 try {
   const loaded = JSON.parse(await readFile(CACHE, "utf8"));
   if (loaded.sitelinks && loaded.careers) cache = loaded;
@@ -190,9 +233,13 @@ const titleToQid = await clubTitleIndex(clubs, cache.sitelinks);
 console.error(`  ${titleToQid.size} titles resolve to one of our ${clubs.length} clubs\n`);
 
 const players = LIMIT ? dataset.players.slice(0, LIMIT) : dataset.players;
-console.error(`Resolving articles for ${players.length} players…`);
-const playerTitle = await sitelinks(players.map((p) => p.id), cache.sitelinks);
-await flush();
+console.error(`Resolving player articles from ${clubs.length} club rosters…`);
+await playerArticles(clubs, cache);
+const playerTitle = new Map();
+for (const p of players) {
+  const title = cache.sitelinks[p.id];
+  if (title) playerTitle.set(p.id, title);
+}
 console.error(`  ${playerTitle.size}/${players.length} have an English article\n`);
 
 console.error("Fetching infoboxes…");
@@ -218,6 +265,34 @@ for (const player of players) {
   gained.push({ name: player.name, added: added.map((q) => clubName[q] ?? q) });
 }
 
+/**
+ * Repair labels that are obviously not names.
+ *
+ * Wikidata's English label for Q1042372 is "don panini". He is Carlo Parola,
+ * a Juventus and Lazio player whose bicycle kick became the Panini logo — the
+ * Italian label is right and the English one has been vandalised. A player
+ * nobody can type is a player nobody can score, so where the label starts
+ * lowercase and an English article exists, the article title wins.
+ *
+ * Deliberately narrow. Article titles carry disambiguators and different
+ * conventions, so preferring them wholesale would rename thousands of players
+ * correctly labelled today. Eight names in 52,175 match this rule.
+ */
+const renamed = [];
+for (const player of players) {
+  if (!/^\p{Ll}/u.test(player.name)) continue;
+  const title = playerTitle.get(player.id);
+  if (!title) continue;
+  const better = title.replace(/\s*\([^)]*\)\s*$/, "").trim();
+  if (!better || better === player.name) continue;
+  renamed.push(`${player.name} -> ${better}`);
+  player.name = better;
+}
+if (renamed.length) {
+  console.error(`\n${renamed.length} labels repaired from their article title:`);
+  for (const r of renamed) console.error(`  ${r}`);
+}
+
 console.error(`\n${gained.length} players gained ${addedTotal} club links.`);
 for (const g of gained.slice(0, 25)) console.error(`  + ${g.name}: ${g.added.join(", ")}`);
 if (gained.length > 25) console.error(`  … and ${gained.length - 25} more`);
@@ -226,7 +301,7 @@ const felix = players.find((p) => p.name === "João Félix");
 if (felix) console.error(`\nJoão Félix now: ${felix.clubIds.map((q) => clubName[q] ?? q).join(", ")}`);
 
 await writeFile(new URL("../data/enrich-report.json", import.meta.url),
-  JSON.stringify({ generatedAt: new Date().toISOString(), playersChanged: gained.length, linksAdded: addedTotal, gained }, null, 2));
+  JSON.stringify({ generatedAt: new Date().toISOString(), playersChanged: gained.length, linksAdded: addedTotal, renamed, gained }, null, 2));
 console.error("\nFull diff: data/enrich-report.json");
 
 if (DRY) {
