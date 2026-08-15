@@ -40,17 +40,38 @@ test("an empty nickname is rejected", () => {
   assert.equal(parseMessage(JSON.stringify({ type: "join", payload: { nickname: "  " } })).error, "bad_payload");
 });
 
-test("the snapshot hides other players' answers during ANSWERING", () => {
-  // Seeing what someone else typed would let you copy it or dodge their claim.
-  const state = {
-    phase: "ANSWERING", code: "ABC123", config: {}, phaseEndsAt: 5000,
-    players: [{ id: "p0", nickname: "A", score: 0, connected: true },
-              { id: "p1", nickname: "B", score: 0, connected: true }],
-    round: { number: 1, picks: { p0: "Q1", p1: "Q2" }, answers: { p1: { entityId: "zlatan" } }, grace: {}, results: null, bestAnswer: null },
-  };
-  const snap = snapshotFor(state, "p0");
-  assert.equal(snap.round.answered.p1, true, "you may know THAT they answered");
-  assert.equal(snap.round.answers, undefined, "but never WHAT they answered");
+const answeringWith = (answers) => ({
+  phase: "ANSWERING", code: "ABC123", config: {}, phaseEndsAt: 5000,
+  players: [{ id: "p0", nickname: "A", score: 0, connected: true },
+            { id: "p1", nickname: "B", score: 0, connected: true }],
+  round: { number: 1, picks: { p0: "Q1", p1: "Q2" }, answers, grace: {}, results: null, bestAnswer: null },
+});
+
+test("claimed footballers are public as they are claimed", () => {
+  // This used to be hidden, to stop anyone copying a rival. But a footballer
+  // already claimed is rejected outright, so copying was never possible —
+  // hiding it only made people find out by wasting a guess.
+  const snap = snapshotFor(
+    answeringWith({ p1: { entityId: "zlatan", entityLabel: "Z. Ibrahimović (1981, SE)" } }), "p0");
+
+  assert.equal(snap.round.answered.p1, true);
+  assert.equal(snap.round.claimed.p1, "Z. Ibrahimović (1981, SE)");
+  assert.equal(snap.round.claimed.p0, undefined, "p0 has not answered");
+});
+
+test("the raw answer records never reach a client", () => {
+  // The label is public; submittedAt and the entity id are not, because
+  // nothing on screen needs them and an id is a handle for guessing.
+  const snap = snapshotFor(
+    answeringWith({ p1: { entityId: "zlatan", entityLabel: "Z. Ibrahimović (1981, SE)" } }), "p0");
+  assert.equal(snap.round.answers, undefined);
+  assert.equal(JSON.stringify(snap).includes("submittedAt"), false);
+});
+
+test("an answer with no resolvable label shows as null, never as a raw id", () => {
+  const snap = snapshotFor(answeringWith({ p1: { entityId: "Q999", entityLabel: null } }), "p0");
+  assert.equal(snap.round.claimed.p1, null);
+  assert.equal(JSON.stringify(snap).includes("Q999"), false);
 });
 
 test("the snapshot reveals everything at REVEAL", () => {

@@ -232,7 +232,14 @@ export function submitAnswer(state, { playerId, entityId }, now, deps) {
   }
 
   let next = clone(state);
-  next.round.answers[playerId] = { entityId, submittedAt: now };
+  // The label is resolved here rather than at reveal, because the answering
+  // screen now shows what everyone has claimed and snapshotFor has no deps to
+  // resolve an id with.
+  next.round.answers[playerId] = {
+    entityId,
+    entityLabel: deps.getPlayerLabel?.(entityId) ?? null,
+    submittedAt: now,
+  };
   delete next.round.grace[playerId];
 
   const events = [{ type: "answer_accepted", playerId }];
@@ -317,7 +324,7 @@ export function beginReveal(state, now, deps) {
       entityId: answer.entityId,
       // Carried through the snapshot so the reveal can say who was named.
       // Resolved here via deps, keeping the engine free of the dataset.
-      entityLabel: deps.getPlayerLabel?.(answer.entityId) ?? null,
+      entityLabel: answer.entityLabel ?? deps.getPlayerLabel?.(answer.entityId) ?? null,
       points: matchedClubIds.length,
       matchedClubIds,
     };

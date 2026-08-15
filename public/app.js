@@ -277,14 +277,19 @@ function renderPickStatus() {
     : `${done} of ${total} chosen — your turn`;
 }
 
-// Who has locked an answer in. The snapshot gives THAT they answered, never
-// what — showing the pick would hand rivals the answer and break the race.
+// Who has claimed whom, live. A footballer already claimed is rejected, so
+// this cannot be copied off — all it does is stop people spending the round
+// discovering by trial and error which names are gone.
 function renderSubmitted() {
   $("submitted").innerHTML = snap.players
     .map((p) => {
       const done = !!snap.round.answered[p.id];
+      const who = snap.round.claimed?.[p.id];
       const me = p.id === snap.you;
-      return `<li class="${done ? "done" : ""}${me ? " me" : ""}">${esc(p.nickname)}</li>`;
+      return `<li class="${done ? "done" : ""}${me ? " me" : ""}">
+        <span class="nk">${esc(p.nickname)}</span>
+        <span class="an">${done ? esc(who ?? "answered") : "thinking…"}</span>
+      </li>`;
     }).join("");
 }
 

@@ -36,8 +36,13 @@ export function parseMessage(raw) {
 }
 
 /**
- * What one player may see. Answers stay hidden until REVEAL — knowing what a
- * rival typed would let you copy it or dodge their claim.
+ * What one player may see.
+ *
+ * Answers used to stay hidden until REVEAL, to stop anyone copying a rival.
+ * But a footballer already claimed is rejected outright, so copying was never
+ * possible — hiding the claims only meant people spent their round discovering
+ * by trial and error what was already gone. They are public as they land now,
+ * and naming a duplicate is a mistake you can see yourself making.
  *
  * Club picks are hidden for the same reason, but only while PICKING: seeing
  * the grid fill up turns choosing into reacting to everyone else. From
@@ -78,6 +83,11 @@ export function snapshotFor(state, playerId) {
     // room is moving, not enough to shadow anyone's pick.
     pickedCount: Object.keys(state.round.picks).length,
     answered: Object.fromEntries(Object.keys(state.round.answers).map((id) => [id, true])),
+    // Who has claimed whom, as they claim them. An entity with no label
+    // resolves to null rather than leaking a raw id.
+    claimed: Object.fromEntries(
+      Object.entries(state.round.answers).map(([id, a]) => [id, a.entityLabel ?? null]),
+    ),
     myGraceEndsAt: state.round.grace[playerId] ?? null,
     // Only your own collision. Telling you someone else was moved off a club
     // would leak the pick that the hiding is there to protect.
