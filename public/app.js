@@ -14,10 +14,13 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
 // must never touch it, or a snapshot arriving in the same tick as an error
 // would wipe the message before it is read.
 let noticeTimer;
-function notice(msg) {
+// The banner is red, because everything that used it was a failure. "Invite
+// link copied" through a red bar reads as an error, so it takes a kind now.
+function notice(msg, kind = "error") {
   const el = $("notice");
   el.textContent = msg;
   el.hidden = !msg;
+  el.className = kind;
   clearTimeout(noticeTimer);
   if (msg) noticeTimer = setTimeout(() => { $("notice").hidden = true; }, 6000);
 }
@@ -82,8 +85,25 @@ function render() {
 
   if (snap.phase === "LOBBY") {
     show("lobby");
-    $("lobby-players").innerHTML = snap.players.map((p) => `<li>${esc(p.nickname)}</li>`).join("");
-    $("start").hidden = snap.you !== snap.hostId || snap.players.length < 2;
+    const min = snap.config?.minPlayers ?? 2;
+    const max = snap.config?.maxPlayers ?? 8;
+    $("lobby-count").textContent = `${snap.players.length} / ${max}`;
+    $("lobby-players").innerHTML = snap.players.map((p) => `
+      <li class="${p.connected ? "on" : "off"}${p.id === snap.you ? " me" : ""}">
+        <span class="dot"></span>${esc(p.nickname)}
+        ${p.id === snap.hostId ? '<span class="tag">host</span>' : ""}
+        ${p.connected ? "" : '<span class="tag away">reconnecting</span>'}
+      </li>`).join("");
+
+    // The button reads minPlayers off the config rather than hardcoding 2, so
+    // changing the engine default cannot leave the UI enforcing a stale rule.
+    const iAmHost = snap.you === snap.hostId;
+    const enough = snap.players.length >= min;
+    $("start").hidden = !iAmHost || !enough;
+    const host = snap.players.find((p) => p.id === snap.hostId);
+    $("lobby-note").textContent = !enough
+      ? `Waiting for ${min - snap.players.length} more player${min - snap.players.length === 1 ? "" : "s"}.`
+      : iAmHost ? "" : `Waiting for ${host ? host.nickname : "the host"} to start.`;
   }
   if (snap.phase === "PICKING") {
     show("picking");
@@ -287,6 +307,12 @@ setInterval(() => {
   $("timer").classList.toggle("urgent", left <= 10 && snap.phase !== "REVEAL");
 }, 250);
 
+const preset = new URLSearchParams(location.search).get("room");
+if (preset) {
+  $("join-code").value = preset.toUpperCase().slice(0, 6);
+  $("nickname").focus();
+}
+
 $("create").onclick = async () => {
   const nick = $("nickname").value.trim();
   if (!nick) return alert("Pick a name first");
@@ -297,6 +323,19 @@ $("join").onclick = () => {
   const nick = $("nickname").value.trim();
   if (!nick) return alert("Pick a name first");
   connect($("join-code").value.trim().toUpperCase(), nick);
+};
+// A shared link prefills the code, so joining is: open, type a name, tap Join.
+$("share").onclick = async () => {
+  const url = `${location.origin}/?room=${snap.code}`;
+  try {
+    if (navigator.share) return await navigator.share({ title: "FootFinder", text: `Join my room: ${snap.code}`, url });
+    await navigator.clipboard.writeText(url);
+    notice("Invite link copied.", "ok");
+  } catch {
+    // Cancelled share, or no clipboard permission. Showing the link is the
+    // fallback that always works — the code is on screen above it anyway.
+    notice(url, "ok");
+  }
 };
 $("start").onclick = () => send("start");
 $("play-again").onclick = () => send("playAgain");

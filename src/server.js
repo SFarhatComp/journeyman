@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { createDataset } from "./dataset/load.js";
 import { findBestAnswer } from "./engine/scoring.js";
 import { parseMessage, snapshotFor } from "./protocol.js";
+import { resolveStaticPath } from "./static-path.js";
 import {
   createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect, endGame, playAgain,
 } from "./engine/room.js";
@@ -94,11 +95,8 @@ const server = createServer(async (req, res) => {
     return res.end(JSON.stringify({ code }));
   }
 
-  const path = req.url === "/" ? "/index.html" : req.url.split("?")[0];
-  // One optional subdirectory, for /crests/Q18656.png. The explicit ".." test
-  // is what actually stops traversal: "." is a legal filename character, so
-  // the character class alone would happily match "/../etc".
-  if (!/^\/[\w.-]+(\/[\w.-]+)?$/.test(path) || path.includes("..")) {
+  const path = resolveStaticPath(req.url);
+  if (!path) {
     res.writeHead(404);
     return res.end();
   }

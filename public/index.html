@@ -13,18 +13,29 @@
 
   <main>
     <section id="screen-home">
-      <input id="nickname" placeholder="Your name" maxlength="24" autocomplete="off">
+      <p class="tagline">Claim a club. Name one footballer who links them all.</p>
+      <input id="nickname" placeholder="Your name" maxlength="24" autocomplete="off"
+             autocapitalize="words" enterkeyhint="done">
       <button id="create">Create room</button>
+      <p class="or"><span>or join one</span></p>
       <div class="row">
-        <input id="join-code" placeholder="Room code" maxlength="6" autocomplete="off">
+        <input id="join-code" placeholder="Room code" maxlength="6" autocomplete="off"
+               autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go">
         <button id="join">Join</button>
       </div>
     </section>
 
     <section id="screen-lobby" hidden>
-      <p>Room code: <strong id="room-code"></strong></p>
+      <span class="lbl">Room code</span>
+      <strong id="room-code"></strong>
+      <button id="share" class="ghost">Share invite link</button>
+      <div class="lobby-head">
+        <span class="lbl">In the room</span>
+        <span id="lobby-count" class="count"></span>
+      </div>
       <ul id="lobby-players"></ul>
       <button id="start" hidden>Start game</button>
+      <p id="lobby-note"></p>
     </section>
 
     <section id="screen-picking" hidden>

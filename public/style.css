@@ -193,9 +193,7 @@ button:active { transform:scale(.98); }
 #answer { padding:18px var(--sm); font-size:17px; text-align:center; border-radius:var(--r-full); }
 
 .status-strip { margin-top:var(--gutter); border-top:1px solid var(--outline-variant); padding-top:var(--sm); }
-.status-strip .lbl {
-  font:500 10px/14px var(--body); letter-spacing:.14em; text-transform:uppercase; color:var(--outline);
-}
+
 #submitted { display:flex; flex-wrap:wrap; gap:6px; list-style:none; padding:0; margin:6px 0 0; }
 #submitted li {
   font:500 12px/16px var(--body); padding:4px 10px; border-radius:var(--r-full);
@@ -204,6 +202,13 @@ button:active { transform:scale(.98); }
 #submitted li.done { color:var(--tertiary); border-color:var(--tertiary); }
 #submitted li.done::before { content:"\2713 "; }
 #submitted li.me { font-weight:700; }
+
+/* The eyebrow label above a value. Used by the lobby, the answering screen's
+   status strip and the best-answer card; those override the colour only. */
+.lbl {
+  display:block; font:500 10px/14px var(--body); letter-spacing:.14em;
+  text-transform:uppercase; color:var(--outline);
+}
 
 /* Base for every points number on every screen. #standings and #scoreboard
    set only a size and inherit the rest from here. */
@@ -226,8 +231,7 @@ button:active { transform:scale(.98); }
   background:var(--surface-high); border-radius:var(--r-xl); padding:var(--gutter);
   margin-bottom:var(--gutter); border-left:3px solid var(--gold);
 }
-.best .lbl { display:block; font:500 10px/14px var(--body); letter-spacing:.14em;
-             text-transform:uppercase; color:var(--gold); }
+.best .lbl { color:var(--gold); }
 .best .who { display:block; font:700 22px/26px var(--display); margin-top:2px; }
 .best .who.none { font-size:15px; line-height:20px; color:var(--outline); }
 .best .max { font:500 12px/16px var(--body); color:var(--on-surface-variant); }
@@ -318,23 +322,54 @@ button:active { transform:scale(.98); }
   padding:10px; box-shadow:none; margin-top:6px;
 }
 
+/* ---------------- home ---------------- */
+.tagline { color:var(--on-surface-variant); font-size:15px; margin-bottom:var(--gutter); }
+.or {
+  display:flex; align-items:center; gap:var(--sm); margin:var(--gutter) 0;
+  color:var(--outline); font:500 11px/14px var(--body); letter-spacing:.14em; text-transform:uppercase;
+}
+.or::before, .or::after { content:""; flex:1; height:1px; background:var(--outline-variant); }
+#join-code { text-transform:uppercase; letter-spacing:.14em; font-family:var(--display); }
+
 /* ---------------- lobby ---------------- */
+#screen-lobby > .lbl { text-align:center; }
 #room-code {
   font:700 40px/1.1 var(--display); color:var(--gold);
   letter-spacing:.18em; display:block; text-align:center;
 }
+#share {
+  background:transparent; color:var(--gold); border:1px solid var(--gold);
+  box-shadow:none; font-size:14px; margin-top:var(--base);
+}
+.lobby-head {
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin:var(--gutter) 0 var(--sm);
+}
+.lobby-head .count { font:700 14px/1 var(--display); color:var(--outline); letter-spacing:.08em; }
+
 #lobby-players { list-style:none; padding:0; }
 #lobby-players li {
+  display:flex; align-items:center; gap:var(--sm);
   background:var(--surface); border:1px solid var(--outline-variant);
-  border-left:2px solid var(--mint); border-radius:var(--r-xl);
-  padding:var(--sm); margin-bottom:6px; font-weight:500;
+  border-radius:var(--r-xl); padding:var(--sm); margin-bottom:6px; font-weight:500;
 }
+#lobby-players li.me { border-color:var(--gold); }
+#lobby-players .dot { width:8px; height:8px; border-radius:50%; background:var(--tertiary); flex:none; }
+#lobby-players li.off { color:var(--outline); }
+#lobby-players li.off .dot { background:var(--outline); animation:pulse 1.4s ease-in-out infinite; }
+#lobby-players .tag {
+  margin-left:auto; font:500 10px/14px var(--body); letter-spacing:.12em; text-transform:uppercase;
+  color:var(--outline); border:1px solid var(--outline-variant); border-radius:var(--r-full); padding:2px 8px;
+}
+#lobby-players .tag.away { color:var(--gold); border-color:var(--gold); }
+#lobby-note { color:var(--outline); font-size:13px; text-align:center; margin-top:var(--sm); }
 
 /* ---------------- notice ---------------- */
 #notice {
   background:var(--error-container); color:#fff; padding:var(--sm) var(--gutter);
-  text-align:center; font-size:14px;
+  text-align:center; font-size:14px; overflow-wrap:anywhere;
 }
+#notice.ok { background:var(--surface-highest); color:var(--tertiary); }
 #notice[hidden] { display:none; }
 
 @media (prefers-reduced-motion:reduce) {
