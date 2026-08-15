@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import { WebSocketServer } from "ws";
 import { randomUUID } from "node:crypto";
@@ -74,6 +74,24 @@ function apply(room, result) {
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
                ".png": "image/png", ".svg": "image/svg+xml",
                ".woff2": "font/woff2" };
+
+/**
+ * Nothing was sending cache headers, so 1.5MB of crests came down the tunnel
+ * again on every load and every reconnect — and with no validator either, the
+ * browser could not even ask "still fresh?".
+ *
+ * Crests are named by Wikidata QID and fonts by script subset, so a given
+ * filename's bytes never change; those cache hard. The page, script and
+ * stylesheet do change on every deploy and carry no content hash in their
+ * names, so they must revalidate — the ETag turns that into a 304 rather than
+ * a re-download. Crests get a month rather than a year, so re-running the
+ * crest fetch is not pinned behind a stale cache until 2027.
+ */
+function cacheControl(path) {
+  if (path.startsWith("/fonts/")) return "public, max-age=31536000, immutable";
+  if (path.startsWith("/crests/")) return "public, max-age=2592000";
+  return "no-cache";
+}
 const server = createServer(async (req, res) => {
   if (req.url === "/api/clubs") {
     res.writeHead(200, { "content-type": "application/json" });
@@ -101,10 +119,21 @@ const server = createServer(async (req, res) => {
     return res.end();
   }
   try {
-    const body = await readFile(new URL(`../public${path}`, import.meta.url));
+    const file = new URL(`../public${path}`, import.meta.url);
+    const info = await stat(file);
     const ext = path.slice(path.lastIndexOf("."));
-    res.writeHead(200, { "content-type": MIME[ext] ?? "application/octet-stream" });
-    res.end(body);
+    const etag = `W/"${info.size.toString(16)}-${Math.floor(info.mtimeMs).toString(16)}"`;
+    const headers = {
+      "content-type": MIME[ext] ?? "application/octet-stream",
+      "cache-control": cacheControl(path),
+      etag,
+    };
+    if (req.headers["if-none-match"] === etag) {
+      res.writeHead(304, headers);
+      return res.end();
+    }
+    res.writeHead(200, headers);
+    res.end(await readFile(file));
   } catch {
     res.writeHead(404);
     res.end("not found");

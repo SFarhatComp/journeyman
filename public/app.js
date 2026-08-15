@@ -331,9 +331,13 @@ $("share").onclick = async () => {
     if (navigator.share) return await navigator.share({ title: "FootFinder", text: `Join my room: ${snap.code}`, url });
     await navigator.clipboard.writeText(url);
     notice("Invite link copied.", "ok");
-  } catch {
-    // Cancelled share, or no clipboard permission. Showing the link is the
-    // fallback that always works — the code is on screen above it anyway.
+  } catch (err) {
+    // Dismissing the share sheet rejects with AbortError. That is the user
+    // saying no, not a failure — banner-ing the URL at them is the opposite
+    // of what they asked for.
+    if (err?.name === "AbortError") return;
+    // No clipboard permission. Showing the link always works; the code is on
+    // screen right above it anyway.
     notice(url, "ok");
   }
 };
