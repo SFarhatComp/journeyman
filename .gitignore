@@ -4,3 +4,4 @@ dist/
 .superpowers/
 data/.enrich-cache.json
 data/.rosters.json
+data/.nhl-rosters.json

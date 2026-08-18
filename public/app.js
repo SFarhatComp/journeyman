@@ -1,4 +1,14 @@
 const $ = (id) => document.getElementById(id);
+
+// The only thing in the client that knows what sport it is. Everything else
+// asks this, so adding a third sport is one entry rather than a search for
+// the word "footballer".
+const WORDS = {
+  football: { player: "footballer", unit: "club", units: "clubs", verb: "played for" },
+  hockey: { player: "hockey player", unit: "team", units: "teams", verb: "played for" },
+};
+const words = () => WORDS[snap?.config?.sport] ?? WORDS.football;
+const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 const screens = ["home", "lobby", "picking", "answering", "reveal", "final"];
 
 let ws, me = null, snap = null, clubs = [], lastRound = null, lastPicks = null, lastPhase = null;
@@ -32,7 +42,10 @@ function show(name) {
 async function connect(code, nickname) {
   saved("code", code);
   saved("nickname", nickname);
-  clubs = await (await fetch("/api/clubs")).json();
+  // Deliberately not fetched here any more: which pool to fetch depends on the
+  // room's sport, and that arrives with the first snapshot. Loading football's
+  // 97 clubs before finding out the room is hockey wasted the request and
+  // showed the wrong grid for a moment.
   const pid = saved("playerId") ?? "";
   ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws?code=${code}&playerId=${pid}`);
 
@@ -56,9 +69,9 @@ async function connect(code, nickname) {
         $("answer").value = "";
         $("suggestions").innerHTML = "";
         $("answer").focus();
-        answerNote = { text: "Someone already named that footballer. Name a different one — you have extra time.", cls: "taken" };
+        answerNote = { text: `Someone already named that ${words().player}. Name a different one — you have extra time.`, cls: "taken" };
         renderAnswerNote();
-        notice("That footballer is taken. Name someone else.", "error", 15000);
+        notice(`That ${words().player} is taken. Name someone else.`, "error", 15000);
       } else {
         notice(payload.error.replace(/_/g, " "));
       }
@@ -81,8 +94,34 @@ async function connect(code, nickname) {
 
 const send = (type, payload = {}) => ws?.send(JSON.stringify({ type, payload }));
 
+let clubsSport = null;
+let clubsPending = null;
+/**
+ * Load the club pool for whatever sport this room is playing.
+ *
+ * Guarded on the sport rather than fired once, because the host can switch
+ * sport in the lobby — and a hockey room showing 97 football clubs is not a
+ * cosmetic problem, it is an unplayable grid.
+ */
+async function ensureClubs() {
+  const sport = snap?.config?.sport ?? "football";
+  if (clubsSport === sport || clubsPending === sport) return;
+  clubsPending = sport;
+  try {
+    clubs = await (await fetch(`/api/clubs?sport=${sport}`)).json();
+    clubsSport = sport;
+    lastPicks = null; // the grid is built from a different pool now
+    if (snap) render();
+  } catch {
+    notice("Could not load the teams. Check your connection.");
+  } finally {
+    clubsPending = null;
+  }
+}
+
 function render() {
   if (!snap) return;
+  ensureClubs();
   $("phase").textContent = snap.phase.toLowerCase();
   $("room-code").textContent = snap.code;
 
@@ -102,6 +141,7 @@ function render() {
 
   if (snap.phase === "LOBBY") {
     show("lobby");
+    renderSports();
     renderRounds();
     const min = snap.config?.minPlayers ?? 2;
     const max = snap.config?.maxPlayers ?? 8;
@@ -126,6 +166,7 @@ function render() {
   if (snap.phase === "PICKING") {
     show("picking");
     renderPickStatus();
+    $("pick-prompt").textContent = `Claim a ${words().unit}. Nobody can see what you take.`;
     // Rebuilding 97 cards is expensive. The grid now depends only on YOUR
     // pick, so other people choosing no longer redraws anything.
     const sig = snap.round.picks[snap.you] ?? "";
@@ -242,6 +283,22 @@ function renderClubs() {
 // Host-only game length. Everyone sees the setting; only the host can move it,
 // and only in the lobby — the engine enforces both, this just reflects them.
 const ROUND_OPTIONS = [4, 6, 8];
+const SPORT_LABELS = { football: "⚽ Football", hockey: "🏒 Hockey" };
+
+// Populated from /api/sports, so a sport whose dataset failed to load never
+// appears as a button that cannot work.
+let sportsAvailable = ["football"];
+fetch("/api/sports").then((r) => r.json()).then((s) => { sportsAvailable = s; })
+  .catch(() => { /* keep the default */ });
+
+function renderSports() {
+  const iAmHost = snap.you === snap.hostId;
+  const current = snap.config?.sport ?? "football";
+  $("sports").innerHTML = sportsAvailable.map((s) =>
+    `<button class="${s === current ? "on" : ""}" data-sport="${s}" ${iAmHost ? "" : "disabled"}>${SPORT_LABELS[s] ?? s}</button>`
+  ).join("");
+}
+
 function renderRounds() {
   const iAmHost = snap.you === snap.hostId;
   const current = snap.config?.rounds;
@@ -319,6 +376,8 @@ function renderNamedSoFar() {
 }
 
 function renderRoundClubs() {
+  $("answer-prompt").textContent = `Name one ${words().player} who ${words().verb}`;
+  $("answer").placeholder = `Search a ${words().player}`;
   $("round-no").textContent = `Round ${snap.round.number} of ${snap.config.rounds ?? "?"}`;
 
   // If two people picked the same club, one was moved. Say so plainly — the
@@ -460,6 +519,10 @@ $("share").onclick = async () => {
   }
 };
 $("club-search").oninput = applyClubFilter;
+$("sports").onclick = (e) => {
+  const btn = e.target.closest("button[data-sport]");
+  if (btn && !btn.disabled) send("setSport", { sport: btn.dataset.sport });
+};
 $("rounds").onclick = (e) => {
   const btn = e.target.closest("button[data-rounds]");
   if (btn && !btn.disabled) send("setRounds", { rounds: Number(btn.dataset.rounds) });
@@ -499,7 +562,8 @@ $("answer").oninput = (e) => {
   const q = e.target.value;
   if (q.length < 2) return ($("suggestions").innerHTML = "");
   searchTimer = setTimeout(async () => {
-    const results = await (await fetch(`/api/search?q=${encodeURIComponent(q)}`)).json();
+    const sport = snap?.config?.sport ?? "football";
+    const results = await (await fetch(`/api/search?q=${encodeURIComponent(q)}&sport=${sport}`)).json();
     $("suggestions").innerHTML = results.map((r) => `<li data-id="${r.id}">${esc(r.label)}</li>`).join("");
   }, 150);
 };

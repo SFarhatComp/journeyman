@@ -39,6 +39,25 @@ case "${1:-help}" in
   crests)  docker run --rm -v "$DIR/public":/app/public -v "$DIR/data":/app/data:ro \
              -v "$DIR/scripts":/app/scripts:ro "$IMAGE" node scripts/fetch-crests.mjs ;;
 
+  # Hockey: the NHL publishes this itself, so no Wikidata and no scraping.
+  nhl)     docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
+             -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-nhl.mjs ;;
+
+  # NHL logos are SVG; the draft grid wants PNG like the football crests, so
+  # they are rasterised at 128px to match. Downscaled for the same reason:
+  # 32 crests load on a phone under a pick timer.
+  nhl-crests)
+           docker run --rm -v "$DIR/data:/data:ro" -v "$DIR/public/crests:/out" alpine:3 sh -c '
+             apk add --quiet curl jq rsvg-convert >/dev/null
+             n=0
+             for tri in $(jq -r "keys[]" /data/nhl-logos.json); do
+               url=$(jq -r --arg t "$tri" ".[\$t]" /data/nhl-logos.json)
+               curl -sfL --max-time 30 "$url" -o "/tmp/$tri.svg" || { echo "  MISS $tri"; continue; }
+               rsvg-convert -w 128 -h 128 -a -f png "/tmp/$tri.svg" -o "/out/$tri.png" \
+                 && n=$((n+1)) && echo "  ok   $tri" || echo "  FAIL $tri"
+             done
+             echo "$n/32 logos"' ;;
+
   dataset) docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-dataset.mjs ;;
 
@@ -48,5 +67,5 @@ case "${1:-help}" in
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/enrich-careers.mjs "$@" ;;
 
   *)       sed -n '2,4p' "${BASH_SOURCE[0]}"; echo
-           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich}"; exit 1 ;;
+           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich|nhl|nhl-crests}"; exit 1 ;;
 esac

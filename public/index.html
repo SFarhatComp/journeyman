@@ -13,7 +13,7 @@
 
   <main>
     <section id="screen-home">
-      <p class="tagline">Claim a club. Name one footballer who links them all.</p>
+      <p class="tagline">Claim a team. Name one player who links them all.</p>
       <input id="nickname" placeholder="Your name" maxlength="24" autocomplete="off"
              autocapitalize="words" enterkeyhint="done">
       <button id="create">Create room</button>
@@ -29,6 +29,11 @@
       <span class="lbl">Room code</span>
       <strong id="room-code"></strong>
       <button id="share">Share invite link</button>
+      <div class="lobby-head">
+        <span class="lbl">Sport</span>
+      </div>
+      <div id="sports" class="seg"></div>
+
       <div class="lobby-head">
         <span class="lbl">Rounds</span>
       </div>
@@ -49,7 +54,7 @@
         <h2 id="pick-no">Round 1</h2>
         <span id="pick-progress" class="count"></span>
       </div>
-      <p class="prompt">Claim a club. Nobody can see what you take.</p>
+      <p class="prompt" id="pick-prompt">Claim a team. Nobody can see what you take.</p>
       <input id="club-search" placeholder="Search clubs" autocomplete="off"
              autocorrect="off" spellcheck="false" enterkeyhint="search">
       <p id="club-empty" hidden>No club matches that.</p>
@@ -59,9 +64,9 @@
     <section id="screen-answering" hidden>
       <div class="round-bar"><span class="live-dot"></span><h2 id="round-no">Round 1</h2></div>
       <p id="reassigned" class="reassigned" hidden></p>
-      <p class="prompt">Name one footballer who played for</p>
+      <p class="prompt" id="answer-prompt">Name one player who played for</p>
       <ul id="round-clubs"></ul>
-      <input id="answer" placeholder="Search a footballer" autocomplete="off"
+      <input id="answer" placeholder="Search a player" autocomplete="off"
              autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
       <ul id="suggestions"></ul>
       <p id="answer-status"></p>

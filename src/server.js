@@ -8,22 +8,58 @@ import { parseMessage, snapshotFor } from "./protocol.js";
 import { resolveStaticPath } from "./static-path.js";
 import {
   createRoom, addPlayer, startGame, pickClub, submitAnswer, expirePhase, disconnect, endGame, playAgain,
-  setRounds,
+  setRounds, setSport,
 } from "./engine/room.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const HOST = process.env.HOST ?? "127.0.0.1";
 
-const raw = JSON.parse(await readFile(new URL("../data/dataset.json", import.meta.url), "utf8"));
-const dataset = createDataset(raw);
-console.log(`dataset: ${dataset.players.length} players, ${dataset.clubs.length} clubs`);
-
-const deps = {
-  clubs: dataset.clubs,
-  getPlayerClubs: (id) => dataset.getPlayerClubs(id),
-  getPlayerLabel: (id) => dataset.getPlayerLabel(id),
-  findBest: (roundClubIds) => findBestAnswer(roundClubIds, dataset.players),
+/**
+ * One dataset per sport, chosen per room.
+ *
+ * The engine never learns which sport it is running: it takes `deps`, and
+ * every sport supplies the same four functions over the same shape. That is
+ * why adding hockey needed no engine change at all — the five mentions of
+ * "football" in engine and protocol were comments.
+ */
+const SPORTS = {
+  football: { file: "../data/dataset.json", noun: "footballer", unit: "club" },
+  hockey: { file: "../data/nhl-dataset.json", noun: "hockey player", unit: "team" },
 };
+
+const datasets = {};
+for (const [sport, meta] of Object.entries(SPORTS)) {
+  try {
+    const raw = JSON.parse(await readFile(new URL(meta.file, import.meta.url), "utf8"));
+    datasets[sport] = createDataset(raw);
+    console.log(`${sport}: ${datasets[sport].players.length} players, ${datasets[sport].clubs.length} ${meta.unit}s`);
+  } catch (err) {
+    // A missing dataset disables that sport rather than stopping the server.
+    // Losing one game is better than losing both.
+    console.log(`${sport}: unavailable (${err.code ?? err.message})`);
+  }
+}
+if (Object.keys(datasets).length === 0) throw new Error("no datasets — cannot serve any game");
+
+export const availableSports = Object.keys(datasets);
+const DEFAULT_SPORT = availableSports.includes("football") ? "football" : availableSports[0];
+
+const depsCache = {};
+function depsFor(sport) {
+  const key = datasets[sport] ? sport : DEFAULT_SPORT;
+  if (depsCache[key]) return depsCache[key];
+  const d = datasets[key];
+  depsCache[key] = {
+    clubs: d.clubs,
+    getPlayerClubs: (id) => d.getPlayerClubs(id),
+    getPlayerLabel: (id) => d.getPlayerLabel(id),
+    findBest: (roundClubIds) => findBestAnswer(roundClubIds, d.players),
+  };
+  return depsCache[key];
+}
+
+/** The deps a given room plays with, decided by its own config. */
+const roomDeps = (room) => depsFor(room.state.config?.sport ?? DEFAULT_SPORT);
 
 /** code -> { state, sockets: Map<playerId, ws> } */
 const rooms = new Map();
@@ -94,14 +130,26 @@ function cacheControl(path) {
   return "no-cache";
 }
 const server = createServer(async (req, res) => {
-  if (req.url === "/api/clubs") {
+  // Both take ?sport=, defaulting to whatever is loaded. An unknown sport
+  // falls back rather than 404ing: a stale client asking the wrong question
+  // should still get a playable answer.
+  const sportOf = (url) => {
+    const asked = new URL(url, "http://x").searchParams.get("sport");
+    return datasets[asked] ? asked : DEFAULT_SPORT;
+  };
+
+  if (req.url === "/api/sports") {
     res.writeHead(200, { "content-type": "application/json" });
-    return res.end(JSON.stringify(dataset.clubs));
+    return res.end(JSON.stringify(availableSports));
+  }
+  if (req.url?.startsWith("/api/clubs")) {
+    res.writeHead(200, { "content-type": "application/json" });
+    return res.end(JSON.stringify(datasets[sportOf(req.url)].clubs));
   }
   if (req.url?.startsWith("/api/search?")) {
-    const q = new URL(req.url, "http://x").searchParams.get("q") ?? "";
+    const url = new URL(req.url, "http://x");
     res.writeHead(200, { "content-type": "application/json" });
-    return res.end(JSON.stringify(dataset.search(q)));
+    return res.end(JSON.stringify(datasets[sportOf(req.url)].search(url.searchParams.get("q") ?? "")));
   }
   if (req.method === "POST" && req.url === "/api/room") {
     if (!allowRoomCreation(req.socket.remoteAddress ?? "unknown")) {
@@ -179,15 +227,22 @@ wss.on("connection", (ws, req) => {
         if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
         else result = setRounds(room.state, msg.payload.rounds);
         break;
+      case "setSport":
+        // Host only, and the server refuses a sport it has no dataset for —
+        // the engine allows any name in SPORTS, but only loaded ones playable.
+        if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
+        else if (!datasets[msg.payload.sport]) result = { state: room.state, error: "sport_unavailable" };
+        else result = setSport(room.state, msg.payload.sport);
+        break;
       case "start":
         if (playerId !== room.state.hostId) result = { state: room.state, error: "not_host" };
-        else result = startGame(room.state, now, deps);
+        else result = startGame(room.state, now, roomDeps(room));
         break;
       case "pickClub":
-        result = pickClub(room.state, { playerId, clubId: msg.payload.clubId }, now, deps);
+        result = pickClub(room.state, { playerId, clubId: msg.payload.clubId }, now, roomDeps(room));
         break;
       case "submitAnswer":
-        result = submitAnswer(room.state, { playerId, entityId: msg.payload.entityId }, now, deps);
+        result = submitAnswer(room.state, { playerId, entityId: msg.payload.entityId }, now, roomDeps(room));
         break;
       default:
         return;
@@ -228,7 +283,7 @@ setInterval(() => {
 
     if (room.state.phaseEndsAt === null) continue;
     const before = room.state.phase;
-    const result = expirePhase(room.state, now, deps);
+    const result = expirePhase(room.state, now, roomDeps(room));
     room.state = result.state;
     // Only broadcast when the tick actually changed something. Clients run
     // their own countdown from phaseEndsAt, so a per-second snapshot to every

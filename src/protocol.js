@@ -12,6 +12,7 @@ const VALIDATORS = {
     && p.nickname.length <= MAX_NICKNAME_LENGTH,
   start: () => true,
   setRounds: (p) => Number.isInteger(p?.rounds),
+  setSport: (p) => typeof p?.sport === "string" && p.sport.length <= 16,
   endGame: () => true,
   playAgain: () => true,
   pickClub: (p) => typeof p?.clubId === "string" && p.clubId.length <= 32,

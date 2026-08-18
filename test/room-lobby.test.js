@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRoom, addPlayer, startGame, beginRound, DEFAULT_CONFIG , setRounds, ROUND_OPTIONS } from "../src/engine/room.js";
+import { createRoom, addPlayer, startGame, beginRound, DEFAULT_CONFIG , setRounds, ROUND_OPTIONS, setSport, SPORTS } from "../src/engine/room.js";
 
 const DEPS = {
   clubs: [
@@ -165,4 +165,38 @@ test("setting the game length leaves the state it was given untouched", () => {
   const snapshot = structuredClone(base);
   setRounds(base, 4);
   assert.deepEqual(base, snapshot, "setRounds mutated its input");
+});
+
+test("the host can choose any sport the engine knows", () => {
+  for (const sport of SPORTS) {
+    const res = setSport(withPlayers(2), sport);
+    assert.equal(res.error, undefined);
+    assert.equal(res.state.config.sport, sport);
+  }
+});
+
+test("a sport that is not on offer is refused", () => {
+  // The pool is drawn from the sport's own dataset, so an unknown name would
+  // leave the round with no clubs to pick from at all.
+  for (const bad of ["cricket", "", "FOOTBALL", null, 7]) {
+    assert.equal(setSport(withPlayers(2), bad).error, "bad_sport", `${bad} must be refused`);
+  }
+});
+
+test("the sport cannot change once play has started", () => {
+  // Players would be holding teams that do not exist in the dataset being
+  // scored against.
+  const playing = { ...withPlayers(2), phase: "PICKING" };
+  assert.equal(setSport(playing, "hockey").error, "wrong_phase");
+});
+
+test("a new room defaults to football", () => {
+  assert.equal(createRoom({ code: "ABC123" }).config.sport, "football");
+});
+
+test("setting the sport leaves the state it was given untouched", () => {
+  const base = withPlayers(2);
+  const snapshot = structuredClone(base);
+  setSport(base, "hockey");
+  assert.deepEqual(base, snapshot, "setSport mutated its input");
 });

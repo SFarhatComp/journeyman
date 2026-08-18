@@ -12,7 +12,17 @@
 /** Selectable game lengths. Eight rounds runs long; six is the default. */
 export const ROUND_OPTIONS = [4, 6, 8];
 
+/**
+ * Which sport a room plays.
+ *
+ * The engine does nothing with this beyond storing it and refusing nonsense —
+ * it never learns what a "club" is. The server reads it to pick which dataset
+ * to hand in as `deps`, and the UI reads it to pick its nouns.
+ */
+export const SPORTS = ["football", "hockey"];
+
 export const DEFAULT_CONFIG = {
+  sport: "football",
   rounds: 6,
   // The picking clock does not run while several people are still deciding —
   // it starts only once everyone but one has locked in, and pickSeconds is
@@ -86,6 +96,20 @@ export function setRounds(state, rounds) {
 
   const next = clone(state);
   next.config = { ...next.config, rounds };
+  return ok(next, [{ type: "config_changed" }]);
+}
+
+/**
+ * Choose the sport. Lobby only, like the round count: the clubs are drawn from
+ * the sport's own pool, so changing it mid-game would leave players holding
+ * teams that no longer exist in the dataset being scored against.
+ */
+export function setSport(state, sport) {
+  if (state.phase !== "LOBBY") return fail(state, "wrong_phase");
+  if (!SPORTS.includes(sport)) return fail(state, "bad_sport");
+
+  const next = clone(state);
+  next.config = { ...next.config, sport };
   return ok(next, [{ type: "config_changed" }]);
 }
 

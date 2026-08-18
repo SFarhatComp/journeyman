@@ -1,0 +1,194 @@
+[
+  {
+    "id": "BOS",
+    "name": "Boston Bruins",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "BUF",
+    "name": "Buffalo Sabres",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "DET",
+    "name": "Detroit Red Wings",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "FLA",
+    "name": "Florida Panthers",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "MTL",
+    "name": "Montréal Canadiens",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "OTT",
+    "name": "Ottawa Senators",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "TBL",
+    "name": "Tampa Bay Lightning",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "TOR",
+    "name": "Toronto Maple Leafs",
+    "country": "Atlantic",
+    "league": "Eastern — Atlantic"
+  },
+  {
+    "id": "CAR",
+    "name": "Carolina Hurricanes",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "CBJ",
+    "name": "Columbus Blue Jackets",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "NJD",
+    "name": "New Jersey Devils",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "NYI",
+    "name": "New York Islanders",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "NYR",
+    "name": "New York Rangers",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "PHI",
+    "name": "Philadelphia Flyers",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "PIT",
+    "name": "Pittsburgh Penguins",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "WSH",
+    "name": "Washington Capitals",
+    "country": "Metropolitan",
+    "league": "Eastern — Metropolitan"
+  },
+  {
+    "id": "CHI",
+    "name": "Chicago Blackhawks",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "COL",
+    "name": "Colorado Avalanche",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "DAL",
+    "name": "Dallas Stars",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "MIN",
+    "name": "Minnesota Wild",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "NSH",
+    "name": "Nashville Predators",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "STL",
+    "name": "St. Louis Blues",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "UTA",
+    "name": "Utah Mammoth",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "WPG",
+    "name": "Winnipeg Jets",
+    "country": "Central",
+    "league": "Western — Central"
+  },
+  {
+    "id": "ANA",
+    "name": "Anaheim Ducks",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "CGY",
+    "name": "Calgary Flames",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "EDM",
+    "name": "Edmonton Oilers",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "LAK",
+    "name": "Los Angeles Kings",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "SJS",
+    "name": "San Jose Sharks",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "SEA",
+    "name": "Seattle Kraken",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "VAN",
+    "name": "Vancouver Canucks",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  },
+  {
+    "id": "VGK",
+    "name": "Vegas Golden Knights",
+    "country": "Pacific",
+    "league": "Western — Pacific"
+  }
+]
