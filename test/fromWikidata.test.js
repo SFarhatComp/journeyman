@@ -98,3 +98,53 @@ test("output is deterministic regardless of row order", () => {
   const b = shapeDataset(CLUBS, [...rows].reverse());
   assert.deepEqual(a, b);
 });
+
+// The file already has a positional `row` helper; this one takes overrides,
+// because these tests care about which naming fields are present.
+const namingRow = (over = {}) => ({
+  player: { value: "http://www.wikidata.org/entity/Q483837" },
+  club: { value: "http://www.wikidata.org/entity/Q1" },
+  ...over,
+});
+
+test("a player with no English label is named from their article", () => {
+  // Luka Modrić carries 59 labels on Wikidata and not one of them is English,
+  // so he was dropped as unnameable — invisible in a football game — while
+  // the article about him sits there titled "Luka Modrić".
+  const { players } = shapeDataset(
+    [{ id: "Q1", name: "Club One", country: "EN" }],
+    [namingRow({ playerLabel: { value: "Q483837" } })], // Wikidata echoes the id back
+    new Map([["Q483837", "Luka Modrić"]]),
+  );
+  assert.equal(players.length, 1);
+  assert.equal(players[0].name, "Luka Modrić");
+});
+
+test("an English label still wins over the article title", () => {
+  // Article titles carry disambiguators and different conventions; the label
+  // is the better name whenever there is one.
+  const { players } = shapeDataset(
+    [{ id: "Q1", name: "Club One", country: "EN" }],
+    [namingRow({ playerLabel: { value: "Kevin De Bruyne" } })],
+    new Map([["Q483837", "Kevin De Bruyne (footballer)"]]),
+  );
+  assert.equal(players[0].name, "Kevin De Bruyne");
+});
+
+test("the article's disambiguator is not part of the name", () => {
+  const { players } = shapeDataset(
+    [{ id: "Q1", name: "Club One", country: "EN" }],
+    [namingRow({ playerLabel: { value: "Q483837" } })],
+    new Map([["Q483837", "John Smith (footballer, born 1990)"]]),
+  );
+  assert.equal(players[0].name, "John Smith");
+});
+
+test("no label and no article means there is nothing to call them", () => {
+  // Keeping them would put a bare QID in the autocomplete.
+  const { players } = shapeDataset(
+    [{ id: "Q1", name: "Club One", country: "EN" }],
+    [namingRow({ playerLabel: { value: "Q483837" } })],
+  );
+  assert.deepEqual(players, []);
+});

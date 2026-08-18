@@ -35,7 +35,7 @@ Nothing is installed on the host — everything runs in Docker via
 
 ```bash
 ./footfinder.sh build     # build the image
-./footfinder.sh test      # run the test suite in a container (149 tests)
+./footfinder.sh test      # run the test suite in a container (159 tests)
 ./footfinder.sh up        # start the game server (http://127.0.0.1:3000)
 ./footfinder.sh down      # stop the server AND close the tunnel if open
 ./footfinder.sh logs      # follow the server's logs
@@ -66,8 +66,8 @@ running — Ctrl-C alone can fail if the shell is killed (see Known limits).
 
 ## The data
 
-A curated, fixed set of **97 European clubs** and **52,175 players**, built
-into `data/dataset.json` (4.9MB, committed and baked into the image). The
+A curated, fixed set of **97 European clubs** and **52,215 players**, built
+into `data/dataset.json` (5.0M, committed and baked into the image). The
 running game never calls the network — it's fully self-contained.
 
 `data/clubs.json` is hand-curated: every Wikidata QID was looked up and
@@ -81,6 +81,11 @@ Wikidata item is "really a club".
 statements. `./footfinder.sh enrich` then fills the gaps from **Wikipedia**
 career infoboxes.
 
+**They are ordered, and the order matters.** `dataset` rewrites
+`data/dataset.json` from scratch, which silently discards everything `enrich`
+added. Always run `enrich` after `dataset`, or 1,885 club links vanish and
+nothing tells you.
+
 The second pass exists because the first is quietly incomplete. Wikidata had
 João Félix at Chelsea and AC Milan, with no Benfica, no Atlético Madrid and no
 Barcelona — and an entry for FCSB, a Romanian club, where the Barcelona loan
@@ -91,7 +96,7 @@ players**.
 
 Enrichment is **additive**: it never removes a club Wikidata asserted. Two
 sources disagreeing isn't evidence about which is wrong, and a pass that can
-delete is one that can quietly gut 52,175 players. Every change is written to
+delete is one that can quietly gut 52,215 players. Every change is written to
 `data/enrich-report.json` so the diff can be read before it's trusted. Both
 passes cache aggressively, so an interrupted run resumes.
 
@@ -166,6 +171,15 @@ HTML, CSS and font — one round trip, no render-blocking JS.
 - **Wikidata labels are occasionally vandalised.** Q1042372's English label
   reads "don panini"; he's Carlo Parola. Eight such labels were repaired from
   their article titles, but the general problem is upstream.
+- **Some players have no English label at all.** Luka Modrić's entity carries
+  59 labels and not one in English, so he was dropped as unnameable — invisible
+  in a football game. The builder now falls back to the Wikipedia article
+  title, which recovered 31 of the 255 players in that state. The other 224
+  have no English article either, so there is genuinely nothing to call them.
+- **Rebuilding is flaky and slow.** The query service throttles under the
+  sustained load of 97 roster queries and starts truncating responses
+  mid-JSON. Rosters are cached per club, so a failed run resumes rather than
+  restarting — but expect a full rebuild to take two or three invocations.
 - **Search ranks by club count, not fame.** Typing `xavi` leads with Xavi
   Simons rather than Xavi Hernández, because Simons appears in more of the 97
   clubs. Typing a fuller name fixes it.

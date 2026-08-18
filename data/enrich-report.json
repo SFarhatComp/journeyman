@@ -1,7 +1,6 @@
 {
-  "generatedAt": "2026-08-15T03:49:57.124Z",
-  "note": "Diff of data/dataset.json before and after the Wikipedia enrichment pass.",
-  "playersChanged": 1477,
+  "generatedAt": "2026-08-18T02:09:33.051Z",
+  "playersChanged": 1479,
   "linksAdded": 1885,
   "renamed": [
     "don panini -> Carlo Parola",
@@ -70,7 +69,7 @@
       ]
     },
     {
-      "name": "Carlo Parola",
+      "name": "don panini",
       "added": [
         "Juventus"
       ]
@@ -352,12 +351,6 @@
       "added": [
         "Galatasaray",
         "Southampton"
-      ]
-    },
-    {
-      "name": "Bryan Zaragoza",
-      "added": [
-        "AS Roma"
       ]
     },
     {
@@ -970,12 +963,6 @@
       ]
     },
     {
-      "name": "Bernard",
-      "added": [
-        "Panathinaikos"
-      ]
-    },
-    {
       "name": "Noah Nsoki",
       "added": [
         "Dinamo Zagreb"
@@ -1204,6 +1191,12 @@
       ]
     },
     {
+      "name": "Moussa Dembélé",
+      "added": [
+        "Atlético Madrid"
+      ]
+    },
+    {
       "name": "Jaïro Riedewald",
       "added": [
         "Crystal Palace"
@@ -1363,13 +1356,6 @@
       "added": [
         "CSKA Moscow",
         "Zenit Saint Petersburg"
-      ]
-    },
-    {
-      "name": "Philipp Max",
-      "added": [
-        "Eintracht Frankfurt",
-        "Panathinaikos"
       ]
     },
     {
@@ -2435,6 +2421,12 @@
       "added": [
         "Werder Bremen",
         "Copenhagen"
+      ]
+    },
+    {
+      "name": "Alex Manninger",
+      "added": [
+        "Liverpool"
       ]
     },
     {
@@ -4220,6 +4212,12 @@
       ]
     },
     {
+      "name": "Djibril Sow",
+      "added": [
+        "Borussia Mönchengladbach"
+      ]
+    },
+    {
       "name": "Pietro Pellegri",
       "added": [
         "AC Milan",
@@ -4574,6 +4572,12 @@
       "added": [
         "Olympique de Marseille",
         "Wolverhampton Wanderers"
+      ]
+    },
+    {
+      "name": "Žan Celar",
+      "added": [
+        "FC Basel"
       ]
     },
     {
@@ -5175,7 +5179,7 @@
       ]
     },
     {
-      "name": "Nicolás Gaitán",
+      "name": "nisola gaitani",
       "added": [
         "Lille"
       ]
@@ -5591,6 +5595,12 @@
       "name": "Morgan Feeney",
       "added": [
         "Sunderland"
+      ]
+    },
+    {
+      "name": "Hamed Junior Traoré",
+      "added": [
+        "Napoli"
       ]
     },
     {
@@ -7081,6 +7091,12 @@
       ]
     },
     {
+      "name": "Haissem Hassan",
+      "added": [
+        "Villarreal"
+      ]
+    },
+    {
       "name": "Spencer",
       "added": [
         "Sevilla"
@@ -8068,14 +8084,6 @@
       ]
     },
     {
-      "name": "Tanguy Nianzou",
-      "added": [
-        "Bayern Munich",
-        "Sevilla",
-        "Lille"
-      ]
-    },
-    {
       "name": "Issa Kaboré",
       "added": [
         "Olympique de Marseille"
@@ -8192,6 +8200,13 @@
       "name": "Luka Sučić",
       "added": [
         "Red Bull Salzburg"
+      ]
+    },
+    {
+      "name": "Sotiris Alexandropoulos",
+      "added": [
+        "Sporting CP",
+        "Olympiacos"
       ]
     },
     {
@@ -9221,12 +9236,6 @@
       "added": [
         "Villarreal",
         "Wolverhampton Wanderers"
-      ]
-    },
-    {
-      "name": "Albert Grønbæk",
-      "added": [
-        "Hamburger SV"
       ]
     },
     {
