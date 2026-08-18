@@ -1,0 +1,182 @@
+[
+  {
+    "id": "BOS",
+    "name": "Boston Celtics",
+    "country": "Atlantic",
+    "league": "East — Atlantic"
+  },
+  {
+    "id": "BKN",
+    "name": "Brooklyn Nets",
+    "country": "Atlantic",
+    "league": "East — Atlantic"
+  },
+  {
+    "id": "NYK",
+    "name": "New York Knicks",
+    "country": "Atlantic",
+    "league": "East — Atlantic"
+  },
+  {
+    "id": "PHI",
+    "name": "Philadelphia 76ers",
+    "country": "Atlantic",
+    "league": "East — Atlantic"
+  },
+  {
+    "id": "TOR",
+    "name": "Toronto Raptors",
+    "country": "Atlantic",
+    "league": "East — Atlantic"
+  },
+  {
+    "id": "CHI",
+    "name": "Chicago Bulls",
+    "country": "Central",
+    "league": "East — Central"
+  },
+  {
+    "id": "CLE",
+    "name": "Cleveland Cavaliers",
+    "country": "Central",
+    "league": "East — Central"
+  },
+  {
+    "id": "DET",
+    "name": "Detroit Pistons",
+    "country": "Central",
+    "league": "East — Central"
+  },
+  {
+    "id": "IND",
+    "name": "Indiana Pacers",
+    "country": "Central",
+    "league": "East — Central"
+  },
+  {
+    "id": "MIL",
+    "name": "Milwaukee Bucks",
+    "country": "Central",
+    "league": "East — Central"
+  },
+  {
+    "id": "ATL",
+    "name": "Atlanta Hawks",
+    "country": "Southeast",
+    "league": "East — Southeast"
+  },
+  {
+    "id": "CHA",
+    "name": "Charlotte Hornets",
+    "country": "Southeast",
+    "league": "East — Southeast"
+  },
+  {
+    "id": "MIA",
+    "name": "Miami Heat",
+    "country": "Southeast",
+    "league": "East — Southeast"
+  },
+  {
+    "id": "ORL",
+    "name": "Orlando Magic",
+    "country": "Southeast",
+    "league": "East — Southeast"
+  },
+  {
+    "id": "WAS",
+    "name": "Washington Wizards",
+    "country": "Southeast",
+    "league": "East — Southeast"
+  },
+  {
+    "id": "DEN",
+    "name": "Denver Nuggets",
+    "country": "Northwest",
+    "league": "West — Northwest"
+  },
+  {
+    "id": "MIN",
+    "name": "Minnesota Timberwolves",
+    "country": "Northwest",
+    "league": "West — Northwest"
+  },
+  {
+    "id": "OKC",
+    "name": "Oklahoma City Thunder",
+    "country": "Northwest",
+    "league": "West — Northwest"
+  },
+  {
+    "id": "POR",
+    "name": "Portland Trail Blazers",
+    "country": "Northwest",
+    "league": "West — Northwest"
+  },
+  {
+    "id": "UTA",
+    "name": "Utah Jazz",
+    "country": "Northwest",
+    "league": "West — Northwest"
+  },
+  {
+    "id": "GSW",
+    "name": "Golden State Warriors",
+    "country": "Pacific",
+    "league": "West — Pacific"
+  },
+  {
+    "id": "LAC",
+    "name": "LA Clippers",
+    "country": "Pacific",
+    "league": "West — Pacific"
+  },
+  {
+    "id": "LAL",
+    "name": "Los Angeles Lakers",
+    "country": "Pacific",
+    "league": "West — Pacific"
+  },
+  {
+    "id": "PHX",
+    "name": "Phoenix Suns",
+    "country": "Pacific",
+    "league": "West — Pacific"
+  },
+  {
+    "id": "SAC",
+    "name": "Sacramento Kings",
+    "country": "Pacific",
+    "league": "West — Pacific"
+  },
+  {
+    "id": "DAL",
+    "name": "Dallas Mavericks",
+    "country": "Southwest",
+    "league": "West — Southwest"
+  },
+  {
+    "id": "HOU",
+    "name": "Houston Rockets",
+    "country": "Southwest",
+    "league": "West — Southwest"
+  },
+  {
+    "id": "MEM",
+    "name": "Memphis Grizzlies",
+    "country": "Southwest",
+    "league": "West — Southwest"
+  },
+  {
+    "id": "NOP",
+    "name": "New Orleans Pelicans",
+    "country": "Southwest",
+    "league": "West — Southwest"
+  },
+  {
+    "id": "SAS",
+    "name": "San Antonio Spurs",
+    "country": "Southwest",
+    "league": "West — Southwest"
+  }
+]

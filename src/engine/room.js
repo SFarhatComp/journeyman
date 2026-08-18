@@ -19,7 +19,7 @@ export const ROUND_OPTIONS = [4, 6, 8];
  * it never learns what a "club" is. The server reads it to pick which dataset
  * to hand in as `deps`, and the UI reads it to pick its nouns.
  */
-export const SPORTS = ["football", "hockey"];
+export const SPORTS = ["football", "hockey", "basketball"];
 
 export const DEFAULT_CONFIG = {
   sport: "football",

@@ -25,6 +25,7 @@ const HOST = process.env.HOST ?? "127.0.0.1";
 const SPORTS = {
   football: { file: "../data/dataset.json", noun: "footballer", unit: "club" },
   hockey: { file: "../data/nhl-dataset.json", noun: "hockey player", unit: "team" },
+  basketball: { file: "../data/nba-dataset.json", noun: "basketball player", unit: "team" },
 };
 
 const datasets = {};

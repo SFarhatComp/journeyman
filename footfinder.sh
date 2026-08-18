@@ -43,6 +43,24 @@ case "${1:-help}" in
   nhl)     docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-nhl.mjs ;;
 
+  # Basketball: stats.nba.com, the endpoints behind nba.com. Rate limited
+  # hard — expect an hour, and expect to run it twice. It resumes.
+  nba)     docker run --rm -v "$DIR/data:/app/data" -v "$DIR/scripts:/app/scripts:ro" \
+             -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/build-nba.mjs ;;
+
+  nba-crests)
+           docker run --rm -v "$DIR/data:/data:ro" -v "$DIR/public/crests:/out" alpine:3 sh -c '
+             apk add --quiet curl jq rsvg-convert >/dev/null
+             n=0
+             for tri in $(jq -r "keys[]" /data/nba-logos.json); do
+               url=$(jq -r --arg t "$tri" ".[\$t]" /data/nba-logos.json)
+               curl -sfL --max-time 30 -A "Mozilla/5.0" -e "https://www.nba.com/" "$url" -o "/tmp/$tri.svg" \
+                 || { echo "  MISS $tri"; continue; }
+               rsvg-convert -w 128 -h 128 -a -f png "/tmp/$tri.svg" -o "/out/$tri.png" \
+                 && n=$((n+1)) && echo "  ok   $tri" || echo "  FAIL $tri"
+             done
+             echo "$n logos"' ;;
+
   # NHL logos are SVG; the draft grid wants PNG like the football crests, so
   # they are rasterised at 128px to match. Downscaled for the same reason:
   # 32 crests load on a phone under a pick timer.
@@ -67,5 +85,5 @@ case "${1:-help}" in
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/enrich-careers.mjs "$@" ;;
 
   *)       sed -n '2,4p' "${BASH_SOURCE[0]}"; echo
-           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich|nhl|nhl-crests}"; exit 1 ;;
+           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich|nhl|nhl-crests|nba|nba-crests}"; exit 1 ;;
 esac

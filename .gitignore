@@ -5,3 +5,4 @@ dist/
 data/.enrich-cache.json
 data/.rosters.json
 data/.nhl-rosters.json
+data/.nba-rosters.json

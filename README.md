@@ -3,9 +3,14 @@
 A multiplayer sports trivia game for friends. Everyone joins a private room by
 code on their phones, and the game runs live for a few rounds.
 
-**Two sports, one game.** The host picks football or hockey in the lobby. The
-rules are identical; only the pool changes — 97 European football clubs, or
-the 32 current NHL teams.
+**Three sports, one game.** The host picks in the lobby. The rules are
+identical; only the pool changes.
+
+| Sport | Pool | Players | Source |
+|---|---|---|---|
+| ⚽ Football | 97 European clubs | 52,215 | Wikidata + Wikipedia |
+| 🏒 Hockey | 32 NHL teams | 8,212 | NHL public API |
+| 🏀 Basketball | 30 NBA teams | 4,667 | stats.nba.com |
 
 ## How it's played
 
@@ -79,6 +84,29 @@ running game never calls the network — it's fully self-contained.
 verified rather than scraped. That keeps national teams and lookalike entities
 out of the pool, and means the game never has to decide whether an arbitrary
 Wikidata item is "really a club".
+
+### Basketball: stats.nba.com
+
+`./footfinder.sh nba` builds `data/nba-dataset.json` — **4,667 players across
+the 30 active NBA franchises**, covering all 1,719 team-seasons they have
+played since 1946.
+
+The NBA publishes nothing as clean as the NHL's API, but the endpoints behind
+nba.com answer to browser headers and are complete. The alternatives were
+checked and are not viable: `data.nba.net` is dead, `cdn.nba.com`'s JSON is
+403, and balldontlie now requires an API key.
+
+**It answers a throttled request with an HTML error page and status 200**, not
+a 429. The builder therefore treats the body shape as the signal rather than
+the status code — code that trusts the status will parse garbage. At 1.2s
+between requests a full run took under an hour with zero throttle events, but
+expect to run it twice; rosters cache per team-season and resume.
+
+NBA rosters carry no nationality, only a school, so basketball labels read
+`L. James (1984)` where football reads `J. Félix (1999, PT)`. The label
+formatter already handles a missing country.
+
+`./footfinder.sh nba-crests` rasterises the NBA's SVG logos to 128px PNG.
 
 ### Hockey: the NHL's own API
 

@@ -6,6 +6,7 @@ const $ = (id) => document.getElementById(id);
 const WORDS = {
   football: { player: "footballer", unit: "club", units: "clubs", verb: "played for" },
   hockey: { player: "hockey player", unit: "team", units: "teams", verb: "played for" },
+  basketball: { player: "basketball player", unit: "team", units: "teams", verb: "played for" },
 };
 const words = () => WORDS[snap?.config?.sport] ?? WORDS.football;
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
@@ -283,7 +284,7 @@ function renderClubs() {
 // Host-only game length. Everyone sees the setting; only the host can move it,
 // and only in the lobby — the engine enforces both, this just reflects them.
 const ROUND_OPTIONS = [4, 6, 8];
-const SPORT_LABELS = { football: "⚽ Football", hockey: "🏒 Hockey" };
+const SPORT_LABELS = { football: "⚽ Football", hockey: "🏒 Hockey", basketball: "🏀 Basketball" };
 
 // Populated from /api/sports, so a sport whose dataset failed to load never
 // appears as a button that cannot work.
