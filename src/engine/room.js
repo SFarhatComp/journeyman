@@ -29,6 +29,10 @@ export const DEFAULT_CONFIG = {
   graceSeconds: 5,
   maxPlayers: 8,
   minPlayers: 2,
+  // Two players means two clubs, and a two-club round is thin — most decent
+  // footballers link two clubs, so everybody maxes out and nothing separates
+  // them. The round is topped up with ownerless clubs to this many.
+  minRoundClubs: 3,
 };
 
 const clone = (state) => structuredClone(state);
@@ -109,6 +113,7 @@ export function beginRound(state, number, now) {
     answers: {}, // playerId -> { entityId, submittedAt }
     grace: {}, // playerId -> deadline ms
     reassigned: {}, // playerId -> { from, to }, set when a collision moved them
+    wildcards: [], // clubIds nobody picked, added to make a small round harder
     pickTimerArmed: false,
     results: null,
     bestAnswer: null,
@@ -136,7 +141,7 @@ export function pickClub(state, { playerId, clubId }, now, deps) {
   // Advance the moment everyone has acted — otherwise a room of fast players
   // watches a dead countdown every round.
   if (picked === next.players.length) {
-    next = beginAnswering(resolveCollisions(next, deps), now);
+    next = beginAnswering(fillWildcards(resolveCollisions(next, deps), deps), now);
     events.push({ type: "phase_changed", phase: "ANSWERING" });
   } else if (picked === next.players.length - 1 && !next.round.pickTimerArmed) {
     // Everyone but one has locked in. Only now does a clock appear, and only
@@ -197,6 +202,38 @@ function beginAnswering(state, now) {
   // Backstop only, hidden by snapshotFor until the real clock arms.
   next.phaseEndsAt = now + next.config.answerMaxSeconds * 1000;
   return next;
+}
+
+/**
+ * Top the round up with ownerless clubs when there are too few players.
+ *
+ * Everyone scores against the whole round's set, not just their own club, so
+ * with two players a round holds two clubs — and most competent footballers
+ * have played for two of anything, which means everybody scores full marks and
+ * the round decides nothing. A third club nobody owns puts the difficulty
+ * back.
+ *
+ * Runs after collisions are settled and everyone has a club, so the count it
+ * tops up from is final.
+ */
+function fillWildcards(state, deps) {
+  const next = clone(state);
+  const taken = new Set(Object.values(next.round.picks));
+  const free = deps.clubs.filter((c) => !taken.has(c.id));
+  const rand = deps.random ?? Math.random;
+
+  const wanted = Math.min(next.config.minRoundClubs, deps.clubs.length);
+  while (taken.size < wanted && free.length > 0) {
+    const club = free.splice(Math.floor(rand() * free.length), 1)[0];
+    taken.add(club.id);
+    next.round.wildcards.push(club.id);
+  }
+  return next;
+}
+
+/** Every club in play this round: the ones players hold, plus any wildcards. */
+export function roundClubIds(round) {
+  return [...Object.values(round.picks ?? {}), ...(round.wildcards ?? [])];
 }
 
 /** Assign a free club at random to each player who ran out of time. */
@@ -276,7 +313,7 @@ export function expirePhase(state, now, deps) {
   if (next.phase === "PICKING") {
     // Collisions first, so autoAssign draws from a pool that already accounts
     // for the clubs the reassigned players were moved onto.
-    return ok(beginAnswering(autoAssign(resolveCollisions(next, deps), deps), now), [
+    return ok(beginAnswering(fillWildcards(autoAssign(resolveCollisions(next, deps), deps), deps), now), [
       { type: "phase_changed", phase: "ANSWERING" },
     ]);
   }
@@ -308,8 +345,8 @@ export function expirePhase(state, now, deps) {
  */
 export function beginReveal(state, now, deps) {
   const next = clone(state);
-  const roundClubIds = Object.values(next.round.picks);
-  const roundClubSet = new Set(roundClubIds);
+  const inPlay = roundClubIds(next.round);
+  const roundClubSet = new Set(inPlay);
 
   next.round.results = next.players.map((player) => {
     const answer = next.round.answers[player.id];
@@ -337,7 +374,7 @@ export function beginReveal(state, now, deps) {
 
   // Shown so every round teaches something, and so the game can prove the
   // round was winnable.
-  next.round.bestAnswer = deps.findBest(roundClubIds);
+  next.round.bestAnswer = deps.findBest(inPlay);
 
   next.phase = "REVEAL";
   next.phaseEndsAt = now + next.config.revealSeconds * 1000;

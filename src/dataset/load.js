@@ -29,7 +29,12 @@ export function createDataset({ clubs, players }) {
     // them is exactly the player someone typing a common surname meant.
     return {
       id: p.id, label: formatLabel(p), norm,
-      words: norm.split(/\s+/), clubCount: p.clubIds.length,
+      words: norm.split(/\s+/),
+      // Spaces removed, so "debruyne" finds "de bruyne" and "vandijk" finds
+      // "van Dijk". People type surnames as one word constantly, and Dutch,
+      // Belgian and Spanish names are full of particles that invite it.
+      squashed: norm.replace(/\s+/g, ""),
+      clubCount: p.clubIds.length,
     };
   });
 
@@ -46,12 +51,20 @@ export function createDataset({ clubs, players }) {
     // used to return Messias Timula, Danilo Messina, Giuseppe Messina and
     // Junior Messias before Lionel Messi, because those sort earlier
     // alphabetically and every one of them was merely a prefix match.
-    const tiers = [[], [], [], []];
+    // Everything up to here only ever matched a prefix — of the whole name or
+    // of one word. So "dijk" found Virgil van Dijk and "van dijk" found
+    // nobody, because his name starts with "Virgil". Same for "de bruyne",
+    // and for any surname anyone types with the particle attached. The last
+    // two tiers match inside the name instead.
+    const qSquashed = q.replace(/\s+/g, "");
+    const tiers = [[], [], [], [], [], []];
     for (const entry of searchable) {
       if (entry.norm === q) tiers[0].push(entry);
       else if (entry.words.includes(q)) tiers[1].push(entry);
       else if (entry.norm.startsWith(q)) tiers[2].push(entry);
       else if (entry.words.some((w) => w.startsWith(q))) tiers[3].push(entry);
+      else if (entry.norm.includes(q)) tiers[4].push(entry);
+      else if (entry.squashed.includes(qSquashed)) tiers[5].push(entry);
     }
 
     // Within a tier, prefer the player who appears in more of this game's

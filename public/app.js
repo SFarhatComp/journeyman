@@ -334,18 +334,22 @@ function renderRoundClubs() {
   // Attribute each club to whoever claimed it — knowing Sam took Juventus is
   // half the fun, and it makes the round's set easier to hold in your head.
   const who = (pid) => snap.players.find((p) => p.id === pid);
-  $("round-clubs").innerHTML = Object.entries(snap.round.picks)
-    .map(([pid, cid]) => {
-      const club = clubs.find((c) => c.id === cid);
+  const row = (cid, ownerLabel, cls = "") => {
+    const club = clubs.find((c) => c.id === cid);
+    return `<li class="${cls}">
+      <img src="/crests/${cid}.png" alt="" decoding="async">
+      <span class="cn">${esc(club?.name ?? cid)}</span>
+      <span class="owner">${ownerLabel}</span>
+    </li>`;
+  };
+  $("round-clubs").innerHTML = [
+    ...Object.entries(snap.round.picks).map(([pid, cid]) => {
       const player = who(pid);
-      const mine = pid === snap.you;
-      const owner = player ? esc(player.nickname) : "?";
-      return `<li>
-        <img src="/crests/${cid}.png" alt="" decoding="async">
-        <span class="cn">${esc(club?.name ?? cid)}</span>
-        <span class="owner">${mine ? "you" : owner}</span>
-      </li>`;
-    }).join("");
+      return row(cid, pid === snap.you ? "you" : esc(player ? player.nickname : "?"));
+    }),
+    // Nobody picked these; they are in play to keep a small round hard.
+    ...(snap.round.wildcards ?? []).map((cid) => row(cid, "random", "wild")),
+  ].join("");
   const answered = snap.round.answered[snap.you];
   $("answer").disabled = !!answered;
   if (answered) answerNote = null; // it landed; the refusal no longer applies
@@ -358,7 +362,7 @@ function renderResults() {
   // The round's clubs in pick order — every result is scored against this same
   // set, so showing it identically on each row makes the scores comparable at
   // a glance instead of a list of names to re-read.
-  const roundClubs = Object.values(snap.round.picks);
+  const roundClubs = [...Object.values(snap.round.picks), ...(snap.round.wildcards ?? [])];
 
   const strip = (matched) => {
     const hit = new Set(matched);
@@ -463,7 +467,10 @@ $("rounds").onclick = (e) => {
 // Creating a room by misclick should not trap anyone in it. Closing the socket
 // marks them disconnected, and an empty room is reaped a couple of minutes
 // later — no new server message needed.
-$("leave").onclick = () => {
+// The same handler on both screens. The lobby is not the only place you can
+// be stuck: after a game ends, the only other control is host-only, so a
+// non-host had no way out at all.
+const leaveRoom = () => {
   if (snap && snap.phase !== "LOBBY" && !confirm("Leave the game?")) return;
   const sock = ws;
   ws = null;              // stop onclose from reconnecting us straight back in
@@ -474,6 +481,8 @@ $("leave").onclick = () => {
   notice("");
   show("home");
 };
+$("leave").onclick = leaveRoom;
+$("leave-final").onclick = leaveRoom;
 $("start").onclick = () => send("start");
 $("play-again").onclick = () => send("playAgain");
 $("end-game").onclick = () => {

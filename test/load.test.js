@@ -142,3 +142,45 @@ test("an exact full name outranks an exact word", () => {
   });
   assert.equal(ds.search("ronaldo")[0].id, "FULL", "even with fewer clubs, the whole name is the better match");
 });
+
+test("a surname typed with its particle finds the player", () => {
+  // "dijk" worked and "van dijk" found nobody, because every tier matched only
+  // a prefix — of the whole name or of one word — and his name starts with
+  // "Virgil". Same for "de bruyne". This is how people actually type.
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      { id: "VVD", name: "Virgil van Dijk", birthYear: 1991, country: "NL", clubIds: ["Q1"] },
+      { id: "KDB", name: "Kevin De Bruyne", birthYear: 1991, country: "BE", clubIds: ["Q1"] },
+      { id: "RVP", name: "Robin van Persie", birthYear: 1983, country: "NL", clubIds: ["Q1"] },
+    ],
+  });
+  assert.equal(ds.search("van dijk")[0].id, "VVD");
+  assert.equal(ds.search("de bruyne")[0].id, "KDB");
+  assert.equal(ds.search("van persie")[0].id, "RVP");
+});
+
+test("a surname typed as one word finds the player too", () => {
+  // Nobody reliably remembers whether it is "de Bruyne" or "Debruyne".
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      { id: "VVD", name: "Virgil van Dijk", birthYear: 1991, country: "NL", clubIds: ["Q1"] },
+      { id: "KDB", name: "Kevin De Bruyne", birthYear: 1991, country: "BE", clubIds: ["Q1"] },
+    ],
+  });
+  assert.equal(ds.search("vandijk")[0].id, "VVD");
+  assert.equal(ds.search("debruyne")[0].id, "KDB");
+});
+
+test("an exact match still outranks a loose one", () => {
+  // The new tiers must not drown the good matches they sit behind.
+  const ds = createDataset({
+    clubs: [],
+    players: [
+      { id: "LOOSE", name: "Someone Vandijkstra", birthYear: 1990, country: "NL", clubIds: ["Q1", "Q2"] },
+      { id: "VVD", name: "Virgil van Dijk", birthYear: 1991, country: "NL", clubIds: ["Q1"] },
+    ],
+  });
+  assert.equal(ds.search("van dijk")[0].id, "VVD", "the real name must come first");
+});

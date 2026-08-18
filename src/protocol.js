@@ -82,6 +82,11 @@ export function snapshotFor(state, playerId) {
     // How many have chosen, without saying who or what — enough to know the
     // room is moving, not enough to shadow anyone's pick.
     pickedCount: Object.keys(state.round.picks).length,
+    // Ownerless clubs that top a small round up. Withheld while picking, for
+    // the same reason picks are: they are only chosen once picking ends, and
+    // sending an empty list early would say "there are none" before that is
+    // decided.
+    wildcards: picking ? [] : (state.round.wildcards ?? []),
     answered: Object.fromEntries(Object.keys(state.round.answers).map((id) => [id, true])),
     // Who has claimed whom, as they claim them. An entity with no label
     // resolves to null rather than leaking a raw id.

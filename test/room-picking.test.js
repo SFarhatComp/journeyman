@@ -164,3 +164,40 @@ test("picking-phase mutators do not touch the state they were given", () => {
   expirePhase(base, 1000 + DEFAULT_CONFIG.pickMaxSeconds * 1000, DEPS);
   assert.deepEqual(base, snapshot, "expirePhase mutated its input");
 });
+
+test("a two-player round is topped up to three clubs", () => {
+  // Everyone scores against the whole round, so two players means two clubs —
+  // and most decent footballers link two of anything, so everybody maxes out
+  // and the round decides nothing.
+  let state = createRoom({ code: "ABC123" });
+  for (const id of ["p0", "p1"]) state = addPlayer(state, { id, nickname: id }).state;
+  state = startGame(state, 1000, DEPS).state;
+  state = pickClub(state, { playerId: "p0", clubId: "Q1" }, 1100, DEPS).state;
+  state = pickClub(state, { playerId: "p1", clubId: "Q2" }, 1200, DEPS).state;
+
+  assert.equal(state.phase, "ANSWERING");
+  assert.equal(state.round.wildcards.length, 1, "one ownerless club is added");
+  assert.equal(state.round.wildcards[0], "Q3", "and it is one nobody holds");
+});
+
+test("a three-player round needs no topping up", () => {
+  let state = started();
+  ["Q1", "Q2", "Q3"].forEach((c, i) => {
+    state = pickClub(state, { playerId: `p${i}`, clubId: c }, 1100 + i, DEPS).state;
+  });
+  assert.deepEqual(state.round.wildcards, []);
+});
+
+test("topping up also happens when the phase times out", () => {
+  // The early-advance path and the expiry path must agree, or a two-player
+  // round that ran out of time is easier than one that did not.
+  let state = createRoom({ code: "ABC123" });
+  for (const id of ["p0", "p1"]) state = addPlayer(state, { id, nickname: id }).state;
+  state = startGame(state, 1000, DEPS).state;
+  const res = expirePhase(state, 1000 + DEFAULT_CONFIG.pickMaxSeconds * 1000, DEPS);
+
+  assert.equal(res.state.phase, "ANSWERING");
+  const all = [...Object.values(res.state.round.picks), ...res.state.round.wildcards];
+  assert.equal(all.length, 3, "two auto-assigned clubs plus one wildcard");
+  assert.equal(new Set(all).size, 3, "all distinct");
+});

@@ -198,7 +198,7 @@ button:active { transform:scale(.98); }
 
 /* Leaving a room entered by misclick. Deliberately understated — it sits under
    the start button and must never be the thing a host taps by accident. */
-#leave {
+#leave, #leave-final {
   background:transparent; color:var(--outline); border:1px solid var(--outline-variant);
   box-shadow:none; font-size:13px; padding:10px; margin-top:var(--gutter);
 }
@@ -219,6 +219,8 @@ button:active { transform:scale(.98); }
   opacity:.5;
 }
 #round-clubs li { position:relative; }
+#round-clubs li.wild { border-left-color:var(--outline); }
+#round-clubs li.wild .owner { font-style:italic; }
 #round-clubs img { position:relative; z-index:1; background:var(--surface); border-radius:50%; padding:2px; }
 
 .round-bar { display:flex; align-items:center; gap:var(--base); margin-bottom:var(--base); }
