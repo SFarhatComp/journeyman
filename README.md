@@ -1,13 +1,18 @@
 # FootFinder
 
-A multiplayer football trivia game for friends. Everyone joins a private room
-by code on their phones, and the game runs live for a few rounds.
+A multiplayer sports trivia game for friends. Everyone joins a private room by
+code on their phones, and the game runs live for a few rounds.
+
+**Two sports, one game.** The host picks football or hockey in the lobby. The
+rules are identical; only the pool changes — 97 European football clubs, or
+the 32 current NHL teams.
 
 ## How it's played
 
 1. One player creates a room and shares the invite link. 2–8 players join by
-   nickname. The host picks the game length: **4, 6 or 8 rounds** (default 6).
-2. Each round, every player claims a club from a grid of 97. **Nobody can see
+   nickname. The host picks the **sport** and the game length: **4, 6 or 8
+   rounds** (default 6).
+2. Each round, every player claims a team from the pool. **Nobody can see
    what anyone else has taken.** If two players happen to claim the same club,
    one keeps it at random and the other is moved to a free club and told so —
    speed doesn't decide it, because nobody could see the collision coming.
@@ -75,7 +80,29 @@ verified rather than scraped. That keeps national teams and lookalike entities
 out of the pool, and means the game never has to decide whether an arbitrary
 Wikidata item is "really a club".
 
-### Two sources, in two passes
+### Hockey: the NHL's own API
+
+`./footfinder.sh nhl` builds `data/nhl-dataset.json` — **8,212 players across
+the 32 current NHL teams**, from the NHL's public API. Free, no key,
+structured, and complete: Montreal has 108 seasons of rosters back to 1917-18,
+and a roster entry already carries name, birth date and country, so no
+per-player lookup is needed.
+
+Wikidata does cover hockey under the same P54 property (861 players for
+Montreal), but it carries the same silent gaps that lost us Modrić and João
+Félix. hockeydb has broader league coverage but would mean scraping HTML under
+unclear terms. When the official source is both more complete and permitted,
+neither is worth it.
+
+`./footfinder.sh nhl-crests` rasterises the NHL's own SVG logos to 128px PNG,
+matching the football crests so the client needs no special case.
+
+**Franchise history follows the franchise, not the city.** The Winnipeg Jets
+have 15 seasons because that franchise moved from Atlanta in 2011 — the
+original Jets became Phoenix. Colorado's history includes its Quebec Nordiques
+years. That is how the NHL models it, and the game inherits it.
+
+### Football: two sources, in two passes
 
 `./footfinder.sh dataset` pulls club rosters from **Wikidata**'s P54
 statements. `./footfinder.sh enrich` then fills the gaps from **Wikipedia**
@@ -106,7 +133,10 @@ sitelink to Wikipedia article to lead image — never by name matching.
 ## Architecture
 
 - **`src/engine/`** — the state machine (`room.js`) and scoring
-  (`scoring.js`). Pure functions: no I/O, no clock, no dataset imports. Time
+  (`scoring.js`). Pure functions: no I/O, no clock, no dataset imports, **and
+  no idea what sport it is running** — it deals in clubs and players and never
+  learns what they are. Adding hockey required no engine change beyond a
+  `setSport` setting; every mention of "football" in here was a comment. Time
   arrives as an argument, the dataset as `deps`. That's what makes the timing
   rules testable without waiting or a server. Every exported mutator clones
   its input; a test asserts none of them mutate.
