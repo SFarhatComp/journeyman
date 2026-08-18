@@ -295,4 +295,4 @@ setInterval(() => {
   }
 }, 1000);
 
-server.listen(PORT, HOST, () => console.log(`footfinder on http://${HOST}:${PORT}`));
+server.listen(PORT, HOST, () => console.log(`journeyman on http://${HOST}:${PORT}`));

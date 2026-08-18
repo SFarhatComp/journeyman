@@ -12,14 +12,14 @@
  *   clubs:   [{ id, name, country, league }]
  *   players: [{ id, name, birthYear, country, clubIds }]
  *
- * Run: ./footfinder.sh nhl
+ * Run: ./journeyman.sh nhl
  *
  * Rosters are cached per team-season. A run that dies partway resumes instead
  * of restarting — the football rebuild cost four attempts learning that.
  */
 import { readFile, writeFile, rm } from "node:fs/promises";
 
-const UA = "footfinder/0.1 (personal sports trivia game)";
+const UA = "journeyman/0.1 (personal sports trivia game)";
 const WEB = "https://api-web.nhle.com/v1";
 const GAP_MS = 250;
 const CACHE = new URL("../data/.nhl-rosters.json", import.meta.url);
@@ -140,4 +140,4 @@ await rm(CACHE, { force: true });
 await writeFile(new URL("../data/nhl-dataset.json", import.meta.url), JSON.stringify(dataset));
 
 console.log(`\nWrote ${dataset.players.length} players across ${dataset.clubs.length} teams.`);
-console.log("Logos: ./footfinder.sh nhl-crests");
+console.log("Logos: ./journeyman.sh nhl-crests");

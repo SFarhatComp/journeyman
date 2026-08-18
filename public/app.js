@@ -506,7 +506,7 @@ $("join").onclick = () => {
 $("share").onclick = async () => {
   const url = `${location.origin}/?room=${snap.code}`;
   try {
-    if (navigator.share) return await navigator.share({ title: "FootFinder", text: `Join my room: ${snap.code}`, url });
+    if (navigator.share) return await navigator.share({ title: "Journeyman", text: `Join my room: ${snap.code}`, url });
     await navigator.clipboard.writeText(url);
     notice("Invite link copied.", "ok");
   } catch (err) {

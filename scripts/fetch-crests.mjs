@@ -10,7 +10,7 @@
  * sparse — Chelsea, Man United and Ajax have none — and sometimes wrong;
  * Barcelona's P154 is a photograph of their training ground.)
  *
- * Run: ./footfinder.sh crests
+ * Run: ./journeyman.sh crests
  *
  * Politeness: one request at a time, ~1s apart, Retry-After honoured. These
  * are free public endpoints and this is a personal project.
@@ -21,7 +21,7 @@
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 
-const UA = "footfinder/0.1 (personal football trivia game)";
+const UA = "journeyman/0.1 (personal football trivia game)";
 const OUT = new URL("../public/crests/", import.meta.url);
 const GAP_MS = 1000;
 

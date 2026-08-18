@@ -1,5 +1,5 @@
 /**
- * Builds data/dataset.json from Wikidata. Run manually: ./footfinder.sh dataset
+ * Builds data/dataset.json from Wikidata. Run manually: ./journeyman.sh dataset
  *
  * Deliberately NOT part of the test run or the image build — pointing
  * scheduled traffic at a public endpoint would be rude, and an upstream
@@ -9,7 +9,7 @@ import { readFile, writeFile, rm } from "node:fs/promises";
 import { shapeDataset } from "../src/dataset/fromWikidata.js";
 
 const ENDPOINT = "https://query.wikidata.org/sparql";
-const UA = "footfinder/0.1 (personal football trivia game)";
+const UA = "journeyman/0.1 (personal football trivia game)";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -110,7 +110,7 @@ for (const [i, club] of clubs.entries()) {
       console.error(`\n${err.message}`);
       console.error(`\n${Object.keys(cache).length}/${clubs.length} clubs are cached.`);
       console.error("The query service throttles under sustained load. Run"
-        + " ./footfinder.sh dataset again — it resumes from the cache.");
+        + " ./journeyman.sh dataset again — it resumes from the cache.");
       process.exit(1);
     }
     cache[club.id] = roster;
@@ -141,4 +141,4 @@ await writeFile(
 );
 console.log(`\nWrote ${dataset.players.length} players across ${dataset.clubs.length} clubs.`);
 console.log("\nThis is Wikidata only — it has REPLACED any Wikipedia enrichment.");
-console.log("Run ./footfinder.sh enrich to put the career gaps back.");
+console.log("Run ./journeyman.sh enrich to put the career gaps back.");

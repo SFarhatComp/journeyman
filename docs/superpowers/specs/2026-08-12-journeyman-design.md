@@ -1,4 +1,4 @@
-# FootFinder — design spec
+# Journeyman — design spec
 
 **Date:** 2026-08-12
 **Status:** approved for planning

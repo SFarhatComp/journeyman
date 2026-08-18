@@ -7,7 +7,7 @@
  * maintained by people who follow the sport, so this pass closes gaps that the
  * structured data does not know it has.
  *
- * Run: ./footfinder.sh enrich   (add --limit N to trial it, --dry to not write)
+ * Run: ./journeyman.sh enrich   (add --limit N to trial it, --dry to not write)
  *
  * Additive only. It never removes a club Wikidata asserted — a disagreement
  * between the two sources is not evidence that Wikidata is the wrong one, and
@@ -20,7 +20,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { careerClubTitles, normalizeTitle } from "../src/dataset/fromWikipedia.js";
 
-const UA = "footfinder/0.1 (personal football trivia game)";
+const UA = "journeyman/0.1 (personal football trivia game)";
 const API = "https://en.wikipedia.org/w/api.php";
 const SPARQL = "https://query.wikidata.org/sparql";
 const BATCH = 50;        // the API's title limit for anonymous requests

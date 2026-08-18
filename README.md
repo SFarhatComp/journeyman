@@ -1,7 +1,11 @@
-# FootFinder
+# Journeyman
 
 A multiplayer sports trivia game for friends. Everyone joins a private room by
 code on their phones, and the game runs live for a few rounds.
+
+*A journeyman is a player who has turned out for many teams — Mike Sillinger's
+eleven NHL clubs, Vince Carter's eight NBA ones. Naming the right one is how
+you win.*
 
 **Three sports, one game.** The host picks in the lobby. The rules are
 identical; only the pool changes.
@@ -41,25 +45,25 @@ milliseconds and you get a few seconds of personal grace to name someone else.
 ## Quick start
 
 Nothing is installed on the host — everything runs in Docker via
-`./footfinder.sh`.
+`./journeyman.sh`.
 
 ```bash
-./footfinder.sh build     # build the image
-./footfinder.sh test      # run the test suite in a container (159 tests)
-./footfinder.sh up        # start the game server (http://127.0.0.1:3000)
-./footfinder.sh down      # stop the server AND close the tunnel if open
-./footfinder.sh logs      # follow the server's logs
-./footfinder.sh tunnel    # expose the running server to the internet
-./footfinder.sh dataset   # rebuild data/dataset.json from Wikidata
-./footfinder.sh enrich    # fill career gaps from Wikipedia infoboxes
-./footfinder.sh crests    # re-download club crests
+./journeyman.sh build     # build the image
+./journeyman.sh test      # run the test suite in a container (159 tests)
+./journeyman.sh up        # start the game server (http://127.0.0.1:3000)
+./journeyman.sh down      # stop the server AND close the tunnel if open
+./journeyman.sh logs      # follow the server's logs
+./journeyman.sh tunnel    # expose the running server to the internet
+./journeyman.sh dataset   # rebuild data/dataset.json from Wikidata
+./journeyman.sh enrich    # fill career gaps from Wikipedia infoboxes
+./journeyman.sh crests    # re-download club crests
 ```
 
 ## Playing with friends
 
 ```bash
-./footfinder.sh up
-./footfinder.sh tunnel
+./journeyman.sh up
+./journeyman.sh tunnel
 ```
 
 `tunnel` runs `cloudflared` in Docker and prints a `https://….trycloudflare.com`
@@ -70,7 +74,7 @@ with the room code already in it, so friends just open it, type a name and tap
 Join. The tunnel URL changes every run, so it can't be bookmarked ahead of
 time.
 
-When you're done, `./footfinder.sh down` stops the server *and* the tunnel.
+When you're done, `./journeyman.sh down` stops the server *and* the tunnel.
 That's the reliable way to be sure no public URL to this machine is left
 running — Ctrl-C alone can fail if the shell is killed (see Known limits).
 
@@ -87,7 +91,7 @@ Wikidata item is "really a club".
 
 ### Basketball: stats.nba.com
 
-`./footfinder.sh nba` builds `data/nba-dataset.json` — **4,667 players across
+`./journeyman.sh nba` builds `data/nba-dataset.json` — **4,667 players across
 the 30 active NBA franchises**, covering all 1,719 team-seasons they have
 played since 1946.
 
@@ -106,11 +110,11 @@ NBA rosters carry no nationality, only a school, so basketball labels read
 `L. James (1984)` where football reads `J. Félix (1999, PT)`. The label
 formatter already handles a missing country.
 
-`./footfinder.sh nba-crests` rasterises the NBA's SVG logos to 128px PNG.
+`./journeyman.sh nba-crests` rasterises the NBA's SVG logos to 128px PNG.
 
 ### Hockey: the NHL's own API
 
-`./footfinder.sh nhl` builds `data/nhl-dataset.json` — **8,212 players across
+`./journeyman.sh nhl` builds `data/nhl-dataset.json` — **8,212 players across
 the 32 current NHL teams**, from the NHL's public API. Free, no key,
 structured, and complete: Montreal has 108 seasons of rosters back to 1917-18,
 and a roster entry already carries name, birth date and country, so no
@@ -122,7 +126,7 @@ Félix. hockeydb has broader league coverage but would mean scraping HTML under
 unclear terms. When the official source is both more complete and permitted,
 neither is worth it.
 
-`./footfinder.sh nhl-crests` rasterises the NHL's own SVG logos to 128px PNG,
+`./journeyman.sh nhl-crests` rasterises the NHL's own SVG logos to 128px PNG,
 matching the football crests so the client needs no special case.
 
 **Franchise history follows the franchise, not the city.** The Winnipeg Jets
@@ -132,8 +136,8 @@ years. That is how the NHL models it, and the game inherits it.
 
 ### Football: two sources, in two passes
 
-`./footfinder.sh dataset` pulls club rosters from **Wikidata**'s P54
-statements. `./footfinder.sh enrich` then fills the gaps from **Wikipedia**
+`./journeyman.sh dataset` pulls club rosters from **Wikidata**'s P54
+statements. `./journeyman.sh enrich` then fills the gaps from **Wikipedia**
 career infoboxes.
 
 **They are ordered, and the order matters.** `dataset` rewrites
@@ -245,7 +249,7 @@ HTML, CSS and font — one round trip, no render-blocking JS.
   link needs a paid Cloudflare tunnel.
 - **A tunnel can outlive its terminal.** If the shell is killed or an SSH
   session drops, the cloudflared container can survive and keep the URL live.
-  `./footfinder.sh down` is the reliable close.
+  `./journeyman.sh down` is the reliable close.
 - **Everyone dropping at once costs a round.** If every phone locks mid-game,
   the backstop timers keep running while nobody is connected.
 - **Rate limiting is per-tunnel, not per-person.** Behind a tunnel every

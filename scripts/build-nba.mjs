@@ -15,7 +15,7 @@
  *   clubs:   [{ id, name, country, league }]
  *   players: [{ id, name, birthYear, country, clubIds }]
  *
- * Run: ./footfinder.sh nba   — expect an hour, and expect to run it twice.
+ * Run: ./journeyman.sh nba   — expect an hour, and expect to run it twice.
  * Rosters cache per team-season, so a second run resumes.
  */
 import { readFile, writeFile, rm } from "node:fs/promises";
@@ -151,4 +151,4 @@ await writeFile(new URL("../data/nba-dataset.json", import.meta.url), JSON.strin
 
 console.log(`\nWrote ${dataset.players.length} players across ${dataset.clubs.length} teams.`);
 if (missed) console.log(`${missed} team-seasons could not be fetched — re-run to fill them in.`);
-console.log("Logos: ./footfinder.sh nba-crests");
+console.log("Logos: ./journeyman.sh nba-crests");

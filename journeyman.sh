@@ -2,9 +2,9 @@
 # Everything runs in Docker. Nothing is installed on the host.
 set -euo pipefail
 
-IMAGE=footfinder:dev
-NAME=footfinder
-TUNNEL_NAME=footfinder-tunnel
+IMAGE=journeyman:dev
+NAME=journeyman
+TUNNEL_NAME=journeyman-tunnel
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 case "${1:-help}" in
@@ -32,7 +32,7 @@ case "${1:-help}" in
            # after a killed shell or dropped SSH, when no trap ever runs.
            trap 'docker rm -f "$TUNNEL_NAME" >/dev/null 2>&1' EXIT INT TERM
            echo "Public URL for friends below."
-           echo "Ctrl-C closes it, or run './footfinder.sh down' from another terminal."
+           echo "Ctrl-C closes it, or run './journeyman.sh down' from another terminal."
            docker run --rm --name "$TUNNEL_NAME" --network host \
              cloudflare/cloudflared:latest tunnel --url http://127.0.0.1:3000 ;;
 
@@ -85,5 +85,5 @@ case "${1:-help}" in
              -v "$DIR/src:/app/src:ro" "$IMAGE" node scripts/enrich-careers.mjs "$@" ;;
 
   *)       sed -n '2,4p' "${BASH_SOURCE[0]}"; echo
-           echo "usage: ./footfinder.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich|nhl|nhl-crests|nba|nba-crests}"; exit 1 ;;
+           echo "usage: ./journeyman.sh {build|test|up|down|logs|tunnel|dataset|crests|enrich|nhl|nhl-crests|nba|nba-crests}"; exit 1 ;;
 esac
